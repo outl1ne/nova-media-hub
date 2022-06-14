@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Outl1ne\NovaMediaLibrary\Http\Controllers\MediaLibraryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,3 +13,5 @@ use Illuminate\Support\Facades\Route;
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
 */
+
+Route::post('/nova-vendor/media-library/collection/{collection}/media/upload', [MediaLibraryController::class, 'uploadMediaToCollection']);

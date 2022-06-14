@@ -1,5 +1,11 @@
 <template>
-  <LoadingView :loading="loading" :key="pageId">
+  <LoadingView :loading="loading" :key="pageId" class="nml-flex nml-flex-col nml-m-2">
+    <!-- Header -->
+    <div class="nml-flex nml-mb-4">
+      <LoadingButton class="nml-ml-auto" @click="showMediaUploadModal = true">Upload media</LoadingButton>
+    </div>
+
+    <!-- Content wrapper -->
     <div class="nml-flex nml-border nml-full nml-border-slate-200 nml-rounded nml-bg-white nml-shadow">
       <!-- Collections list -->
       <div class="nml-flex nml-flex-col nml-border-r nml-border-slate-200">
@@ -18,14 +24,22 @@
       </div>
     </div>
   </LoadingView>
+
+  <!-- Modal -->
+  <MediaUploadModal :show="showMediaUploadModal" @close="showMediaUploadModal = false" />
 </template>
 
 <script>
+import MediaUploadModal from '../modals/MediaUploadModal';
+
 export default {
+  components: { MediaUploadModal },
+
   data: () => ({
     loading: true,
     collections: [],
     mediaItems: [],
+    showMediaUploadModal: false,
   }),
 
   mounted() {

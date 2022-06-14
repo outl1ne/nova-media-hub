@@ -9,14 +9,14 @@
   "require": {
     "php": ">=8.0",
     "laravel/nova": "^4.0",
-    "outl1ne/nova-translations-loader": "^5.0"
+    "outl1ne/nova-translations-loader": "^5.0",
+    "spatie/laravel-medialibrary": "^10.3.6"
   },
   "autoload": {
     "psr-4": {
       "Outl1ne\\NovaMediaLibrary\\": "src/"
     },
-    "files": [
-    ]
+    "files": []
   },
   "autoload-dev": {
     "psr-4": {

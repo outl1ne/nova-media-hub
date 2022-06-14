@@ -2,8 +2,18 @@
 
 namespace Outl1ne\NovaMediaLibrary\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class MediaLibraryController extends Controller
 {
+    public function uploadMediaToCollection(Request $request)
+    {
+        $files = $request->allFiles()['files'] ?? [];
+        $collectionName = $request->route('collection') ?? 'default';
+
+        ray($files, $collectionName);
+
+        return response('', 204);
+    }
 }
