@@ -44,7 +44,7 @@ class NMLServiceProvider extends ServiceProvider
     {
         // Register nova routes
         Nova::router()->group(function ($router) {
-            $path = config('nova-medialibrary.base_path', 'nova-medialibrary');
+            $path = MediaLibrary::getBasePath();
 
             $router
                 ->get("{$path}/{pageId?}", fn ($pageId = 'general') => inertia('NovaMediaLibrary', ['basePath' => $path, 'pageId' => $pageId]))
