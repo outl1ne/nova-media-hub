@@ -5,7 +5,7 @@ namespace Outl1ne\NovaMediaHub\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class MediaLibraryController extends Controller
+class MediaHubController extends Controller
 {
     public function uploadMediaToCollection(Request $request)
     {

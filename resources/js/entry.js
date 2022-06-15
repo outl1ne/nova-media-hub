@@ -1,10 +1,10 @@
 import DetailMediaField from './fields/MediaField/DetailMediaField';
 import FormMediaField from './fields/MediaField/FormMediaField';
 
-let mediaLibraryDarkModeObserver = null;
+let mediaHubDarkModeObserver = null;
 
 Nova.booting((Vue, router, store) => {
-  mediaLibraryDarkModeObserver = new MutationObserver(() => {
+  mediaHubDarkModeObserver = new MutationObserver(() => {
     const cls = document.documentElement.classList;
     const isDarkMode = cls.contains('dark');
 

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Outl1ne\NovaMediaHub\Http\Controllers\MediaLibraryController;
+use Outl1ne\NovaMediaHub\Http\Controllers\MediaHubController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +14,4 @@ use Outl1ne\NovaMediaHub\Http\Controllers\MediaLibraryController;
 |
 */
 
-Route::post('/nova-vendor/media-hub/collection/{collection}/media/upload', [MediaLibraryController::class, 'uploadMediaToCollection']);
+Route::post('/nova-vendor/media-hub/collection/{collection}/media/upload', [MediaHubController::class, 'uploadMediaToCollection']);

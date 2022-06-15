@@ -17,15 +17,10 @@
     },
     "files": []
   },
-  "autoload-dev": {
-    "psr-4": {
-      "Outl1ne\\NovaMediaHub\\Tests\\": "tests"
-    }
-  },
   "extra": {
     "laravel": {
       "providers": [
-        "Outl1ne\\NovaMediaHub\\NMLServiceProvider"
+        "Outl1ne\\NovaMediaHub\\MediaHubServiceProvider"
       ]
     }
   },

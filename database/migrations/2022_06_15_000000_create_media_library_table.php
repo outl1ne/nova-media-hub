@@ -1,6 +1,6 @@
 <?php
 
-use Outl1ne\NovaMediaHub\MediaLibrary;
+use Outl1ne\NovaMediaHub\MediaHub;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(MediaLibrary::getTableName(), function (Blueprint $table) {
+        Schema::create(MediaHub::getTableName(), function (Blueprint $table) {
             // Primary keys
             $table->bigIncrements('id');
             $table->uuid('uuid')->nullable()->unique();

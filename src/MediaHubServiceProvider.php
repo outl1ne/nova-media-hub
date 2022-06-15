@@ -9,7 +9,7 @@ use Laravel\Nova\Http\Middleware\Authenticate;
 use Outl1ne\NovaMediaHub\Http\Middleware\Authorize;
 use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
 
-class NMLServiceProvider extends ServiceProvider
+class MediaHubServiceProvider extends ServiceProvider
 {
     use LoadsNovaTranslations;
 
@@ -50,7 +50,7 @@ class NMLServiceProvider extends ServiceProvider
     {
         // Register nova routes
         Nova::router()->group(function ($router) {
-            $path = MediaLibrary::getBasePath();
+            $path = MediaHub::getBasePath();
 
             $router
                 ->get("{$path}/{pageId?}", fn ($pageId = 'general') => inertia('NovaMediaHub', ['basePath' => $path, 'pageId' => $pageId]))

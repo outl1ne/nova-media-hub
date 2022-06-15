@@ -40,7 +40,7 @@ public function tools()
 {
     return [
         // ...
-        new \Outl1ne\NovaMediaHub\MediaLibrary
+        new \Outl1ne\NovaMediaHub\MediaHub
     ];
 }
 ```

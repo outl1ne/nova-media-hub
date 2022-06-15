@@ -3,7 +3,7 @@
 namespace Outl1ne\NovaMediaHub\Http\Middleware;
 
 use Laravel\Nova\Nova;
-use Outl1ne\NovaMediaHub\MediaLibrary;
+use Outl1ne\NovaMediaHub\MediaHub;
 
 class Authorize
 {
@@ -28,6 +28,6 @@ class Authorize
      */
     public function matchesTool($tool)
     {
-        return $tool instanceof MediaLibrary;
+        return $tool instanceof MediaHub;
     }
 }

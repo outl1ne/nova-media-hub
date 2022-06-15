@@ -4,7 +4,7 @@ namespace Outl1ne\NovaMediaHub\Nova\Resources;
 
 use Laravel\Nova\Resource;
 use Illuminate\Http\Request;
-use Outl1ne\NovaMediaHub\MediaLibrary;
+use Outl1ne\NovaMediaHub\MediaHub;
 
 class Media extends Resource
 {
@@ -14,7 +14,7 @@ class Media extends Resource
 
     public function __construct($resource)
     {
-        self::$model = MediaLibrary::getMediaModel();
+        self::$model = MediaHub::getMediaModel();
         parent::__construct($resource);
     }
 

@@ -7,7 +7,7 @@ use Laravel\Nova\Tool;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 
-class MediaLibrary extends Tool
+class MediaHub extends Tool
 {
     public function boot()
     {
@@ -18,7 +18,7 @@ class MediaLibrary extends Tool
     public function menu(Request $request)
     {
         return MenuSection::make(__('novaMediaHub.navigationItemTitle'))
-            ->path(MediaLibrary::getBasePath())
+            ->path(self::getBasePath())
             ->icon('photograph');
     }
 
