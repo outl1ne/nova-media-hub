@@ -1,7 +1,7 @@
 # Nova Media Library
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-medialibrary.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-medialibrary)
-[![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-medialibrary.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-medialibrary)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
+[![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
 
 This [Laravel Nova](https://nova.laravel.com) package allows you to manage media and media fields.
 
@@ -24,8 +24,8 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 Install the package in a Laravel Nova project via Composer and run migrations:
 
 ```bash
-# Install nova-medialibrary
-composer require outl1ne/nova-medialibrary
+# Install nova-media-hub
+composer require outl1ne/nova-media-hub
 
 # Run migrations
 php artisan migrate
@@ -40,14 +40,18 @@ public function tools()
 {
     return [
         // ...
-        new \Outl1ne\NovaMediaLibrary\MediaLibrary
+        new \Outl1ne\NovaMediaHub\MediaLibrary
     ];
 }
 ```
 
 ## Usage
 
-Setup spatie/laravel-medialibrary.
+### Migrate
+
+### Configure
+
+### Use fields
 
 ## Credits
 

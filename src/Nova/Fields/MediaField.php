@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaMediaLibrary\Nova\Fields;
+namespace Outl1ne\NovaMediaHub\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
 

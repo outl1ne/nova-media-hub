@@ -50,10 +50,7 @@ export default {
           formData.append('files[]', file);
         }
 
-        await Nova.request().post(
-          `/nova-vendor/media-library/collection/${this.collectionName}/media/upload`,
-          formData
-        );
+        await Nova.request().post(`/nova-vendor/media-hub/collection/${this.collectionName}/media/upload`, formData);
       } catch (e) {
         Nova.$toasted.success(e.message);
       }

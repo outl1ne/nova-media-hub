@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaMediaLibrary;
+namespace Outl1ne\NovaMediaHub;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -11,24 +11,29 @@ class MediaLibrary extends Tool
 {
     public function boot()
     {
-        Nova::script('nova-medialibrary', __DIR__ . '/../dist/js/entry.js');
-        Nova::style('nova-medialibrary', __DIR__ . '/../dist/css/entry.css');
+        Nova::script('nova-media-hub', __DIR__ . '/../dist/js/entry.js');
+        Nova::style('nova-media-hub', __DIR__ . '/../dist/css/entry.css');
     }
 
     public function menu(Request $request)
     {
-        return MenuSection::make(__('novaMediaLibrary.navigationItemTitle'))
+        return MenuSection::make(__('novaMediaHub.navigationItemTitle'))
             ->path(MediaLibrary::getBasePath())
             ->icon('photograph');
     }
 
+    public static function getTableName()
+    {
+        return config('nova-media-hub.model');
+    }
+
     public static function getMediaModel()
     {
-        return config('laravel-medialibrary.model');
+        return config('nova-media-hub.model');
     }
 
     public static function getBasePath()
     {
-        return config('nova-medialibrary.base_path', 'media-library');
+        return config('nova-media-hub.base_path', 'media-hub');
     }
 }

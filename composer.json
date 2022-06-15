@@ -1,5 +1,5 @@
 {
-  "name": "outl1ne/nova-medialibrary",
+  "name": "outl1ne/nova-media-hub",
   "description": "A Laravel Nova tool for managing media.",
   "keywords": [
     "laravel",
@@ -9,24 +9,23 @@
   "require": {
     "php": ">=8.0",
     "laravel/nova": "^4.0",
-    "outl1ne/nova-translations-loader": "^5.0",
-    "spatie/laravel-medialibrary": "^10.3.6"
+    "outl1ne/nova-translations-loader": "^5.0"
   },
   "autoload": {
     "psr-4": {
-      "Outl1ne\\NovaMediaLibrary\\": "src/"
+      "Outl1ne\\NovaMediaHub\\": "src/"
     },
     "files": []
   },
   "autoload-dev": {
     "psr-4": {
-      "Outl1ne\\NovaMediaLibrary\\Tests\\": "tests"
+      "Outl1ne\\NovaMediaHub\\Tests\\": "tests"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Outl1ne\\NovaMediaLibrary\\NMLServiceProvider"
+        "Outl1ne\\NovaMediaHub\\NMLServiceProvider"
       ]
     }
   },

@@ -1,12 +1,12 @@
 <?php
 
-namespace Outl1ne\NovaMediaLibrary;
+namespace Outl1ne\NovaMediaHub;
 
 use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
-use Outl1ne\NovaMediaLibrary\Http\Middleware\Authorize;
+use Outl1ne\NovaMediaHub\Http\Middleware\Authorize;
 use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class NMLServiceProvider extends ServiceProvider
@@ -20,9 +20,15 @@ class NMLServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslations(__DIR__ . '/../lang', 'nova-medialibrary', true);
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadTranslations(__DIR__ . '/../lang', 'nova-media-hub', true);
 
         if ($this->app->runningInConsole()) {
+            // Publish migrations
+            $this->publishes([
+                __DIR__ . '/../database/migrations' => database_path('migrations'),
+            ], 'migrations');
+
             // Publish config
             $this->publishes([
                 __DIR__ . '/../config/' => config_path(),
@@ -35,8 +41,8 @@ class NMLServiceProvider extends ServiceProvider
         $this->registerRoutes();
 
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/nova-medialibrary.php',
-            'nova-medialibrary'
+            __DIR__ . '/../config/nova-media-hub.php',
+            'nova-media-hub'
         );
     }
 
@@ -47,7 +53,7 @@ class NMLServiceProvider extends ServiceProvider
             $path = MediaLibrary::getBasePath();
 
             $router
-                ->get("{$path}/{pageId?}", fn ($pageId = 'general') => inertia('NovaMediaLibrary', ['basePath' => $path, 'pageId' => $pageId]))
+                ->get("{$path}/{pageId?}", fn ($pageId = 'general') => inertia('NovaMediaHub', ['basePath' => $path, 'pageId' => $pageId]))
                 ->middleware(['nova', Authenticate::class]);
         });
 

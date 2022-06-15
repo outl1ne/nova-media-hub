@@ -12,7 +12,7 @@ mix
       vue: 'Vue',
     },
     output: {
-      uniqueName: 'outl1ne/nova-medialibrary',
+      uniqueName: 'outl1ne/nova-media-hub',
     },
   })
   .postCss('resources/css/entry.css', 'dist/css/', [postcss(), tailwindcss('tailwind.config.js')])

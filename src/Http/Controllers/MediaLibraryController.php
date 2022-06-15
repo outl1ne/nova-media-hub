@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaMediaLibrary\Http\Controllers;
+namespace Outl1ne\NovaMediaHub\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
