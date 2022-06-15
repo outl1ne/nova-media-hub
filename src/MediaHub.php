@@ -22,9 +22,15 @@ class MediaHub extends Tool
             ->icon('photograph');
     }
 
+
+
+    // ------------------------------
+    // Getters
+    // ------------------------------
+
     public static function getTableName()
     {
-        return config('nova-media-hub.model');
+        return config('nova-media-hub.table_name');
     }
 
     public static function getMediaModel()
@@ -34,6 +40,6 @@ class MediaHub extends Tool
 
     public static function getBasePath()
     {
-        return config('nova-media-hub.base_path', 'media-hub');
+        return config('nova-media-hub.base_path');
     }
 }

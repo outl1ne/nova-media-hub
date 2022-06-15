@@ -6,4 +6,6 @@ return [
 
     // Base URL path
     'base_path' => 'media-hub',
+
+    'model' => \Outl1ne\NovaMediaHub\Models\Media::class,
 ];
