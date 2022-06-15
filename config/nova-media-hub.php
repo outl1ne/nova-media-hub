@@ -1,12 +1,9 @@
 <?php
 
 return [
-
+    // Table name
     'table_name' => 'media_hub',
 
-    /**
-     * URL path of media hub page
-     */
+    // Base URL path
     'base_path' => 'media-hub',
-
 ];
