@@ -11,16 +11,36 @@
       <div class="nml-flex nml-flex-col nml-border-r nml-border-slate-200">
         <div class="nml-font-bold nml-border-b nml-border-slate-200 nml-px-6 nml-py-3 nml-text-center">Collections</div>
 
-        <div class="nml-flex nml-flex-col">
+        <div class="nml-flex nml-flex-col nml-items-center nml-justify-center" v-if="mediaLoading">
+          <Loader class="text-gray-300" />
+        </div>
+
+        <div class="nml-flex nml-flex-col" v-else>
           <div v-if="!collections.length" class="nml-text-sm nml-text-slate-400 nml-p-4 nml-whitespace-nowrap">
             No collections found
           </div>
+
+          <button
+            v-for="collectionName in collections"
+            :key="collectionName"
+            class="nml-py-4 hover:nml-bg-slate-400"
+            @click.stop="selectCollection(collectionName)"
+          >
+            {{ collectionName }}
+          </button>
         </div>
       </div>
 
       <!-- Media list -->
-      <div class="nml-flex nml-p-4 nml-w-full" :class="{ 'nml-items-center nml-justify-center': !mediaItems.length }">
+      <div
+        class="nml-flex nml-p-4 nml-w-full nml-flex-wrap"
+        :class="{ 'nml-items-center nml-justify-center': !mediaItems.length }"
+      >
         <div v-if="!mediaItems.length" class="nml-text-sm nml-text-slate-400">No media items found</div>
+
+        <button v-for="item in mediaItems" :key="item.id" class="nml-h-48 nml-w-48 nml-mx-2">
+          <img :src="item.url" :alt="item.id" class="nml-shadow" />
+        </button>
       </div>
     </div>
   </LoadingView>
@@ -37,13 +57,40 @@ export default {
 
   data: () => ({
     loading: true,
+    mediaLoading: false,
+
+    selectedCollection: void 0,
     collections: [],
     mediaItems: [],
+    currentPage: 1,
     showMediaUploadModal: false,
   }),
 
-  mounted() {
-    setTimeout(() => (this.loading = false), 200);
+  async mounted() {
+    this.loading = true;
+    await this.getCollections();
+    await this.getCollectionMedia();
+    this.loading = false;
+  },
+
+  methods: {
+    async getCollections() {
+      const { data } = await Nova.request().get('/nova-vendor/media-hub/collections');
+      this.collections = data || [];
+      this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
+    },
+
+    async getCollectionMedia() {
+      this.mediaLoading = true;
+      const { data } = await Nova.request().get(`/nova-vendor/media-hub/collections/${this.selectedCollection}/media`);
+      this.mediaItems = data.data;
+      this.mediaLoading = false;
+    },
+
+    async selectCollection(collectionName) {
+      this.selectedCollection = collectionName;
+      await this.getCollectionMedia();
+    },
   },
 };
 </script>

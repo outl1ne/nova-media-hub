@@ -16,4 +16,6 @@ return [
     'conversions_disk_name' => 'public',
 
     'max_file_size_in_kb' => 3000,
+
+    'path_prefix' => 'media',
 ];

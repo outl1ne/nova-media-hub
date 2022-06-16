@@ -126,6 +126,8 @@ class FileHandler
 
         $media->save();
 
+        $this->filesystem->create($this->pathToFile, $media, $this->fileName);
+
         // TODO: Dispatch conversions jobs
 
         return $media;

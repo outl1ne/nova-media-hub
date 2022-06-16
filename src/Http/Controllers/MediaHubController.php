@@ -5,9 +5,27 @@ namespace Outl1ne\NovaMediaHub\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Outl1ne\NovaMediaHub\MediaHub;
+use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaHubController extends Controller
 {
+    public function getCollections(Request $request)
+    {
+        $collections = Media::select('collection_name')
+            ->groupBy('collection_name')
+            ->get()
+            ->pluck('collection_name');
+
+        return response()->json($collections, 200);
+    }
+
+    public function getCollectionMedia(Request $request, $collectionName)
+    {
+        $media = Media::where('collection_name', $collectionName)->paginate();
+
+        return response()->json($media, 200);
+    }
+
     public function uploadMediaToCollection(Request $request)
     {
         $files = $request->allFiles()['files'] ?? [];
