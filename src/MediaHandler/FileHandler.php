@@ -4,17 +4,16 @@ namespace Outl1ne\NovaMediaHub\MediaHandler;
 
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\Models\Media;
-use Illuminate\Support\Facades\Storage;
-use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 use Outl1ne\NovaMediaHub\Exceptions\FileTooLargeException;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
+use Outl1ne\NovaMediaHub\Exceptions\NoFileProvidedException;
 use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
-use Outl1ne\NovaMediaHub\Exceptions\NoFileProvidedException;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
+use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
 
 class FileHandler
 {
@@ -91,7 +90,7 @@ class FileHandler
         return $this;
     }
 
-    public function create($file = null): Media
+    public function save($file = null): Media
     {
         if (!empty($file)) $this->withFile($file);
 
@@ -106,17 +105,17 @@ class FileHandler
 
         $sanitizedFileName = $this->sanitizeFileName($this->fileName);
         [$fileName, $extension] = $this->splitNameAndExtension($sanitizedFileName);
-        $fileName = $this->getFileNamer()->formatOriginalFileName($fileName, $extension);
-        $this->fileName = $this->appendExtension($fileName, $extension);
+        $this->fileName = MediaHub::getFileNamer()->formatFileName($fileName, $extension);
 
         $mediaClass = MediaHub::getMediaModel();
         $media = new $mediaClass();
 
-        $media->name = $this->mediaName;
         $media->file_name = $this->fileName;
         $media->collection_name = $this->collectionName;
         $media->size = filesize($this->pathToFile);
         $media->mime_type = FileHelpers::getMimeType($this->pathToFile);
+        $media->file_hash = FileHelpers::getFileHash($this->pathToFile);
+        $media->data = [];
         $media->conversions = [];
 
         $media->disk = $this->getDiskName();
@@ -152,12 +151,6 @@ class FileHandler
         }
     }
 
-    protected function getFileNamer(): FileNamer
-    {
-        $fileNamerClass = config('nova-media-hub.file_namer');
-        return new $fileNamerClass;
-    }
-
     protected function sanitizeFileName(string $fileName): string
     {
         return str_replace(['#', '/', '\\', ' '], '-', $fileName);
@@ -167,11 +160,7 @@ class FileHandler
     {
         $name = pathinfo($fileName, PATHINFO_BASENAME);
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $name = mb_substr($name, 0, - (mb_strlen($extension) + 1));
         return [$name, $extension];
-    }
-
-    protected function appendExtension($fileName, $extension)
-    {
-        return $extension ? "{$fileName}.{$extension}" : $fileName;
     }
 }

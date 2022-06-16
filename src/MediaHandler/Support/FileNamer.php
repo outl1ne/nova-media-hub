@@ -4,7 +4,7 @@ namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
 class FileNamer
 {
-    public function formatOriginalFileName(string $fileName, string $extension)
+    public function formatFileName(string $fileName, string $extension)
     {
         return "$fileName.$extension";
     }

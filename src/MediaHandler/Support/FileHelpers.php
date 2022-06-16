@@ -24,4 +24,15 @@ class FileHelpers
         $finfo = new Finfo(FILEINFO_MIME_TYPE);
         return $finfo->file($path);
     }
+
+    public static function getFileHash(string $path): string
+    {
+        if (!$path || !is_file($path)) return null;
+
+        $fileStream = fopen($path, 'r');
+        $fileHash = md5(fread($fileStream, 1000000));
+        fclose($fileStream);
+
+        return $fileHash;
+    }
 }

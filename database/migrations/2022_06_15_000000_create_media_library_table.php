@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('file_hash');
             $table->string('mime_type')->nullable();
 
-            // Alt etc data
+            // Data
             $table->json('data');
 
             // Conversions
@@ -33,5 +33,10 @@ return new class extends Migration
 
             $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists(MediaHub::getTableName());
     }
 };

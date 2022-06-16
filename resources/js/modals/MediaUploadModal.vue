@@ -42,7 +42,6 @@ export default {
 
   methods: {
     async uploadFiles() {
-      console.info(this.collectionName, this.selectedFiles);
       this.loading = true;
       try {
         const formData = new FormData();
@@ -50,7 +49,7 @@ export default {
           formData.append('files[]', file);
         }
 
-        await Nova.request().post(`/nova-vendor/media-hub/collection/${this.collectionName}/media/upload`, formData);
+        await Nova.request().post(`/nova-vendor/media-hub/media/save?collectionName=${this.collectionName}`, formData);
       } catch (e) {
         Nova.$toasted.success(e.message);
       }

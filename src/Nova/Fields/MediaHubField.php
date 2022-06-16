@@ -4,7 +4,7 @@ namespace Outl1ne\NovaMediaHub\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
 
-class MediaField extends Field
+class MediaHubField extends Field
 {
     public $component = 'media-field';
 

@@ -14,4 +14,4 @@ use Outl1ne\NovaMediaHub\Http\Controllers\MediaHubController;
 |
 */
 
-Route::post('/nova-vendor/media-hub/collection/{collection}/media/upload', [MediaHubController::class, 'uploadMediaToCollection']);
+Route::post('/nova-vendor/media-hub/media/save', [MediaHubController::class, 'uploadMediaToCollection']);
