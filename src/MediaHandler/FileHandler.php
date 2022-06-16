@@ -114,7 +114,7 @@ class FileHandler
         $media->collection_name = $this->collectionName;
         $media->size = filesize($this->pathToFile);
         $media->mime_type = FileHelpers::getMimeType($this->pathToFile);
-        $media->file_hash = FileHelpers::getFileHash($this->pathToFile);
+        $media->original_file_hash = FileHelpers::getFileHash($this->pathToFile);
         $media->data = [];
         $media->conversions = [];
 

@@ -9,6 +9,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
+use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaHub extends Tool
 {
@@ -67,5 +68,11 @@ class MediaHub extends Tool
     public static function fileHandler()
     {
         return new FileHandler();
+    }
+
+    public static function isOptimizable(Media $media)
+    {
+        $optimizableMimeTypes = config('nova-media-hub.optimizable_mime_types');
+        return in_array($media->mime_type, $optimizableMimeTypes);
     }
 }

@@ -7,17 +7,66 @@ return [
     // Base URL path
     'base_path' => 'media-hub',
 
+    // Class configurations
     'model' => \Outl1ne\NovaMediaHub\Models\Media::class,
-
     'file_namer' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer::class,
     'path_maker' => \Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker::class,
 
+    // Disk configurations
     'disk_name' => 'public',
     'conversions_disk_name' => 'public',
 
+    // Misc configuration
+    'path_prefix' => 'media',
     'max_file_size_in_kb' => 3000,
 
-    'path_prefix' => 'media',
+    'collections' => [
+        'default',
+    ],
+
+
+    // ------------------------------
+    // -- Conversion configurations
+    // ------------------------------
+
+    // TODO
+    // Conversions
+    // '*' for all collections
+    // 'collection_name' => ['conversion_name' => [options]]
+    'conversions' => [
+        '*' => [
+            'thumbnail' => [
+                'width' => 150,
+                'height' => 150,
+                'crop' => true,
+                'format' => 'jpeg',
+            ]
+        ],
+    ],
+
+    // TODO
+    'original_image_manipulations' => [
+        // False if you don't want the original image to be optimized
+        // The mime type must still be in the optimizable_mime_types array
+        'optimize' => true,
+
+        // Maximum number of pixels in height or width, will be scaled down to this number
+        // Set to null if you don't want the original image to be resized
+        'max_dimensions' => 2000,
+    ],
+
+
+
+    // ------------------------------
+    // -- Image optimizations
+    // ------------------------------
+
+    // NB! Must have a matching image_optimizer configured and binary for it to work
+    'optimizable_mime_types' => [
+        'image/png',
+        'image/jpeg',
+        'image/gif',
+    ],
 
     'image_optimizers' => [
         Spatie\ImageOptimizer\Optimizers\Jpegoptim::class => [

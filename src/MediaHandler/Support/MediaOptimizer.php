@@ -15,11 +15,10 @@ class MediaOptimizer
     {
         if (!empty($media->optimized_at)) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
+        if (!MediaHub::isOptimizable($media)) return;
 
-        $pathToFile = MediaHub::getPathMaker()->getPathWithFileName($media);
-        $pathToFile = Storage::disk($media->disk)->path($pathToFile);
+        $pathToFile = MediaHub::getPathMaker()->getFullPathWithFileName($media);
 
-        ray('original size:', $media->size);
         $manipulations = (new Manipulations())
             ->optimize(config('nova-media-hub.image_optimizers'))
             ->apply();
@@ -28,6 +27,10 @@ class MediaOptimizer
             ->manipulate($manipulations)
             ->save();
 
-        ray('new size?', filesize($pathToFile));
+        $newFileSize = filesize($pathToFile);
+
+        $media->size = $newFileSize;
+        $media->optimized_at = now();
+        $media->save();
     }
 }

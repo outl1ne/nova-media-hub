@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
 use Outl1ne\NovaMediaHub\Models\Media;
+use Illuminate\Support\Facades\Storage;
 
 class PathMaker
 {
@@ -18,9 +19,10 @@ class PathMaker
         return $this->getBasePath($media) . '/conversions/';
     }
 
-    public function getPathWithFileName(Media $media)
+    public function getFullPathWithFileName(Media $media)
     {
-        return $this->getPath($media) . $media->file_name;
+        $filePath = $this->getPath($media) . $media->file_name;
+        return Storage::disk($media->disk)->path($filePath);
     }
 
     // Get a unique base path for the given media.

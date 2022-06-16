@@ -13,6 +13,7 @@ class Media extends Model
         'conversions' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'optimized_at' => 'datetime',
     ];
 
     protected $appends = ['url'];
