@@ -21,8 +21,10 @@ return new class extends Migration
             $table->string('disk');
             $table->string('file_name');
             $table->unsignedBigInteger('size');
-            $table->string('file_hash');
             $table->string('mime_type')->nullable();
+
+            // Save original file hash to check for duplicate uploads
+            $table->string('original_file_hash');
 
             // Data
             $table->json('data');
@@ -32,6 +34,7 @@ return new class extends Migration
             $table->string('conversions_disk')->nullable();
 
             $table->timestamps();
+            $table->timestamp('optimized_at')->nullable();
         });
     }
 

@@ -18,6 +18,11 @@ class PathMaker
         return $this->getBasePath($media) . '/conversions/';
     }
 
+    public function getPathWithFileName(Media $media)
+    {
+        return $this->getPath($media) . $media->file_name;
+    }
+
     // Get a unique base path for the given media.
     protected function getBasePath(Media $media): string
     {

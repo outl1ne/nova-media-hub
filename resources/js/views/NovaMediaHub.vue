@@ -6,16 +6,15 @@
     </div>
 
     <!-- Content wrapper -->
-    <div class="nml-flex nml-border nml-full nml-border-slate-200 nml-rounded nml-bg-white nml-shadow">
+    <div
+      class="nml-flex nml-border nml-full nml-border-slate-200 nml-rounded nml-bg-white nml-shadow"
+      style="min-height: 500px"
+    >
       <!-- Collections list -->
-      <div class="nml-flex nml-flex-col nml-border-r nml-border-slate-200">
+      <div class="nml-flex nml-flex-col nml-border-r nml-border-slate-200" style="min-width: 160px">
         <div class="nml-font-bold nml-border-b nml-border-slate-200 nml-px-6 nml-py-3 nml-text-center">Collections</div>
 
-        <div class="nml-flex nml-flex-col nml-items-center nml-justify-center" v-if="mediaLoading">
-          <Loader class="text-gray-300" />
-        </div>
-
-        <div class="nml-flex nml-flex-col" v-else>
+        <div class="nml-flex nml-flex-col">
           <div v-if="!collections.length" class="nml-text-sm nml-text-slate-400 nml-p-4 nml-whitespace-nowrap">
             No collections found
           </div>
@@ -23,7 +22,8 @@
           <button
             v-for="collectionName in collections"
             :key="collectionName"
-            class="nml-py-4 hover:nml-bg-slate-400"
+            class="nml-py-4 nml-bg-slate-50 nml-border-b nml-border-slate-200 hover:nml-bg-slate-100"
+            :class="{ 'font-bold text-primary-500 nml-bg-slate-100': collectionName === selectedCollection }"
             @click.stop="selectCollection(collectionName)"
           >
             {{ collectionName }}
@@ -31,8 +31,13 @@
         </div>
       </div>
 
+      <div class="nml-flex nml-w-full nml-p-4 nml-items-center nml-justify-center" v-if="mediaLoading">
+        <Loader class="text-gray-300" />
+      </div>
+
       <!-- Media list -->
       <div
+        v-else
         class="nml-flex nml-p-4 nml-w-full nml-flex-wrap"
         :class="{ 'nml-items-center nml-justify-center': !mediaItems.length }"
       >
@@ -46,7 +51,11 @@
   </LoadingView>
 
   <!-- Modal -->
-  <MediaUploadModal :show="showMediaUploadModal" @close="showMediaUploadModal = false" />
+  <MediaUploadModal
+    :show="showMediaUploadModal"
+    @close="closeMediaUploadModal"
+    :active-collection="selectedCollection"
+  />
 </template>
 
 <script>
@@ -77,7 +86,10 @@ export default {
     async getCollections() {
       const { data } = await Nova.request().get('/nova-vendor/media-hub/collections');
       this.collections = data || [];
-      this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
+
+      if (!this.selectedCollection) {
+        this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
+      }
     },
 
     async getCollectionMedia() {
@@ -90,6 +102,15 @@ export default {
     async selectCollection(collectionName) {
       this.selectedCollection = collectionName;
       await this.getCollectionMedia();
+    },
+
+    async closeMediaUploadModal(updateData, collectionName) {
+      if (updateData) {
+        await this.getCollections();
+        this.selectedCollection = collectionName;
+        await this.getCollectionMedia();
+      }
+      this.showMediaUploadModal = false;
     },
   },
 };
