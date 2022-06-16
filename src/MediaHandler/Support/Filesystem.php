@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\MediaHandler;
+namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
 use Illuminate\Contracts\Filesystem\Factory;
 use Outl1ne\NovaMediaHub\Models\Media;

@@ -42,4 +42,10 @@ class MediaHub extends Tool
     {
         return config('nova-media-hub.base_path');
     }
+
+    public static function getMaxFileSizeInBytes()
+    {
+        $maxInBytes = config('media-library.max_file_size_in_kb');
+        return $maxInBytes ? $maxInBytes * 1000 : null;
+    }
 }

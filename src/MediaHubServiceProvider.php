@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Outl1ne\NovaMediaHub\Http\Middleware\Authorize;
 use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 
 class MediaHubServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,8 @@ class MediaHubServiceProvider extends ServiceProvider
             __DIR__ . '/../config/nova-media-hub.php',
             'nova-media-hub'
         );
+
+        $this->app->bind(Filesystem::class, Filesystem::class);
     }
 
     protected function registerRoutes()
