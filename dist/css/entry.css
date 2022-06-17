@@ -23,6 +23,12 @@
 .nml-h-48 {
     height: 12rem
 }
+.nml-h-full {
+    height: 100%
+}
+.nml-max-h-full {
+    max-height: 100%
+}
 .nml-min-h-full {
     min-height: 100%
 }
@@ -31,6 +37,9 @@
 }
 .nml-w-48 {
     width: 12rem
+}
+.nml-max-w-full {
+    max-width: 100%
 }
 .nml-flex-col {
     flex-direction: column
@@ -49,6 +58,9 @@
 }
 .nml-rounded {
     border-radius: 0.25rem
+}
+.nml-rounded-lg {
+    border-radius: 0.5rem
 }
 .nml-border {
     border-width: 1px
@@ -78,6 +90,10 @@
 .nml-bg-slate-100 {
     --tw-bg-opacity: 1;
     background-color: rgb(241 245 249 / var(--tw-bg-opacity))
+}
+.nml-object-contain {
+    -o-object-fit: contain;
+       object-fit: contain
 }
 .nml-p-4 {
     padding: 1rem
@@ -113,6 +129,19 @@
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
+.nml-shadow-sm {
+    --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+.hover\:nml-border-blue-500:hover {
+    --tw-border-opacity: 1;
+    border-color: rgb(59 130 246 / var(--tw-border-opacity))
+}
+.hover\:nml-border-slate-200:hover {
+    --tw-border-opacity: 1;
+    border-color: rgb(226 232 240 / var(--tw-border-opacity))
+}
 .hover\:nml-bg-slate-400:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(148 163 184 / var(--tw-bg-opacity))
@@ -124,5 +153,15 @@
 .hover\:nml-bg-slate-100:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(241 245 249 / var(--tw-bg-opacity))
+}
+.hover\:nml-shadow-md:hover {
+    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+.hover\:nml-shadow:hover {
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
 

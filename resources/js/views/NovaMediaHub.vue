@@ -7,7 +7,7 @@
 
     <!-- Content wrapper -->
     <div
-      class="nml-flex nml-border nml-full nml-border-slate-200 nml-rounded nml-bg-white nml-shadow"
+      class="nml-flex nml-border nml-full nml-border-slate-200 nml-rounded-lg nml-bg-white nml-shadow"
       style="min-height: 500px"
     >
       <!-- Collections list -->
@@ -19,15 +19,15 @@
             No collections found
           </div>
 
-          <button
+          <Link
             v-for="collectionName in collections"
             :key="collectionName"
+            :href="`/media-hub/${collectionName}`"
             class="nml-py-4 nml-bg-slate-50 nml-border-b nml-border-slate-200 hover:nml-bg-slate-100"
             :class="{ 'font-bold text-primary-500 nml-bg-slate-100': collectionName === selectedCollection }"
-            @click.stop="selectCollection(collectionName)"
           >
             {{ collectionName }}
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -43,8 +43,16 @@
       >
         <div v-if="!mediaItems.length" class="nml-text-sm nml-text-slate-400">No media items found</div>
 
-        <button v-for="item in mediaItems" :key="item.id" class="nml-h-48 nml-w-48 nml-mx-2">
-          <img :src="item.url" :alt="item.id" class="nml-shadow" />
+        <button
+          v-for="item in mediaItems"
+          :key="item.id"
+          class="nml-h-48 nml-w-48 nml-mx-2 nml-bg-slate-50 nml-shadow-sm hover:nml-shadow nml-border nml-border-slate-100 hover:nml-bg-slate-100 hover:nml-border-slate-200"
+        >
+          <img
+            :src="item.url"
+            :alt="item.id"
+            class="nml-object-contain nml-max-w-full nml-w-full nml-max-h-full nml-h-full"
+          />
         </button>
       </div>
     </div>
@@ -76,6 +84,7 @@ export default {
   }),
 
   async mounted() {
+    console.info(this.$attrs);
     this.loading = true;
     await this.getCollections();
     await this.getCollectionMedia();

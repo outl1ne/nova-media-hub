@@ -20,10 +20,13 @@ return [
     'path_prefix' => 'media',
     'max_file_size_in_kb' => 3000,
 
+    'user_can_create_collections' => true,
+
     'collections' => [
         'default',
+        'banners',
+        'product_images',
     ],
-
 
     // ------------------------------
     // -- Conversion configurations

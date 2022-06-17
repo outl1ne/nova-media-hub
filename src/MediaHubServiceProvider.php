@@ -39,12 +39,12 @@ class MediaHubServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->registerRoutes();
-
         $this->mergeConfigFrom(
             __DIR__ . '/../config/nova-media-hub.php',
             'nova-media-hub'
         );
+
+        $this->registerRoutes();
 
         $this->app->bind(Filesystem::class, Filesystem::class);
     }
@@ -56,7 +56,7 @@ class MediaHubServiceProvider extends ServiceProvider
             $path = MediaHub::getBasePath();
 
             $router
-                ->get("{$path}/{pageId?}", fn ($pageId = 'general') => inertia('NovaMediaHub', ['basePath' => $path, 'pageId' => $pageId]))
+                ->get("/{$path}/{pageId?}", fn ($pageId = 'default') => inertia('NovaMediaHub', ['basePath' => $path, 'pageId' => $pageId]))
                 ->middleware(['nova', Authenticate::class]);
         });
 

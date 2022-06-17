@@ -75,4 +75,14 @@ class MediaHub extends Tool
         $optimizableMimeTypes = config('nova-media-hub.optimizable_mime_types');
         return in_array($media->mime_type, $optimizableMimeTypes);
     }
+
+    public static function getCollections(): array
+    {
+        return config('nova-media-hub.collections', []);
+    }
+
+    public static function userCanCreateCollections()
+    {
+        return config('nova-media-hub.user_can_create_collections', false);
+    }
 }
