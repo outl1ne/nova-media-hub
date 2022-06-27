@@ -19,8 +19,8 @@ Nova.booting((Vue, router, store) => {
     attributeFilter: ['class'],
   });
 
-  Nova.inertia('NovaMediaHub', require('./views/NovaMediaHub').default);
-
   Vue.component('detail-media-field', DetailMediaField);
   Vue.component('form-media-field', FormMediaField);
+
+  Nova.inertia('NovaMediaHub', require('./views/NovaMediaHub').default);
 });

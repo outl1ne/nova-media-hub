@@ -56,7 +56,7 @@ class MediaHubServiceProvider extends ServiceProvider
             $path = MediaHub::getBasePath();
 
             $router
-                ->get("/{$path}/{pageId?}", fn ($pageId = 'default') => inertia('NovaMediaHub', ['basePath' => $path, 'pageId' => $pageId]))
+                ->get("/{$path}/{collectionId?}", fn ($collectionId = 'default') => inertia('NovaMediaHub', ['basePath' => $path, 'collectionId' => $collectionId]))
                 ->middleware(['nova', Authenticate::class]);
         });
 

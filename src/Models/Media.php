@@ -27,6 +27,6 @@ class Media extends Model
     public function getUrlAttribute()
     {
         $pathMaker = MediaHub::getPathMaker();
-        return Storage::disk($this->disk)->url($pathMaker->getPath($this) . '/' . $this->file_name);
+        return Storage::disk($this->disk)->url($pathMaker->getPath($this) . $this->file_name);
     }
 }

@@ -1,5 +1,7 @@
 <template>
-  <LoadingView :loading="loading" :key="pageId" class="nml-flex nml-flex-col nml-m-2">
+  <LoadingView :loading="loading" :key="collectionId" class="nml-flex nml-flex-col nml-m-2">
+    <Head :title="__('novaMediaHub.navigationItemTitle')" />
+
     <!-- Header -->
     <div class="nml-flex nml-mb-4">
       <LoadingButton class="nml-ml-auto" @click="showMediaUploadModal = true">Upload media</LoadingButton>
@@ -23,7 +25,7 @@
             v-for="collectionName in collections"
             :key="collectionName"
             :href="`/media-hub/${collectionName}`"
-            class="nml-py-4 nml-bg-slate-50 nml-border-b nml-border-slate-200 hover:nml-bg-slate-100"
+            class="nml-p-4 nml-bg-slate-50 nml-border-b nml-border-slate-200 hover:nml-bg-slate-100"
             :class="{ 'font-bold text-primary-500 nml-bg-slate-100': collectionName === selectedCollection }"
           >
             {{ collectionName }}
@@ -43,34 +45,24 @@
       >
         <div v-if="!mediaItems.length" class="nml-text-sm nml-text-slate-400">No media items found</div>
 
-        <button
-          v-for="item in mediaItems"
-          :key="item.id"
-          class="nml-h-48 nml-w-48 nml-mx-2 nml-bg-slate-50 nml-shadow-sm hover:nml-shadow nml-border nml-border-slate-100 hover:nml-bg-slate-100 hover:nml-border-slate-200"
-        >
-          <img
-            :src="item.url"
-            :alt="item.id"
-            class="nml-object-contain nml-max-w-full nml-w-full nml-max-h-full nml-h-full"
-          />
-        </button>
+        <MediaItem v-for="mediaItem in mediaItems" :key="mediaItem.id" :mediaItem="mediaItem" />
       </div>
     </div>
-  </LoadingView>
 
-  <!-- Modal -->
-  <MediaUploadModal
-    :show="showMediaUploadModal"
-    @close="closeMediaUploadModal"
-    :active-collection="selectedCollection"
-  />
+    <MediaUploadModal
+      :show="showMediaUploadModal"
+      @close="closeMediaUploadModal"
+      :active-collection="selectedCollection"
+    />
+  </LoadingView>
 </template>
 
 <script>
+import MediaItem from '../components/MediaItem';
 import MediaUploadModal from '../modals/MediaUploadModal';
 
 export default {
-  components: { MediaUploadModal },
+  components: { MediaUploadModal, MediaItem },
 
   data: () => ({
     loading: true,
@@ -80,11 +72,15 @@ export default {
     collections: [],
     mediaItems: [],
     currentPage: 1,
+
     showMediaUploadModal: false,
   }),
 
+  async created() {
+    this.selectedCollection = this.$page.props.collectionId || 'default';
+  },
+
   async mounted() {
-    console.info(this.$attrs);
     this.loading = true;
     await this.getCollections();
     await this.getCollectionMedia();
@@ -124,3 +120,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@import 'vue-simple-context-menu/dist/vue-simple-context-menu.css';
+
+.vue-simple-context-menu {
+  position: fixed;
+}
+</style>
