@@ -8,10 +8,10 @@ Nova.booting((Vue, router, store) => {
     const cls = document.documentElement.classList;
     const isDarkMode = cls.contains('dark');
 
-    if (isDarkMode && !cls.contains('nml-dark')) {
-      cls.add('nml-dark');
-    } else if (!isDarkMode && cls.contains('nml-dark')) {
-      cls.remove('nml-dark');
+    if (isDarkMode && !cls.contains('o1-dark')) {
+      cls.add('o1-dark');
+    } else if (!isDarkMode && cls.contains('o1-dark')) {
+      cls.remove('o1-dark');
     }
   }).observe(document.documentElement, {
     attributes: true,

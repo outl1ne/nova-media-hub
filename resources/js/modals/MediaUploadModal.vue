@@ -4,7 +4,7 @@
       <slot>
         <ModalHeader class="flex items-center">Upload media</ModalHeader>
 
-        <ModalContent class="px-8 nml-flex nml-flex-col">
+        <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span>Select collection to add media to:</span>
           <select v-model="selectedCollection" class="form-control form-input form-input-bordered">
@@ -36,7 +36,7 @@
 
       <ModalFooter>
         <div class="ml-auto">
-          <LoadingButton @click.prevent="$emit('close')" class="nml-mr-4">
+          <LoadingButton @click.prevent="$emit('close')" class="o1-mr-4">
             {{ __('Close') }}
           </LoadingButton>
 
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import API from '../api';
+
 export default {
   emits: ['close'],
   props: ['show', 'activeCollection'],
@@ -82,10 +84,7 @@ export default {
           formData.append('files[]', file);
         }
 
-        await Nova.request().post(
-          `/nova-vendor/media-hub/media/save?collectionName=${this.finalCollectionName}`,
-          formData
-        );
+        await API.saveMediaToCollection(this.finalCollectionName, formData);
 
         this.$emit('close', true, this.finalCollectionName);
       } catch (e) {
@@ -101,7 +100,7 @@ export default {
     },
 
     async getCollections() {
-      const { data } = await Nova.request().get('/nova-vendor/media-hub/collections');
+      const { data } = await API.getCollections();
       this.collections = data || [];
 
       if (!this.selectedCollection) {

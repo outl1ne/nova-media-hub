@@ -24,9 +24,14 @@ class Media extends Model
         $this->setTable(MediaHub::getTableName());
     }
 
-    public function getUrlAttribute()
+    public function getPathAttribute()
     {
         $pathMaker = MediaHub::getPathMaker();
-        return Storage::disk($this->disk)->url($pathMaker->getPath($this) . $this->file_name);
+        return $pathMaker->getPath($this) . $this->file_name;
+    }
+
+    public function getUrlAttribute()
+    {
+        return Storage::disk($this->disk)->url($this->path);
     }
 }

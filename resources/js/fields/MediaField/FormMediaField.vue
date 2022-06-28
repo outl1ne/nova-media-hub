@@ -1,7 +1,7 @@
 <template>
   <DefaultField :field="field" :errors="errors" :show-help-text="showHelpText" class="nova-media-field form-field">
     <template #field>
-      <div class="nml-flex nml-flex-col">TODO</div>
+      <div class="o1-flex o1-flex-col">TODO</div>
     </template>
   </DefaultField>
 </template>

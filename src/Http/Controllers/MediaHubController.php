@@ -4,6 +4,7 @@ namespace Outl1ne\NovaMediaHub\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\Models\Media;
 
@@ -40,5 +41,15 @@ class MediaHubController extends Controller
         }
 
         return response()->json($uploadedMedia, 200);
+    }
+
+    public function deleteMedia(Request $request)
+    {
+        $mediaId = $request->route('mediaId');
+        if ($mediaId && $media = Media::find($mediaId)) {
+            Storage::disk($media->disk)->delete($media->path);
+            $media->delete();
+        }
+        return response()->json('', 204);
     }
 }
