@@ -75,13 +75,6 @@
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="targetMediaItem" @close="handleDeleteModalClose" />
 
-    <ChooseMediaModal
-      :initialSelectedMediaItems="value"
-      :show="showChooseModal"
-      @close="showChooseModal = false"
-      @confirm="mediaItemsSelected"
-    />
-
     <VueSimpleContextMenu
       elementId="mediaItemContextMenuChooseModal"
       :options="contextMenuOptions"
@@ -114,7 +107,7 @@ export default {
   components: { MediaItem, MediaUploadModal, MediaViewModal, ConfirmDeleteModal, VueSimpleContextMenu },
 
   emits: ['close', 'confirm'],
-  props: ['show', 'activeCollection', 'initialSelectedMediaItems'],
+  props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
 
   data: () => ({
     collectionName: '',
@@ -152,7 +145,11 @@ export default {
       if (this.selectedMediaItems.find(mi => mi.id === mediaItem.id)) {
         this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id !== mediaItem.id);
       } else {
-        this.selectedMediaItems.push(mediaItem);
+        if (this.field.multiple) {
+          this.selectedMediaItems.push(mediaItem);
+        } else {
+          this.selectedMediaItems = [mediaItem];
+        }
       }
     },
 

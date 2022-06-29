@@ -14,7 +14,7 @@
             />
           </template>
 
-          <MediaItem v-else :mediaItem="media" :size="24" />
+          <MediaItem v-else :mediaItem="value" :size="24" />
         </div>
       </div>
 
@@ -23,6 +23,7 @@
       <MediaViewModal :show="showMediaViewModal" :mediaItem="targetMediaItem" @close="showMediaViewModal = false" />
 
       <ChooseMediaModal
+        :field="field"
         :initialSelectedMediaItems="value"
         :show="showChooseModal"
         @close="showChooseModal = false"
@@ -81,11 +82,13 @@ export default {
 
   methods: {
     setInitialValue() {
-      const value = this.field.value;
+      let value = this.field.value;
+      const multiple = this.field.multiple;
 
-      if (Array.isArray(value)) {
+      if (multiple && Array.isArray(value)) {
         this.value = value.map(id => this.field.media[id]).filter(Boolean);
       } else if (!!value) {
+        if (Array.isArray(value)) value = value[0];
         this.value = this.field.media[value];
       }
     },

@@ -86,8 +86,20 @@
 .o1-w-12 {
     width: 3rem
 }
+.o1-w-64 {
+    width: 16rem
+}
 .o1-max-w-full {
     max-width: 100%
+}
+.o1-max-w-md {
+    max-width: 28rem
+}
+.o1-max-w-sm {
+    max-width: 24rem
+}
+.o1-max-w-xs {
+    max-width: 20rem
 }
 .o1-flex-col {
     flex-direction: column
@@ -244,6 +256,10 @@
 .o1-text-red-500 {
     --tw-text-opacity: 1;
     color: rgb(239 68 68 / var(--tw-text-opacity))
+}
+.o1-text-rose-600 {
+    --tw-text-opacity: 1;
+    color: rgb(225 29 72 / var(--tw-text-opacity))
 }
 .o1-shadow-sm {
     --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
