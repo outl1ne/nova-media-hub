@@ -14,6 +14,7 @@
                 @click="toggleMediaSelection(mediaItem)"
                 :selected="true"
                 :size="36"
+                @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
               />
             </div>
             <div v-else class="o1-text-slate-400">No media items selected</div>
@@ -21,15 +22,11 @@
 
           <div class="o1-flex">
             <!-- Choose collection -->
-            <div class="o1-flex o1-flex-col o1-py-6 o1-pr-8">
+            <div class="o1-flex o1-flex-col o1-py-6 o1-pr-8 o1-w-64">
               <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Choose collection</div>
-              <select
-                v-model="collection"
-                name="collection"
-                class="block form-control form-select form-select-bordered"
-              >
+              <SelectControl v-model:selected="collection" @change="c => (collection = c)">
                 <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-              </select>
+              </SelectControl>
             </div>
 
             <!-- Collection media -->
@@ -41,6 +38,7 @@
                   :key="'media-' + mediaItem.id"
                   :mediaItem="mediaItem"
                   @click="toggleMediaSelection(mediaItem)"
+                  @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
                 />
               </div>
 
@@ -70,17 +68,48 @@
     </LoadingCard>
 
     <MediaUploadModal :activeCollection="collection" :show="showMediaUploadModal" @close="handleUploadModalClose" />
+
+    <MediaViewModal :show="showMediaViewModal" :mediaItem="targetMediaItem" @close="showMediaViewModal = false" />
+
+    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="targetMediaItem" @close="handleDeleteModalClose" />
+
+    <ChooseMediaModal
+      :initialSelectedMediaItems="value"
+      :show="showChooseModal"
+      @close="showChooseModal = false"
+      @confirm="mediaItemsSelected"
+    />
+
+    <VueSimpleContextMenu
+      elementId="mediaItemContextMenuChooseModal"
+      :options="contextMenuOptions"
+      ref="vueSimpleContextMenu"
+      @option-clicked="onMediaItemContextMenuClick"
+    />
+
+    <!-- Fake download button -->
+    <a
+      :href="targetMediaItem && targetMediaItem.url"
+      download
+      ref="downloadAnchor"
+      target="_BLANK"
+      rel="noopener noreferrer"
+      class="o1-hidden"
+    />
   </Modal>
 </template>
 
 <script>
 import MediaItem from '../components/MediaItem';
-import HandlesMediaLists from '../mixins/HandlesMediaLists';
+import MediaViewModal from '../modals/MediaViewModal';
 import MediaUploadModal from '../modals/MediaUploadModal';
+import HandlesMediaLists from '../mixins/HandlesMediaLists';
+import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
+import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
 export default {
   mixins: [HandlesMediaLists],
-  components: { MediaItem, MediaUploadModal },
+  components: { MediaItem, MediaUploadModal, MediaViewModal, ConfirmDeleteModal, VueSimpleContextMenu },
 
   emits: ['close', 'confirm'],
   props: ['show', 'activeCollection', 'initialSelectedMediaItems'],
@@ -88,12 +117,18 @@ export default {
   data: () => ({
     collectionName: '',
     selectedMediaItems: [],
+
     showMediaUploadModal: false,
+    showMediaViewModal: false,
+    showConfirmDeleteModal: false,
+
+    targetMediaItem: void 0,
+    contextMenuOptions: [],
   }),
 
   async mounted() {
     await this.getCollections();
-    this.loading = false;
+    this.$nextTick(() => (this.loading = false));
   },
 
   watch: {
@@ -131,6 +166,59 @@ export default {
         this.collection = collectionName;
         await this.getCollectionMedia(this.collection);
       }
+    },
+
+    openContextMenuFromSelected(event, mediaItem) {
+      this.contextMenuOptions = [
+        { name: 'Deselect', action: 'deselect', class: 'o1-text-rose-600' },
+        { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
+        { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
+      ];
+
+      this.$nextTick(() => {
+        this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
+      });
+    },
+
+    openContextMenuFromChoose(event, mediaItem) {
+      this.contextMenuOptions = [
+        { name: 'Select', action: 'select', class: 'o1-text-slate-600' },
+        { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
+        { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
+        { name: 'Delete', action: 'delete', class: 'o1-text-rose-600' },
+      ];
+
+      this.$nextTick(() => {
+        this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
+      });
+    },
+
+    onMediaItemContextMenuClick(event) {
+      const action = event.option.action || void 0;
+      this.targetMediaItem = event.item;
+
+      if (action === 'view') {
+        this.showMediaViewModal = true;
+      }
+
+      if (action === 'download') {
+        this.$nextTick(() => {
+          this.$refs.downloadAnchor.click();
+        });
+      }
+
+      if (action === 'delete') {
+        this.showConfirmDeleteModal = true;
+      }
+
+      if (action === 'select' || action === 'deselect') {
+        this.toggleMediaSelection(this.targetMediaItem);
+      }
+    },
+
+    handleDeleteModalClose(update = false) {
+      this.showConfirmDeleteModal = false;
+      if (update) this.getCollectionMedia();
     },
   },
 

@@ -23,8 +23,9 @@ export default {
       this.loadingCollections = false;
     },
 
-    async getCollectionMedia(collection) {
+    async getCollectionMedia(collection = void 0) {
       this.loadingMedia = true;
+      if (!collection) collection = this.collection;
       const { data } = await API.getCollectionMedia(collection);
       this.mediaItems = data.data || [];
       this.loadingMedia = false;

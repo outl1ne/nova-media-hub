@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="2xl">
+  <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="2xl" id="o1-nmh-media-view-modal">
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
         <ModalHeader class="flex items-center">Media ({{ mediaItem.file_name }})</ModalHeader>
@@ -84,12 +84,6 @@ export default {
       this.loading = false;
     },
 
-    onFilesChange(e) {
-      if (this.$refs.filesInput) {
-        this.selectedFiles = Array.from(this.$refs.filesInput.files);
-      }
-    },
-
     async getCollections() {
       const { data } = await API.getCollections();
       this.collections = data || [];
@@ -119,3 +113,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#o1-nmh-media-view-modal {
+  z-index: 130;
+
+  + .fixed {
+    z-index: 129;
+  }
+}
+</style>

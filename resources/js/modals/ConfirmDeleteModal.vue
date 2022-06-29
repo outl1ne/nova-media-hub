@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="show" role="alertdialog">
+  <Modal :show="show" role="alertdialog" id="o1-nmh-confirm-delete-modal">
     <div class="o1-bg-white dark:o1-bg-gray-800 o1-rounded-lg o1-shadow-lg o1-overflow-hidden" style="width: 460px">
       <ModalHeader v-text="__('Delete File')" />
 
@@ -54,3 +54,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#o1-nmh-confirm-delete-modal {
+  z-index: 130;
+
+  + .fixed {
+    z-index: 129;
+  }
+}
+</style>
