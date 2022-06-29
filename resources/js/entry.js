@@ -1,5 +1,5 @@
-import DetailMediaField from './fields/MediaField/DetailMediaField';
-import FormMediaField from './fields/MediaField/FormMediaField';
+import DetailMediaHubField from './fields/MediaField/DetailMediaHubField';
+import FormMediaHubField from './fields/MediaField/FormMediaHubField';
 
 let mediaHubDarkModeObserver = null;
 
@@ -19,8 +19,8 @@ Nova.booting((Vue, router, store) => {
     attributeFilter: ['class'],
   });
 
-  Vue.component('detail-media-field', DetailMediaField);
-  Vue.component('form-media-field', FormMediaField);
+  Vue.component('detail-media-hub-field', DetailMediaHubField);
+  Vue.component('form-media-hub-field', FormMediaHubField);
 
   Nova.inertia('NovaMediaHub', require('./views/NovaMediaHub').default);
 });

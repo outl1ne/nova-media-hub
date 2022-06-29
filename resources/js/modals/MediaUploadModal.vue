@@ -1,5 +1,11 @@
 <template>
-  <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="2xl">
+  <Modal
+    :show="show"
+    @close-via-escape="$emit('close')"
+    role="alertdialog"
+    maxWidth="2xl"
+    id="o1-nmh-media-upload-modal"
+  >
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
         <ModalHeader class="flex items-center">Upload media</ModalHeader>
@@ -7,7 +13,7 @@
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span>Select collection to add media to:</span>
-          <select v-model="selectedCollection" class="form-control form-input form-input-bordered">
+          <select v-model="selectedCollection" class="w-full block form-control form-select form-select-bordered">
             <option value="media-hub-new-collection">Create new collection</option>
             <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
           </select>
@@ -120,3 +126,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#o1-nmh-media-upload-modal {
+  z-index: 120;
+
+  + .fixed {
+    z-index: 119;
+  }
+}
+</style>
