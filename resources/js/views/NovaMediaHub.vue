@@ -126,7 +126,7 @@ export default {
   async mounted() {
     this.loading = true;
     await this.getCollections();
-    await this.getCollectionMedia();
+    await this.getMedia();
     this.loading = false;
   },
 
@@ -140,23 +140,23 @@ export default {
       }
     },
 
-    async getCollectionMedia() {
+    async getMedia() {
       this.mediaLoading = true;
-      const { data } = await API.getCollectionMedia(this.selectedCollection);
+      const { data } = await API.getMedia(this.selectedCollection);
       this.mediaItems = data.data;
       this.mediaLoading = false;
     },
 
     async selectCollection(collectionName) {
       this.selectedCollection = collectionName;
-      await this.getCollectionMedia();
+      await this.getMedia();
     },
 
     async closeMediaUploadModal(updateData, collectionName) {
       if (updateData) {
         await this.getCollections();
         this.selectedCollection = collectionName;
-        await this.getCollectionMedia();
+        await this.getMedia();
       }
       this.showMediaUploadModal = false;
     },
@@ -193,10 +193,7 @@ export default {
 
     handleDeleteModalClose(update = false) {
       this.showConfirmDeleteModal = false;
-
-      if (update) {
-        this.getCollectionMedia();
-      }
+      if (update) this.getMedia();
     },
   },
 };

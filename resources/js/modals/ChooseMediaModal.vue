@@ -22,9 +22,10 @@
 
           <div class="o1-flex">
             <!-- Choose collection -->
-            <div class="o1-flex o1-flex-col o1-py-6 o1-pr-8 o1-w-64">
+            <div class="o1-flex o1-flex-col o1-py-6 o1-pr-8 o1-w-full o1-max-w-xs">
               <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Choose collection</div>
               <SelectControl v-model:selected="collection" @change="c => (collection = c)">
+                <option value="">{{ '> Show all' }}</option>
                 <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
               </SelectControl>
             </div>
@@ -39,6 +40,7 @@
                   :mediaItem="mediaItem"
                   @click="toggleMediaSelection(mediaItem)"
                   @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
+                  class="o1-mb-4"
                 />
               </div>
 
@@ -140,8 +142,8 @@ export default {
       }
     },
 
-    async collection() {
-      await this.getCollectionMedia(this.collection);
+    async collection(newValue) {
+      await this.getMedia(newValue);
     },
   },
 
@@ -164,15 +166,18 @@ export default {
       if (updateData) {
         await this.getCollections();
         this.collection = collectionName;
-        await this.getCollectionMedia(this.collection);
+        await this.getMedia(this.collection);
       }
     },
 
     openContextMenuFromSelected(event, mediaItem) {
       this.contextMenuOptions = [
-        { name: 'Deselect', action: 'deselect', class: 'o1-text-rose-600' },
         { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
         { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
+        { name: 'Open collection', action: 'open-collection', class: 'o1-text-slate-600' },
+        { type: 'divider' },
+        { name: 'Deselect', action: 'deselect', class: 'o1-text-rose-600' },
+        { name: 'Deselect others', action: 'deselect-others', class: 'o1-text-rose-600' },
       ];
 
       this.$nextTick(() => {
@@ -214,11 +219,19 @@ export default {
       if (action === 'select' || action === 'deselect') {
         this.toggleMediaSelection(this.targetMediaItem);
       }
+
+      if (action === 'open-collection') {
+        this.collection = this.targetMediaItem.collection_name;
+      }
+
+      if (action === 'deselect-others') {
+        this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id === this.targetMediaItem.id);
+      }
     },
 
     handleDeleteModalClose(update = false) {
       this.showConfirmDeleteModal = false;
-      if (update) this.getCollectionMedia();
+      if (update) this.getMedia(this.collection);
     },
   },
 

@@ -20,11 +20,19 @@ class MediaHubController extends Controller
         return response()->json($collections, 200);
     }
 
-    public function getCollectionMedia(Request $request, $collectionName)
+    public function getMedia(Request $request)
     {
-        $media = Media::where('collection_name', $collectionName)->paginate();
+        $collectionName = $request->get('collection');
 
-        return response()->json($media, 200);
+        $mediaQuery = Media::query();
+
+        if ($collectionName) {
+            $mediaQuery->where('collection_name', $collectionName);
+        }
+
+        $mediaQuery->orderBy('created_at', 'DESC');
+
+        return response()->json($mediaQuery->paginate(), 200);
     }
 
     public function uploadMediaToCollection(Request $request)

@@ -13,10 +13,10 @@
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span>Select collection to add media to:</span>
-          <select v-model="selectedCollection" class="w-full block form-control form-select form-select-bordered">
+          <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
             <option value="media-hub-new-collection">Create new collection</option>
             <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-          </select>
+          </SelectControl>
 
           <template v-if="newCollection">
             <span class="mt-6"> Enter new collection name: </span>

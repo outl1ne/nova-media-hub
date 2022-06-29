@@ -15,8 +15,9 @@ use Outl1ne\NovaMediaHub\Http\Controllers\MediaHubController;
 */
 
 Route::prefix('/nova-vendor/media-hub')->group(function () {
+    Route::get('/media', [MediaHubController::class, 'getMedia']);
     Route::get('/collections', [MediaHubController::class, 'getCollections']);
-    Route::get('/collections/{collectionName}/media', [MediaHubController::class, 'getCollectionMedia']);
+
     Route::post('/media/save', [MediaHubController::class, 'uploadMediaToCollection']);
     Route::delete('media/{mediaId}', [MediaHubController::class, 'deleteMedia']);
 });
