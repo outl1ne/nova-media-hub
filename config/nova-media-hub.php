@@ -31,8 +31,6 @@ return [
     // Default collections that will always be displayed (even when empty)
     'collections' => [
         'default',
-        'banners',
-        'product_images',
     ],
 
     // TODO confirm it works

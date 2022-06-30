@@ -12,10 +12,16 @@ class MediaHubController extends Controller
 {
     public function getCollections(Request $request)
     {
+        $defaultCollections = MediaHub::getDefaultCollections();
+
         $collections = MediaHub::getMediaModel()::select('collection_name')
             ->groupBy('collection_name')
             ->get()
-            ->pluck('collection_name');
+            ->pluck('collection_name')
+            ->merge($defaultCollections)
+            ->unique()
+            ->values()
+            ->toArray();
 
         return response()->json($collections, 200);
     }

@@ -83,7 +83,7 @@ class MediaHub extends Tool
         return $ogRules;
     }
 
-    public static function getCollections(): array
+    public static function getDefaultCollections(): array
     {
         return config('nova-media-hub.collections', []);
     }
