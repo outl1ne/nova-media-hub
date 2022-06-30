@@ -26,7 +26,13 @@
 
       <LoadingButton type="button" @click.prevent.stop="showChooseModal = true">Choose media</LoadingButton>
 
-      <MediaViewModal :show="showMediaViewModal" :mediaItem="targetMediaItem" @close="showMediaViewModal = false" />
+      <MediaItemContextMenu
+        id="form-media-hub-field-ctx-menu"
+        :showEvent="ctxShowEvent"
+        :options="ctxOptions"
+        @close="ctxShowEvent = void 0"
+        :mediaItem="ctxMediaItem"
+      />
 
       <ChooseMediaModal
         :field="field"
@@ -35,37 +41,19 @@
         @close="showChooseModal = false"
         @confirm="mediaItemsSelected"
       />
-
-      <VueSimpleContextMenu
-        elementId="mediaItemContextMenu"
-        :options="contextMenuOptions"
-        ref="vueSimpleContextMenu"
-        @option-clicked="onMediaItemContextMenuClick"
-      />
-
-      <!-- Fake download button -->
-      <a
-        :href="targetMediaItem && targetMediaItem.url"
-        download
-        ref="downloadAnchor"
-        target="_BLANK"
-        rel="noopener noreferrer"
-        class="o1-hidden"
-      />
     </template>
   </DefaultField>
 </template>
 
 <script>
 import MediaItem from '../../components/MediaItem';
-import MediaViewModal from '../../modals/MediaViewModal';
 import ChooseMediaModal from '../../modals/ChooseMediaModal';
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
-import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
+import MediaItemContextMenu from '../../components/MediaItemContextMenu';
 import HandlesMediaHubFieldValue from '../../mixins/HandlesMediaHubFieldValue';
 
 export default {
-  components: { MediaItem, ChooseMediaModal, MediaViewModal, VueSimpleContextMenu },
+  components: { MediaItem, ChooseMediaModal, MediaItemContextMenu },
   mixins: [FormField, HandlesValidationErrors, HandlesMediaHubFieldValue],
   props: ['resourceName', 'resourceId', 'field'],
 
@@ -73,12 +61,13 @@ export default {
     showChooseModal: false,
     showMediaViewModal: false,
 
-    contextMenuOptions: [],
-    targetMediaItem: void 0,
+    ctxShowEvent: void 0,
+    ctxOptions: [],
+    ctxMediaItem: void 0,
   }),
 
   created() {
-    this.contextMenuOptions = [
+    this.ctxOptions = [
       { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
       { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
     ];
@@ -103,22 +92,8 @@ export default {
     },
 
     openContextMenu(event, mediaItem) {
-      this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
-    },
-
-    onMediaItemContextMenuClick(event) {
-      const action = event.option.action || void 0;
-      this.targetMediaItem = event.item;
-
-      if (action === 'view') {
-        this.showMediaViewModal = true;
-      }
-
-      if (action === 'download') {
-        this.$nextTick(() => {
-          this.$refs.downloadAnchor.click();
-        });
-      }
+      this.ctxMediaItem = mediaItem;
+      this.ctxShowEvent = event;
     },
   },
 

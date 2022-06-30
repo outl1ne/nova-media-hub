@@ -24,23 +24,12 @@
         </div>
       </div>
 
-      <MediaViewModal :show="showMediaViewModal" :mediaItem="targetMediaItem" @close="showMediaViewModal = false" />
-
-      <VueSimpleContextMenu
-        elementId="mediaItemContextMenu"
-        :options="contextMenuOptions"
-        ref="vueSimpleContextMenu"
-        @option-clicked="onMediaItemContextMenuClick"
-      />
-
-      <!-- Fake download button -->
-      <a
-        :href="targetMediaItem && targetMediaItem.url"
-        download
-        ref="downloadAnchor"
-        target="_BLANK"
-        rel="noopener noreferrer"
-        class="o1-hidden"
+      <MediaItemContextMenu
+        id="detail-media-hub-field-ctx-menu"
+        :showEvent="ctxShowEvent"
+        :options="ctxOptions"
+        @close="ctxShowEvent = void 0"
+        :mediaItem="ctxMediaItem"
       />
     </template>
   </PanelItem>
@@ -48,25 +37,25 @@
 
 <script>
 import MediaItem from '../../components/MediaItem';
-import MediaViewModal from '../../modals/MediaViewModal';
+import MediaItemContextMenu from '../../components/MediaItemContextMenu';
 import HandlesMediaHubFieldValue from '../../mixins/HandlesMediaHubFieldValue';
-import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
 export default {
   mixins: [HandlesMediaHubFieldValue],
-  components: { MediaItem, VueSimpleContextMenu, MediaViewModal },
+  components: { MediaItem, MediaItemContextMenu },
 
   props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
 
   data: () => ({
     showMediaViewModal: false,
 
-    contextMenuOptions: void 0,
-    targetMediaItem: void 0,
+    ctxOptions: void 0,
+    ctxMediaItem: void 0,
+    ctxShowEvent: void 0,
   }),
 
   created() {
-    this.contextMenuOptions = [
+    this.ctxOptions = [
       { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
       { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
     ];
@@ -74,22 +63,8 @@ export default {
 
   methods: {
     openContextMenu(event, mediaItem) {
-      this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
-    },
-
-    onMediaItemContextMenuClick(event) {
-      const action = event.option.action || void 0;
-      this.targetMediaItem = event.item;
-
-      if (action === 'view') {
-        this.showMediaViewModal = true;
-      }
-
-      if (action === 'download') {
-        this.$nextTick(() => {
-          this.$refs.downloadAnchor.click();
-        });
-      }
+      this.ctxShowEvent = event;
+      this.ctxMediaItem = mediaItem;
     },
   },
 };
