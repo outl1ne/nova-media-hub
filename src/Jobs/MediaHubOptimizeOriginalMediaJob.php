@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\MediaOptimizer;
 
-class MediaHubOptimizeMediaJob implements ShouldQueue
+class MediaHubOptimizeOriginalMediaJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -25,7 +25,9 @@ class MediaHubOptimizeMediaJob implements ShouldQueue
 
     public function handle()
     {
-        $media = Media::findOrFail($this->mediaId);
-        MediaOptimizer::optimizeFile($media);
+        $media = Media::find($this->mediaId);
+        if (!$media) return;
+
+        MediaOptimizer::optimizeOriginalFile($media);
     }
 }

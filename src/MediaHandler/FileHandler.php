@@ -14,6 +14,7 @@ use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
 use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
+use Outl1ne\NovaMediaHub\Jobs\MediaHubOptimizeOriginalMediaJob;
 
 class FileHandler
 {
@@ -127,6 +128,8 @@ class FileHandler
         $media->save();
 
         $this->filesystem->create($this->pathToFile, $media, $this->fileName);
+
+        MediaHubOptimizeOriginalMediaJob::dispatch($media);
 
         // TODO: Dispatch conversions jobs
 

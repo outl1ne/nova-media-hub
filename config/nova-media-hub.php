@@ -47,10 +47,10 @@ return [
         ],
     ],
 
-    // TODO
     'original_image_manipulations' => [
-        // False if you don't want the original image to be optimized
+        // Set to false if you don't want the original image to be optimized
         // The mime type must still be in the optimizable_mime_types array
+        // If set to false, will also disable resizing in max_dimensions
         'optimize' => true,
 
         // Maximum number of pixels in height or width, will be scaled down to this number

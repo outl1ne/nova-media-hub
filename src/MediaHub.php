@@ -76,6 +76,13 @@ class MediaHub extends Tool
         return in_array($media->mime_type, $optimizableMimeTypes);
     }
 
+    public static function shouldOptimizeOriginal()
+    {
+        $ogRules = config('nova-media-hub.original_image_manipulations');
+        if (!$ogRules['optimize']) return false;
+        return $ogRules;
+    }
+
     public static function getCollections(): array
     {
         return config('nova-media-hub.collections', []);
