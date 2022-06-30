@@ -1,6 +1,6 @@
 <template>
   <button
-    class="o1-relative o1-mx-2 o1-bg-slate-50 o1-rounded-sm"
+    class="o1-relative o1-mr-4 o1-bg-slate-50 o1-rounded-sm"
     :class="[
       { 'o1-ring-2 o1-ring-teal-200 hover:o1-ring-rose-300': selected },
       { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:o1-ring-teal-200': !selected },
@@ -52,6 +52,8 @@ export default {
 
   computed: {
     type() {
+      if (!this.mediaItem) return;
+
       const mimeType = this.mediaItem.mime_type.split('/')[0];
       if (mimeType === 'image') return 'image';
       if (mimeType === 'audio') return 'audio';

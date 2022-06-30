@@ -14,7 +14,13 @@
             />
           </template>
 
-          <MediaItem v-else :mediaItem="value" :size="24" />
+          <MediaItem
+            v-else
+            class="o1-mb-4"
+            :mediaItem="value"
+            :size="36"
+            @contextmenu.stop.prevent="openContextMenu($event, value)"
+          />
         </div>
       </div>
 
@@ -99,14 +105,14 @@ export default {
     },
 
     fill(formData) {
-      if (!this.value || !this.value.length) {
-        formData.append(this.field.attribute, '');
-      } else if (this.value.length) {
+      if (this.value && this.value.length) {
         this.value.map(mediaItem => {
           formData.append(`${this.field.attribute}[]`, mediaItem.id);
         });
-      } else {
+      } else if (!!this.value) {
         formData.append(this.field.attribute, this.value.id);
+      } else {
+        formData.append(this.field.attribute, '');
       }
     },
 

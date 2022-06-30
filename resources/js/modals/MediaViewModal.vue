@@ -104,6 +104,8 @@ export default {
     },
 
     type() {
+      if (!this.mediaItem) return;
+
       const mimeType = this.mediaItem.mime_type.split('/')[0];
       if (mimeType === 'image') return 'image';
       if (mimeType === 'audio') return 'audio';

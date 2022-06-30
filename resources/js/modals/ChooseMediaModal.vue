@@ -131,7 +131,9 @@ export default {
       if (newValue) {
         await this.getCollections();
         this.selectedCollection = this.activeCollection;
-        this.selectedMediaItems = [...this.initialSelectedMediaItems];
+        this.selectedMediaItems = Array.isArray(this.initialSelectedMediaItems)
+          ? [...this.initialSelectedMediaItems]
+          : [this.initialSelectedMediaItems];
       }
     },
 
@@ -154,7 +156,7 @@ export default {
     },
 
     confirm() {
-      this.$emit('confirm', this.selectedMediaItems);
+      this.$emit('confirm', this.field.multiple ? this.selectedMediaItems : this.selectedMediaItems[0]);
     },
 
     async handleUploadModalClose(updateData, collectionName) {
