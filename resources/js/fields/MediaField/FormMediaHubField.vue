@@ -2,16 +2,19 @@
   <DefaultField :field="field" :errors="errors" :show-help-text="showHelpText">
     <template #field>
       <div class="o1-flex" v-if="hasValue">
-        <div class="o1-flex o1-flex-wrap">
+        <div class="o1-flex">
           <template v-if="field.multiple">
-            <MediaItem
-              v-for="mediaItem in value"
-              :key="mediaItem.id"
-              :mediaItem="mediaItem"
-              :size="24"
-              class="o1-mb-4"
-              @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
-            />
+            <Draggable v-model="value" item-key="id" class="o1-flex o1-flex-wrap">
+              <template #item="{ element: mediaItem }">
+                <MediaItem
+                  :key="mediaItem.id"
+                  :mediaItem="mediaItem"
+                  :size="24"
+                  class="o1-mb-4"
+                  @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
+                />
+              </template>
+            </Draggable>
           </template>
 
           <MediaItem
@@ -46,6 +49,7 @@
 </template>
 
 <script>
+import Draggable from 'vuedraggable';
 import MediaItem from '../../components/MediaItem';
 import ChooseMediaModal from '../../modals/ChooseMediaModal';
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
@@ -53,7 +57,7 @@ import MediaItemContextMenu from '../../components/MediaItemContextMenu';
 import HandlesMediaHubFieldValue from '../../mixins/HandlesMediaHubFieldValue';
 
 export default {
-  components: { MediaItem, ChooseMediaModal, MediaItemContextMenu },
+  components: { Draggable, MediaItem, ChooseMediaModal, MediaItemContextMenu },
   mixins: [FormField, HandlesValidationErrors, HandlesMediaHubFieldValue],
   props: ['resourceName', 'resourceId', 'field'],
 

@@ -7,15 +7,18 @@
           <div class="o1-flex o1-flex-col o1-py-6 o1-border-b o1-border-slate-200">
             <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Selected media</div>
             <div class="o1-flex o1-flex-wrap" v-if="!!selectedMediaItems.length">
-              <MediaItem
-                v-for="mediaItem in selectedMediaItems"
-                :key="'selected-' + mediaItem.id"
-                :mediaItem="mediaItem"
-                @click="toggleMediaSelection(mediaItem)"
-                :selected="true"
-                :size="36"
-                @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
-              />
+              <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-wrap">
+                <template #item="{ element: mediaItem }">
+                  <MediaItem
+                    :key="'selected-' + mediaItem.id"
+                    :mediaItem="mediaItem"
+                    @click="toggleMediaSelection(mediaItem)"
+                    :selected="true"
+                    :size="36"
+                    @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
+                  />
+                </template>
+              </Draggable>
             </div>
             <div v-else class="o1-text-slate-400">No media items selected</div>
           </div>
@@ -95,6 +98,7 @@
 </template>
 
 <script>
+import Draggable from 'vuedraggable';
 import MediaItem from '../components/MediaItem';
 import MediaViewModal from '../modals/MediaViewModal';
 import MediaUploadModal from '../modals/MediaUploadModal';
@@ -104,7 +108,7 @@ import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context
 
 export default {
   mixins: [HandlesMediaLists],
-  components: { MediaItem, MediaUploadModal, MediaViewModal, ConfirmDeleteModal, VueSimpleContextMenu },
+  components: { Draggable, MediaItem, MediaUploadModal, MediaViewModal, ConfirmDeleteModal, VueSimpleContextMenu },
 
   emits: ['close', 'confirm'],
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
