@@ -24,7 +24,7 @@
           <Link
             v-for="collectionName in collections"
             :key="collectionName"
-            :href="`/media-hub/${collectionName}`"
+            :href="`/${$page.props.basePath}/${collectionName}`"
             class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100"
             :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === selectedCollection }"
           >
