@@ -131,9 +131,15 @@ export default {
       if (newValue) {
         await this.getCollections();
         this.selectedCollection = this.activeCollection;
-        this.selectedMediaItems = Array.isArray(this.initialSelectedMediaItems)
-          ? [...this.initialSelectedMediaItems]
-          : [this.initialSelectedMediaItems];
+
+        const iniVal = this.initialSelectedMediaItems;
+        if (Array.isArray(iniVal)) {
+          this.selectedMediaItems = [...iniVal];
+        } else if (!!iniVal && !!iniVal.id) {
+          this.selectedMediaItems = [iniVal];
+        } else {
+          this.selectedMediaItems = [];
+        }
       }
     },
 

@@ -15,7 +15,7 @@
           </template>
 
           <MediaItem
-            v-else
+            v-else-if="!!value"
             class="o1-mb-4"
             :mediaItem="value"
             :size="36"
@@ -62,24 +62,22 @@ import MediaViewModal from '../../modals/MediaViewModal';
 import ChooseMediaModal from '../../modals/ChooseMediaModal';
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
 import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
+import HandlesMediaHubFieldValue from '../../mixins/HandlesMediaHubFieldValue';
 
 export default {
   components: { MediaItem, ChooseMediaModal, MediaViewModal, VueSimpleContextMenu },
-  mixins: [FormField, HandlesValidationErrors],
+  mixins: [FormField, HandlesValidationErrors, HandlesMediaHubFieldValue],
   props: ['resourceName', 'resourceId', 'field'],
 
   data: () => ({
     showChooseModal: false,
     showMediaViewModal: false,
 
-    value: [],
     contextMenuOptions: [],
     targetMediaItem: void 0,
   }),
 
   created() {
-    this.setInitialValue();
-
     this.contextMenuOptions = [
       { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
       { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
@@ -87,18 +85,6 @@ export default {
   },
 
   methods: {
-    setInitialValue() {
-      let value = this.field.value;
-      const multiple = this.field.multiple;
-
-      if (multiple && Array.isArray(value)) {
-        this.value = value.map(id => this.field.media[id]).filter(Boolean);
-      } else if (!!value) {
-        if (Array.isArray(value)) value = value[0];
-        this.value = this.field.media[value];
-      }
-    },
-
     mediaItemsSelected(mediaItems) {
       this.value = mediaItems;
       this.showChooseModal = false;

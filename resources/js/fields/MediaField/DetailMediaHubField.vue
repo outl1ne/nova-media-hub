@@ -13,7 +13,14 @@
             />
           </template>
 
-          <MediaItem v-else :mediaItem="value" :size="36" @contextmenu.stop.prevent="openContextMenu($event, value)" />
+          <MediaItem
+            v-else-if="value"
+            :mediaItem="value"
+            :size="36"
+            @contextmenu.stop.prevent="openContextMenu($event, value)"
+          />
+
+          <div v-else>&mdash;</div>
         </div>
       </div>
 
@@ -42,16 +49,16 @@
 <script>
 import MediaItem from '../../components/MediaItem';
 import MediaViewModal from '../../modals/MediaViewModal';
+import HandlesMediaHubFieldValue from '../../mixins/HandlesMediaHubFieldValue';
 import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
 export default {
+  mixins: [HandlesMediaHubFieldValue],
   components: { MediaItem, VueSimpleContextMenu, MediaViewModal },
 
   props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
 
   data: () => ({
-    value: void 0,
-
     showMediaViewModal: false,
 
     contextMenuOptions: void 0,
@@ -59,8 +66,6 @@ export default {
   }),
 
   created() {
-    this.setInitialValue();
-
     this.contextMenuOptions = [
       { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
       { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
@@ -68,18 +73,6 @@ export default {
   },
 
   methods: {
-    setInitialValue() {
-      let value = this.field.value;
-      const multiple = this.field.multiple;
-
-      if (multiple && Array.isArray(value)) {
-        this.value = value.map(id => this.field.media[id]).filter(Boolean);
-      } else if (!!value) {
-        if (Array.isArray(value)) value = value[0];
-        this.value = this.field.media[value];
-      }
-    },
-
     openContextMenu(event, mediaItem) {
       this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
     },

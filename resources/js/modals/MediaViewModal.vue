@@ -2,7 +2,7 @@
   <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="2xl" id="o1-nmh-media-view-modal">
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
-        <ModalHeader class="flex items-center">Media ({{ mediaItem.file_name }})</ModalHeader>
+        <ModalHeader class="flex items-center">{{ mediaItem.file_name }} ({{ mediaItem.mime_type }})</ModalHeader>
 
         <ModalContent class="o1-px-8 o1-flex o1-flex-col">
           <div class="o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full" style="max-height: 50vh">
