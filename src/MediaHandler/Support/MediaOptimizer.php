@@ -30,7 +30,6 @@ class MediaOptimizer
 
         Image::load($pathToFile)
             ->manipulate($manipulations)
-            ->quality($origOptimRules['jpeg_quality'] ?? 80)
             ->save();
 
         $media->size = filesize($pathToFile);

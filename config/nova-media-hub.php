@@ -6,10 +6,10 @@ return [
     // Table name
     'table_name' => 'media_hub',
 
-    // Base URL path
+    // Base URL path in Nova
     'base_path' => 'media-hub',
 
-    // Class configurations
+    // Classes configuration
     'model' => \Outl1ne\NovaMediaHub\Models\Media::class,
     'file_namer' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer::class,
     'path_maker' => \Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker::class,
@@ -18,26 +18,31 @@ return [
     'disk_name' => 'public',
     'conversions_disk_name' => 'public',
 
-    // Misc configuration
+    // Path configuration
     'path_prefix' => 'media',
-    'max_file_size_in_kb' => 3000,
 
-    'user_can_create_collections' => true,
+    // File size upper limit
+    'max_uploaded_file_size_in_kb' => 3000,
 
+    // Job queue configuration
     'original_image_manipulations_job_queue' => null,
     'image_conversions_job_queue' => null,
 
+    // Default collections that will always be displayed (even when empty)
     'collections' => [
         'default',
         'banners',
         'product_images',
     ],
 
+    // TODO confirm it works
+    'user_can_create_collections' => true,
+
     // ------------------------------
     // -- Conversion configurations
     // ------------------------------
 
-    // TODO
+    // TODO Make job work
     // Conversions
     // '*' for all collections
     // 'collection_name' => ['conversion_name' => [options]]
@@ -60,9 +65,6 @@ return [
         // Maximum number of pixels in height or width, will be scaled down to this number
         // Set to null if you don't want the original image to be resized
         'max_dimensions' => 2000,
-
-        // Set quality for JPEG files in percent (0-100)
-        'jpeg_quality' => 80,
     ],
 
 
