@@ -1,5 +1,7 @@
 <?php
 
+use Spatie\Image\Manipulations;
+
 return [
     // Table name
     'table_name' => 'media_hub',
@@ -22,6 +24,9 @@ return [
 
     'user_can_create_collections' => true,
 
+    'original_image_manipulations_job_queue' => null,
+    'image_conversions_job_queue' => null,
+
     'collections' => [
         'default',
         'banners',
@@ -36,13 +41,12 @@ return [
     // Conversions
     // '*' for all collections
     // 'collection_name' => ['conversion_name' => [options]]
-    'conversions' => [
+    'image_conversions' => [
         '*' => [
             'thumbnail' => [
                 'width' => 150,
                 'height' => 150,
-                'crop' => true,
-                'format' => 'jpeg',
+                'fit' => Manipulations::FIT_MAX,
             ]
         ],
     ],
@@ -56,6 +60,9 @@ return [
         // Maximum number of pixels in height or width, will be scaled down to this number
         // Set to null if you don't want the original image to be resized
         'max_dimensions' => 2000,
+
+        // Set quality for JPEG files in percent (0-100)
+        'jpeg_quality' => 80,
     ],
 
 

@@ -10,7 +10,7 @@ use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaOptimizer
 {
-    public static function optimizeOriginalFile(Media $media)
+    public static function optimizeOriginalImage(Media $media)
     {
         if (!empty($media->optimized_at)) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
@@ -30,6 +30,7 @@ class MediaOptimizer
 
         Image::load($pathToFile)
             ->manipulate($manipulations)
+            ->quality($origOptimRules['jpeg_quality'] ?? 80)
             ->save();
 
         $media->size = filesize($pathToFile);

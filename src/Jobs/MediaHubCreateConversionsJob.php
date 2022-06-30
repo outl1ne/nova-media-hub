@@ -9,9 +9,8 @@ use Outl1ne\NovaMediaHub\Models\Media;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\MediaOptimizer;
 
-class MediaHubOptimizeOriginalMediaJob implements ShouldQueue
+class MediaHubCreateConversionsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,6 +29,21 @@ class MediaHubOptimizeOriginalMediaJob implements ShouldQueue
         $media = Media::find($this->mediaId);
         if (!$media) return;
 
-        MediaOptimizer::optimizeOriginalImage($media);
+        $conversions = $this->getConversionForMedia($media);
+
+        // TODO
+    }
+
+    protected function getConversionForMedia(Media $media)
+    {
+        $allConversions = MediaHub::getConversions();
+
+        $appliesToAllConversions = $allConversions['*'] ?? [];
+        $appliesToCollectionConv = $allConversions[$media->collection_name] ?? [];
+
+        return array_merge(
+            $appliesToAllConversions,
+            $appliesToCollectionConv,
+        );
     }
 }

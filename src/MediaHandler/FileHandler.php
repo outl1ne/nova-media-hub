@@ -9,6 +9,7 @@ use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 use Outl1ne\NovaMediaHub\Exceptions\FileTooLargeException;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
+use Outl1ne\NovaMediaHub\Jobs\MediaHubCreateConversionsJob;
 use Outl1ne\NovaMediaHub\Exceptions\NoFileProvidedException;
 use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
@@ -130,8 +131,7 @@ class FileHandler
         $this->filesystem->create($this->pathToFile, $media, $this->fileName);
 
         MediaHubOptimizeOriginalMediaJob::dispatch($media);
-
-        // TODO: Dispatch conversions jobs
+        MediaHubCreateConversionsJob::dispatch($media);
 
         return $media;
     }

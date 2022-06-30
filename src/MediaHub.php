@@ -92,4 +92,19 @@ class MediaHub extends Tool
     {
         return config('nova-media-hub.user_can_create_collections', false);
     }
+
+    public static function getConversions()
+    {
+        return config('nova-media-hub.image_conversions', []);
+    }
+
+    public static function getOriginalImageManipulationsJobQueue()
+    {
+        return config('nova-media-hub.original_image_manipulations_job_queue', config('queue.default'));
+    }
+
+    public static function getImageConversionsJobQueue()
+    {
+        return config('nova-media-hub.image_conversions_job_queue', config('queue.default'));
+    }
 }
