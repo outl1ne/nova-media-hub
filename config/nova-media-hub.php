@@ -73,9 +73,9 @@ return [
 
     // NB! Must have a matching image_optimizer configured and binary for it to work
     'optimizable_mime_types' => [
-        'image/png',
         'image/jpeg',
-        'image/gif',
+        // 'image/png',
+        // 'image/gif',
     ],
 
     'image_optimizers' => [
