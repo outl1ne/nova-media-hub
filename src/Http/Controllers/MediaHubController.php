@@ -12,7 +12,7 @@ class MediaHubController extends Controller
 {
     public function getCollections(Request $request)
     {
-        $collections = Media::select('collection_name')
+        $collections = MediaHub::getMediaModel()::select('collection_name')
             ->groupBy('collection_name')
             ->get()
             ->pluck('collection_name');
@@ -54,10 +54,24 @@ class MediaHubController extends Controller
     public function deleteMedia(Request $request)
     {
         $mediaId = $request->route('mediaId');
-        if ($mediaId && $media = Media::find($mediaId)) {
+        if ($mediaId && $media = MediaHub::getMediaModel()::find($mediaId)) {
             Storage::disk($media->disk)->delete($media->path);
             $media->delete();
         }
         return response()->json('', 204);
+    }
+
+    public function moveMediaToCollection(Request $request, $mediaId)
+    {
+        $collectionName = $request->get('collection');
+        if (!$collectionName) return response()->json(['error' => 'Collection name required.'], 400);
+
+        $media = MediaHub::getMediaModel()::findOrFail($mediaId);
+
+
+        $media->collection_name = $collectionName;
+        $media->save();
+
+        return response()->json($media, 200);
     }
 }

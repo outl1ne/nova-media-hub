@@ -18,4 +18,8 @@ export default {
   async deleteMedia(mediaId) {
     return Nova.request().delete(`${PREFIX}/media/${mediaId}`);
   },
+
+  async moveMediaToCollection(mediaId, collection) {
+    return Nova.request().post(`${PREFIX}/media/${mediaId}/move`, { collection });
+  },
 };

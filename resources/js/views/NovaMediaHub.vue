@@ -75,6 +75,12 @@
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="targetMediaItem" @close="handleDeleteModalClose" />
 
+    <MoveToCollectionModal
+      :show="showMoveCollectionModal"
+      :mediaItem="targetMediaItem"
+      @close="handleMoveCollectionModalClose"
+    />
+
     <VueSimpleContextMenu
       elementId="mediaItemContextMenu"
       :options="contextMenuOptions"
@@ -90,10 +96,18 @@ import MediaItem from '../components/MediaItem';
 import MediaViewModal from '../modals/MediaViewModal';
 import MediaUploadModal from '../modals/MediaUploadModal';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
+import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
 export default {
-  components: { MediaUploadModal, MediaItem, VueSimpleContextMenu, MediaViewModal, ConfirmDeleteModal },
+  components: {
+    MediaUploadModal,
+    MoveToCollectionModal,
+    MediaItem,
+    VueSimpleContextMenu,
+    MediaViewModal,
+    ConfirmDeleteModal,
+  },
 
   data: () => ({
     loading: true,
@@ -107,6 +121,7 @@ export default {
     showMediaViewModal: false,
     showMediaUploadModal: false,
     showConfirmDeleteModal: false,
+    showMoveCollectionModal: false,
 
     contextMenuOptions: [],
     targetMediaItem: void 0,
@@ -118,6 +133,7 @@ export default {
     this.contextMenuOptions = [
       { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
       { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
+      { name: 'Move to collection', action: 'move-collection', class: 'o1-text-slate-600' },
       { type: 'divider' },
       { name: 'Delete', action: 'delete', class: 'o1-text-red-500' },
     ];
@@ -183,6 +199,10 @@ export default {
       if (action === 'delete') {
         this.showConfirmDeleteModal = true;
       }
+
+      if (action === 'move-collection') {
+        this.showMoveCollectionModal = true;
+      }
     },
 
     openViewModal(mediaItem) {
@@ -193,6 +213,11 @@ export default {
 
     handleDeleteModalClose(update = false) {
       this.showConfirmDeleteModal = false;
+      if (update) this.getMedia();
+    },
+
+    handleMoveCollectionModalClose(update = false) {
+      this.showMoveCollectionModal = false;
       if (update) this.getMedia();
     },
   },
