@@ -8,6 +8,9 @@ use Outl1ne\NovaMediaHub\Models\Media;
 
 class Filesystem
 {
+    const TYPE_ORIGINAL = 'original';
+    const TYPE_CONVERSION = 'conversion';
+
     /** @var \Illuminate\Contracts\Filesystem\Factory */
     protected $filesystem;
 
@@ -29,7 +32,7 @@ class Filesystem
 
     public function copyFileToMediaFolder(string $pathToFile, Media $media, ?string $targetFileName = null, ?string $type = null)
     {
-        $forOriginal = $type !== 'conversions';
+        $forOriginal = $type !== static::TYPE_CONVERSION;
         $newFileName = $targetFileName ?: pathinfo($pathToFile, PATHINFO_BASENAME);
         $destination = $this->getMediaDirectory($media, $type) . $newFileName;
 
@@ -43,12 +46,19 @@ class Filesystem
             ->disk($diskName)
             ->put($destination, $file);
 
-        if (is_resource($file)) fclose($file);
+        if (is_resource($file)) {
+            fclose($file);
+
+            // Delete old file
+            if ($pathToFile !== $destination) {
+                unlink($pathToFile);
+            }
+        }
     }
 
     public function getMediaDirectory(Media $media, ?string $type = null): string
     {
-        $forOriginal = $type !== 'conversions';
+        $forOriginal = $type !== static::TYPE_CONVERSION;
         $pathMaker = MediaHub::getPathMaker();
 
         $directory = $forOriginal

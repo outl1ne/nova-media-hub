@@ -105,8 +105,8 @@ class FileHandler
             throw new FileTooLargeException($this->pathToFile);
         }
 
-        $sanitizedFileName = $this->sanitizeFileName($this->fileName);
-        [$fileName, $extension] = $this->splitNameAndExtension($sanitizedFileName);
+        $sanitizedFileName = FileHelpers::sanitizeFileName($this->fileName);
+        [$fileName, $extension] = FileHelpers::splitNameAndExtension($sanitizedFileName);
         $this->fileName = MediaHub::getFileNamer()->formatFileName($fileName, $extension);
 
         $mediaClass = MediaHub::getMediaModel();
@@ -154,18 +154,5 @@ class FileHandler
         if (is_null(config("filesystems.disks.{$diskName}"))) {
             throw new DiskDoesNotExistException($diskName);
         }
-    }
-
-    protected function sanitizeFileName(string $fileName): string
-    {
-        return str_replace(['#', '/', '\\', ' '], '-', $fileName);
-    }
-
-    protected function splitNameAndExtension(string $fileName): array
-    {
-        $name = pathinfo($fileName, PATHINFO_BASENAME);
-        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-        $name = mb_substr($name, 0, - (mb_strlen($extension) + 1));
-        return [$name, $extension];
     }
 }

@@ -35,4 +35,18 @@ class FileHelpers
 
         return $fileHash;
     }
+
+    public static function sanitizeFileName($fileName)
+    {
+        return str_replace(['#', '/', '\\', ' '], '-', $fileName);
+    }
+
+    // Returns [$fileName, $extension]
+    public static function splitNameAndExtension(string $fileName): array
+    {
+        $name = pathinfo($fileName, PATHINFO_BASENAME);
+        $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $name = mb_substr($name, 0, - (mb_strlen($extension) + 1));
+        return [$name, $extension];
+    }
 }

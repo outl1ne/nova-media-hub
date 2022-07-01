@@ -50,7 +50,7 @@ return [
                 'width' => 150,
                 'height' => 150,
                 'fit' => Manipulations::FIT_MAX,
-            ]
+            ],
         ],
     ],
 

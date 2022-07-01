@@ -6,11 +6,11 @@ class FileNamer
 {
     public function formatFileName(string $fileName, string $extension)
     {
-        return "$fileName.$extension";
+        return "{$fileName}.{$extension}";
     }
 
     public function formatConversionFileName(string $fileName, string $extension, $conversion)
     {
-        return "$fileName.$extension";
+        return "{$fileName}.{$conversion}.{$extension}";
     }
 }
