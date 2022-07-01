@@ -10,6 +10,7 @@
               :mediaItem="mediaItem"
               :size="24"
               @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
+              class="o1-mr-4 o1-mb-4"
             />
           </template>
 
