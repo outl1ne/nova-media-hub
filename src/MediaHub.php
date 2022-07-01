@@ -49,7 +49,7 @@ class MediaHub extends Tool
 
     public static function getMaxFileSizeInBytes()
     {
-        $maxInBytes = config('media-library.max_uploaded_file_size_in_kb');
+        $maxInBytes = config('nova-media-hub.max_uploaded_file_size_in_kb');
         return $maxInBytes ? $maxInBytes * 1000 : null;
     }
 

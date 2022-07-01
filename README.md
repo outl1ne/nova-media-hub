@@ -47,13 +47,12 @@ public function tools()
 
 ## TODO
 
-- Thumbnails for Nova (?)
-- Conversions job
-- Title/alt texts and translatability
-- i18n support
-- Index field
-- "User can create collections" config support
 - Pagination for Hub view, Choose modal view
+- "User can create collections" config support
+- Index field
+- i18n support
+- Title/alt texts and translatability
+- Thumbnails for Nova (?)
 
 ## Usage
 

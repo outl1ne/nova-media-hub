@@ -46,7 +46,7 @@
             {{ __('Close') }}
           </LoadingButton>
 
-          <LoadingButton @click.prevent="uploadFiles"> Upload files </LoadingButton>
+          <LoadingButton @click.prevent="uploadFiles">Upload files</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -94,7 +94,17 @@ export default {
 
         this.$emit('close', true, this.finalCollectionName);
       } catch (e) {
-        Nova.$toasted.success(e.message);
+        if (e && e.response && e.response.data) {
+          const data = e.response.data;
+          Nova.$toasted.error(data.message || e.message);
+
+          // Some succeeded, let the user know
+          if (data.success_count > 0) {
+            this.$emit('close', true, this.finalCollectionName);
+          }
+        } else {
+          Nova.$toasted.error(e.message);
+        }
       }
       this.loading = false;
     },

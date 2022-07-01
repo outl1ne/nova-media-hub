@@ -51,6 +51,7 @@
           :mediaItem="mediaItem"
           @click.stop.prevent="openViewModal(mediaItem)"
           @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
+          class="o1-mb-4"
         />
       </div>
     </div>

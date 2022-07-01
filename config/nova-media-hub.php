@@ -36,14 +36,9 @@ return [
     // TODO confirm it works
     'user_can_create_collections' => true,
 
-    // ------------------------------
-    // -- Conversion configurations
-    // ------------------------------
-
-    // TODO Make job work
-    // Conversions
-    // '*' for all collections
+    // -- Conversions
     // 'collection_name' => ['conversion_name' => [options]]
+    // Use '*' as wildcard for all collections
     'image_conversions' => [
         '*' => [
             'thumbnail' => [

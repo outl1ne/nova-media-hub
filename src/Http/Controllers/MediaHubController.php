@@ -2,6 +2,7 @@
 
 namespace Outl1ne\NovaMediaHub\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -46,12 +47,25 @@ class MediaHubController extends Controller
         $files = $request->allFiles()['files'] ?? [];
         $collectionName = $request->get('collectionName') ?? 'default';
 
+        $exceptions = [];
+
         $uploadedMedia = [];
         foreach ($files as $file) {
-            $uploadedMedia[] = MediaHub::fileHandler()
-                ->withFile($file)
-                ->withCollection($collectionName)
-                ->save();
+            try {
+                $uploadedMedia[] = MediaHub::fileHandler()
+                    ->withFile($file)
+                    ->withCollection($collectionName)
+                    ->save();
+            } catch (Exception $e) {
+                $exceptions[] = class_basename(get_class($e));
+            }
+        }
+
+        if (!empty($exceptions)) {
+            return response()->json([
+                'success_count' => count($files) - count($exceptions),
+                'message' => 'Error(s): ' . implode(', ', $exceptions),
+            ], 400);
         }
 
         return response()->json($uploadedMedia, 200);
