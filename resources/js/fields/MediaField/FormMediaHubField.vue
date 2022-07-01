@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <LoadingButton type="button" @click.prevent.stop="showChooseModal = true">Choose media</LoadingButton>
+      <LoadingButton type="button" @click.prevent.stop="openChooseModal">Choose media</LoadingButton>
 
       <MediaItemContextMenu
         id="form-media-hub-field-ctx-menu"
@@ -98,6 +98,11 @@ export default {
     openContextMenu(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxShowEvent = event;
+    },
+
+    openChooseModal() {
+      this.ctxShowEvent = void 0;
+      this.showChooseModal = true;
     },
   },
 

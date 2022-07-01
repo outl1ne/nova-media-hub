@@ -47,9 +47,9 @@ public function tools()
 
 ## TODO
 
+- Add 'collection()' to select default collection in FormField
 - Index field
 - i18n support
-- Title/alt texts and translatability
 - Thumbnails for Nova (?)
 
 ## Usage

@@ -63,7 +63,7 @@
               </div>
 
               <PaginationLinks
-                v-if="!!filteredMediaItems.length"
+                v-show="!!filteredMediaItems.length && mediaResponse.last_page > 1"
                 class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 o1-border-l"
                 :page="mediaResponse.current_page"
                 :pages="mediaResponse.last_page"
