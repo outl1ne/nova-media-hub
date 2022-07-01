@@ -14,7 +14,7 @@
           <!-- Select existing collection -->
           <span>Select collection to add media to:</span>
           <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
-            <option value="media-hub-new-collection">Create new collection</option>
+            <option value="media-hub-new-collection" v-if="canCreateCollections">Create new collection</option>
             <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
           </SelectControl>
 
@@ -132,6 +132,10 @@ export default {
 
     finalCollectionName() {
       return this.newCollection ? this.collectionName : this.selectedCollection;
+    },
+
+    canCreateCollections() {
+      return Nova.appConfig.novaMediaHub.canCreateCollections;
     },
   },
 };

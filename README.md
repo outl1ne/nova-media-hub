@@ -47,7 +47,6 @@ public function tools()
 
 ## TODO
 
-- "User can create collections" config support
 - Index field
 - i18n support
 - Title/alt texts and translatability

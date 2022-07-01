@@ -33,7 +33,6 @@ return [
         'default',
     ],
 
-    // TODO confirm it works
     'user_can_create_collections' => true,
 
     // -- Conversions

@@ -9,7 +9,7 @@
 
     <!-- Content wrapper -->
     <div
-      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded-lg o1-bg-white o1-shadow"
+      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow"
       style="min-height: 500px"
     >
       <!-- Collections list -->
@@ -24,7 +24,7 @@
           <Link
             v-for="collectionName in collections"
             :key="collectionName"
-            :href="`/${$page.props.basePath}/${collectionName}`"
+            :href="`/${basePath}/${collectionName}`"
             class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100"
             :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }"
           >
@@ -165,7 +165,6 @@ export default {
 
     contextOptionClick(event) {
       const action = event.option.action || void 0;
-      this.ctxMediaItem = event.item;
 
       if (action === 'delete') {
         this.showConfirmDeleteModal = true;
@@ -195,6 +194,12 @@ export default {
     async switchToPage(page) {
       await this.goToMediaPage(page);
       Nova.$emit('resources-loaded');
+    },
+  },
+
+  computed: {
+    basePath() {
+      return Nova.appConfig.novaMediaHub.basePath;
     },
   },
 };

@@ -18,6 +18,7 @@ class MediaHubField extends Field
 
         $this->withMeta([
             'multiple' => false,
+            'user_can_create_collections' => MediaHub::userCanCreateCollections(),
             'defaultCollectionName' => $defaultCollectionName,
         ]);
     }

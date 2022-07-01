@@ -6,10 +6,10 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
+use Outl1ne\NovaMediaHub\Models\Media;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
-use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaHub extends Tool
 {
@@ -17,6 +17,13 @@ class MediaHub extends Tool
     {
         Nova::script('nova-media-hub', __DIR__ . '/../dist/js/entry.js');
         Nova::style('nova-media-hub', __DIR__ . '/../dist/css/entry.css');
+
+        Nova::provideToScript([
+            'novaMediaHub' => [
+                'basePath' => MediaHub::getBasePath(),
+                'canCreateCollections' => MediaHub::userCanCreateCollections(),
+            ],
+        ]);
     }
 
     public function menu(Request $request)
