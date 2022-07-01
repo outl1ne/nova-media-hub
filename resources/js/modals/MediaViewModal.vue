@@ -15,23 +15,28 @@
             <div class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full">
               <MediaViewModalInfoListItem label="ID" :value="mediaItem.id" />
               <MediaViewModalInfoListItem label="File name" :value="mediaItem.file_name" />
-              <MediaViewModalInfoListItem label="File size" :value="mediaItem.size / 1000 + 'kb'" />
+              <MediaViewModalInfoListItem label="File size" :value="fileSize" />
               <MediaViewModalInfoListItem label="Mime type" :value="mediaItem.mime_type" />
               <MediaViewModalInfoListItem label="Collection" :value="mediaItem.collection_name" />
 
-              <form-translatable-field
-                v-for="(dataField, i) in dataFields"
-                :key="i"
-                class="nova-media-hub-media-modal-translatable-field"
-                :field="dataField"
-              />
+              <div class="o1-flex o1-flex-col" v-if="show">
+                <form-translatable-field
+                  v-for="(dataField, i) in dataFields"
+                  :key="mediaItem.id + i"
+                  class="nova-media-hub-media-modal-translatable-field"
+                  :field="dataField"
+                />
+              </div>
             </div>
 
             <!-- File itself -->
-            <div class="o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full" style="max-height: 50vh">
+            <div
+              class="o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full o1-items-center o1-justify-center"
+              style="max-height: 60vh"
+            >
               <img
                 v-if="type === 'image'"
-                class="o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-shadow o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0"
+                class="o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0"
                 :src="mediaItem.url"
                 :alt="mediaItem.file_name"
               />
@@ -94,6 +99,8 @@ export default {
         await this.getCollections();
         this.selectedCollection = this.activeCollection;
         this.dataFields = [this.createField('alt', 'Alt text'), this.createField('title', 'Title')];
+      } else {
+        this.dataFields = [];
       }
     },
   },
@@ -107,11 +114,14 @@ export default {
           field.fill(formData);
         }
 
-        await API.updateMediaData(this.mediaItem.id, formData);
+        const { data } = await API.updateMediaData(this.mediaItem.id, formData);
+        this.mediaItem.data = data.data;
 
         this.$emit('close');
         Nova.$toasted.success('Updated');
-      } catch (e) {}
+      } catch (e) {
+        console.error(e);
+      }
       this.loading = false;
     },
 
@@ -125,7 +135,7 @@ export default {
     },
 
     createField(attribute, name) {
-      const hasLocales = !!this.locales && !!Object.keys(this.locales).length;
+      const hasLocales = !!this.locales && this.locales.en !== 'mediaHubHidden';
 
       let value = '';
       if (!hasLocales) {
@@ -164,7 +174,14 @@ export default {
     },
 
     locales() {
-      return Nova.appConfig.novaMediaHub.locales || { en: 'hidden' };
+      return Nova.appConfig.novaMediaHub.locales || { en: 'mediaHubHidden' };
+    },
+
+    fileSize() {
+      if (!this.mediaItem) return '';
+
+      const sizeInKb = this.mediaItem.size / 1000;
+      return Number(Math.round(sizeInKb + 'e' + 2) + 'e-' + 2) + ' kb';
     },
   },
 };

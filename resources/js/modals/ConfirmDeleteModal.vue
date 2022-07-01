@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="show" role="alertdialog" id="o1-nmh-confirm-delete-modal">
+  <Modal :show="show" role="alertdialog" id="o1-nmh-confirm-delete-modal" @close-via-escape="$emit('close')">
     <div class="o1-bg-white dark:o1-bg-gray-800 o1-rounded-lg o1-shadow-lg o1-overflow-hidden" style="width: 460px">
       <ModalHeader v-text="__('Delete File')" />
 

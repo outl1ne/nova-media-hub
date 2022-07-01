@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="w-full" class="o1-px-8">
+  <Modal :show="show" @close-via-escape="closeViaEscape" role="alertdialog" maxWidth="w-full" class="o1-px-8">
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
         <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">
@@ -95,7 +95,8 @@
       id="media-choose-modal-ctx-menu"
       :showEvent="ctxShowEvent"
       :options="ctxOptions"
-      @close="ctxShowEvent = void 0"
+      @showModal="ctxShowingModal = true"
+      @hideModal="ctxShowingModal = false"
       :mediaItem="ctxMediaItem"
       @optionClick="contextOptionClick"
     />
@@ -128,6 +129,7 @@ export default {
     ctxOptions: [],
     ctxMediaItem: void 0,
     ctxShowEvent: void 0,
+    ctxShowingModal: false,
   }),
 
   async mounted() {
@@ -239,6 +241,13 @@ export default {
     async switchToPage(page) {
       await this.goToMediaPage(page);
       Nova.$emit('resources-loaded');
+    },
+
+    closeViaEscape() {
+      // Close only if context isn't showing anything
+      if (!this.ctxShowingModal && !this.showConfirmDeleteModal) {
+        this.$emit('close');
+      }
     },
   },
 

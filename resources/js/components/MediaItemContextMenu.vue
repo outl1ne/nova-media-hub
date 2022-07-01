@@ -8,7 +8,7 @@
     />
 
     <!-- View media modal -->
-    <MediaViewModal :show="showMediaViewModal" :mediaItem="mediaItem" @close="showMediaViewModal = false" />
+    <MediaViewModal :show="showMediaViewModal" :mediaItem="mediaItem" @close="closeViewModal" />
 
     <!-- Fake download button -->
     <a
@@ -32,7 +32,7 @@ export default {
 
   props: ['id', 'showEvent', 'options', 'mediaItem'],
 
-  emits: ['close', 'optionClick'],
+  emits: ['openModal', 'hideModal', 'optionClick'],
 
   data: () => ({
     showMediaViewModal: false,
@@ -52,10 +52,7 @@ export default {
     onOptionClicked(event) {
       const action = event.option.action || void 0;
 
-      if (action === 'view') {
-        this.showMediaViewModal = true;
-        return;
-      }
+      if (action === 'view') return this.openViewModal();
 
       if (action === 'download') {
         this.$nextTick(() => this.$refs.downloadAnchor.click());
@@ -63,6 +60,17 @@ export default {
       }
 
       this.$emit('optionClick', event);
+    },
+
+    openViewModal() {
+      console.info('emitting showModal');
+      this.$emit('showModal');
+      this.showMediaViewModal = true;
+    },
+
+    closeViewModal() {
+      this.$emit('hideModal');
+      this.showMediaViewModal = false;
     },
   },
 };
