@@ -1,6 +1,6 @@
 <template>
   <button
-    class="o1-relative o1-mr-4 o1-bg-slate-50 o1-rounded-sm"
+    class="o1-relative o1-bg-slate-100 o1-rounded-sm"
     :class="[
       { 'o1-ring-2 o1-ring-teal-200 hover:o1-ring-rose-300': selected },
       { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:o1-ring-teal-200': !selected },

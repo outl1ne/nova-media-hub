@@ -47,7 +47,6 @@ public function tools()
 
 ## TODO
 
-- Pagination for Hub view, Choose modal view
 - "User can create collections" config support
 - Index field
 - i18n support

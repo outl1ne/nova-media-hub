@@ -38,10 +38,11 @@
       </div>
 
       <!-- Media list -->
-      <div v-else class="o1-flex o1-flex-col o1-w-full">
+      <div v-else class="o1-flex o1-flex-col o1-w-full o1-overflow-hidden">
         <div
-          class="o1-flex o1-p-4 o1-w-full o1-flex-wrap"
-          :class="{ 'o1-items-center o1-justify-center': !mediaItems.length }"
+          id="media-items-list"
+          class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
+          :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
           <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">No media items found</div>
 
@@ -51,7 +52,6 @@
             :mediaItem="mediaItem"
             @click.stop.prevent="openViewModal(mediaItem)"
             @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
-            class="o1-mb-4"
           />
         </div>
 
@@ -177,7 +177,7 @@ export default {
     },
 
     openViewModal(mediaItem) {
-      this.ctxShowEvent = false;
+      this.ctxShowEvent = void 0;
       this.ctxMediaItem = mediaItem;
       this.showMediaViewModal = true;
     },
@@ -206,6 +206,10 @@ $grey: darken($light-grey, 15%);
 $blue: #007aff;
 $white: #fff;
 $black: #333;
+
+#media-items-list {
+  grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
+}
 
 .vue-simple-context-menu {
   background-color: #f1f5f9;

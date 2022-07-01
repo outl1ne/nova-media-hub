@@ -25,8 +25,6 @@ export default {
       this.mediaResponse = data;
       this.mediaItems = data.data || [];
 
-      console.info(this.mediaResponse.current_page, this.mediaResponse.last_page);
-
       this.loadingMedia = false;
     },
 

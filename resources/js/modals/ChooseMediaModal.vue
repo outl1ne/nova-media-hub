@@ -1,8 +1,8 @@
 <template>
-  <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="w-full" class="p-8">
+  <Modal :show="show" @close-via-escape="$emit('close')" role="alertdialog" maxWidth="w-full" class="o1-px-8">
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
-        <ModalContent class="o1-px-8 o1-flex o1-flex-col">
+        <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
           <div class="o1-flex o1-flex-col o1-py-6 o1-border-b o1-border-slate-200">
             <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Selected media</div>
@@ -16,6 +16,7 @@
                     :selected="true"
                     :size="36"
                     @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
+                    class="o1-mr-4"
                   />
                 </template>
               </Draggable>
@@ -34,17 +35,23 @@
             </div>
 
             <!-- Collection media -->
-            <div class="o1-flex o1-flex-col o1-py-6">
+            <div class="o1-flex o1-flex-col o1-pt-6 o1-w-full">
               <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Choose media</div>
-              <div class="o1-flex o1-flex-wrap" v-show="!!filteredMediaItems.length">
-                <MediaItem
-                  v-for="mediaItem in filteredMediaItems"
-                  :key="'media-' + mediaItem.id"
-                  :mediaItem="mediaItem"
-                  @click="toggleMediaSelection(mediaItem)"
-                  @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
-                  class="o1-mb-4"
-                />
+              <div class="o1-w-full">
+                <div
+                  id="media-items-list"
+                  class="o1-w-full o1-grid o1-gap-4 o1-justify-items-center"
+                  v-show="!!filteredMediaItems.length"
+                >
+                  <MediaItem
+                    v-for="mediaItem in filteredMediaItems"
+                    :key="'media-' + mediaItem.id"
+                    :mediaItem="mediaItem"
+                    @click="toggleMediaSelection(mediaItem)"
+                    @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
+                    class="o1-mb-4"
+                  />
+                </div>
               </div>
 
               <div v-show="allCollectionItemsSelected" class="o1-text-slate-400">
@@ -54,6 +61,14 @@
               <div v-show="!allCollectionItemsSelected && !mediaItems.length" class="o1-text-slate-400">
                 No media items found
               </div>
+
+              <PaginationLinks
+                v-if="!!filteredMediaItems.length"
+                class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 o1-border-l"
+                :page="mediaResponse.current_page"
+                :pages="mediaResponse.last_page"
+                @page="switchToPage"
+              />
             </div>
           </div>
         </ModalContent>
@@ -74,25 +89,15 @@
 
     <MediaUploadModal :activeCollection="collection" :show="showMediaUploadModal" @close="handleUploadModalClose" />
 
-    <MediaViewModal :show="showMediaViewModal" :mediaItem="targetMediaItem" @close="showMediaViewModal = false" />
+    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
 
-    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="targetMediaItem" @close="handleDeleteModalClose" />
-
-    <VueSimpleContextMenu
-      elementId="mediaItemContextMenuChooseModal"
-      :options="contextMenuOptions"
-      ref="vueSimpleContextMenu"
-      @option-clicked="onMediaItemContextMenuClick"
-    />
-
-    <!-- Fake download button -->
-    <a
-      :href="targetMediaItem && targetMediaItem.url"
-      download
-      ref="downloadAnchor"
-      target="_BLANK"
-      rel="noopener noreferrer"
-      class="o1-hidden"
+    <MediaItemContextMenu
+      id="media-choose-modal-ctx-menu"
+      :showEvent="ctxShowEvent"
+      :options="ctxOptions"
+      @close="ctxShowEvent = void 0"
+      :mediaItem="ctxMediaItem"
+      @optionClick="contextOptionClick"
     />
   </Modal>
 </template>
@@ -100,15 +105,15 @@
 <script>
 import Draggable from 'vuedraggable';
 import MediaItem from '../components/MediaItem';
-import MediaViewModal from '../modals/MediaViewModal';
 import MediaUploadModal from '../modals/MediaUploadModal';
+import PaginationLinks from '../components/PaginationLinks';
 import HandlesMediaLists from '../mixins/HandlesMediaLists';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
-import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
+import MediaItemContextMenu from '../components/MediaItemContextMenu';
 
 export default {
   mixins: [HandlesMediaLists],
-  components: { Draggable, MediaItem, MediaUploadModal, MediaViewModal, ConfirmDeleteModal, VueSimpleContextMenu },
+  components: { Draggable, MediaItem, MediaUploadModal, ConfirmDeleteModal, MediaItemContextMenu, PaginationLinks },
 
   emits: ['close', 'confirm'],
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
@@ -118,11 +123,11 @@ export default {
     selectedMediaItems: [],
 
     showMediaUploadModal: false,
-    showMediaViewModal: false,
     showConfirmDeleteModal: false,
 
-    targetMediaItem: void 0,
-    contextMenuOptions: [],
+    ctxOptions: [],
+    ctxMediaItem: void 0,
+    ctxShowEvent: void 0,
   }),
 
   async mounted() {
@@ -148,6 +153,7 @@ export default {
     },
 
     async collection(newValue) {
+      this.currentPage = 1;
       await this.getMedia(newValue);
     },
   },
@@ -180,7 +186,8 @@ export default {
     },
 
     openContextMenuFromSelected(event, mediaItem) {
-      this.contextMenuOptions = [
+      this.ctxMediaItem = mediaItem;
+      this.ctxOptions = [
         { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
         { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
         { name: 'Open collection', action: 'open-collection', class: 'o1-text-slate-600' },
@@ -189,58 +196,49 @@ export default {
         { name: 'Deselect others', action: 'deselect-others', class: 'o1-text-rose-600' },
       ];
 
-      this.$nextTick(() => {
-        this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
-      });
+      this.$nextTick(() => (this.ctxShowEvent = event));
     },
 
     openContextMenuFromChoose(event, mediaItem) {
-      this.contextMenuOptions = [
+      this.ctxMediaItem = mediaItem;
+      this.ctxOptions = [
         { name: 'Select', action: 'select', class: 'o1-text-slate-600' },
         { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
         { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
         { name: 'Delete', action: 'delete', class: 'o1-text-rose-600' },
       ];
 
-      this.$nextTick(() => {
-        this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
-      });
+      this.$nextTick(() => (this.ctxShowEvent = event));
     },
 
-    onMediaItemContextMenuClick(event) {
+    contextOptionClick(event) {
       const action = event.option.action || void 0;
-      this.targetMediaItem = event.item;
-
-      if (action === 'view') {
-        this.showMediaViewModal = true;
-      }
-
-      if (action === 'download') {
-        this.$nextTick(() => {
-          this.$refs.downloadAnchor.click();
-        });
-      }
 
       if (action === 'delete') {
         this.showConfirmDeleteModal = true;
       }
 
       if (action === 'select' || action === 'deselect') {
-        this.toggleMediaSelection(this.targetMediaItem);
+        this.toggleMediaSelection(this.ctxMediaItem);
       }
 
       if (action === 'open-collection') {
-        this.collection = this.targetMediaItem.collection_name;
+        this.collection = this.ctxMediaItem.collection_name;
       }
 
       if (action === 'deselect-others') {
-        this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id === this.targetMediaItem.id);
+        this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id === this.ctxMediaItem.id);
       }
     },
 
     handleDeleteModalClose(update = false) {
       this.showConfirmDeleteModal = false;
       if (update) this.getMedia(this.collection);
+    },
+
+    async switchToPage(page) {
+      await this.goToMediaPage(page);
+      Nova.$emit('resources-loaded');
     },
   },
 
