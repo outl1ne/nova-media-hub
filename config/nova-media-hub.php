@@ -22,7 +22,7 @@ return [
     'path_prefix' => 'media',
 
     // File size upper limit
-    'max_uploaded_file_size_in_kb' => 3000,
+    'max_uploaded_file_size_in_kb' => 15000,
 
     // Job queue configuration
     'original_image_manipulations_job_queue' => null,

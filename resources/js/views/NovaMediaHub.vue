@@ -26,7 +26,7 @@
             :key="collectionName"
             :href="`/${$page.props.basePath}/${collectionName}`"
             class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100"
-            :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === selectedCollection }"
+            :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }"
           >
             {{ collectionName }}
           </Link>
@@ -38,100 +38,95 @@
       </div>
 
       <!-- Media list -->
-      <div
-        v-else
-        class="o1-flex o1-p-4 o1-w-full o1-flex-wrap"
-        :class="{ 'o1-items-center o1-justify-center': !mediaItems.length }"
-      >
-        <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">No media items found</div>
+      <div v-else class="o1-flex o1-flex-col o1-w-full">
+        <div
+          class="o1-flex o1-p-4 o1-w-full o1-flex-wrap"
+          :class="{ 'o1-items-center o1-justify-center': !mediaItems.length }"
+        >
+          <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">No media items found</div>
 
-        <MediaItem
-          v-for="mediaItem in mediaItems"
-          :key="mediaItem.id"
-          :mediaItem="mediaItem"
-          @click.stop.prevent="openViewModal(mediaItem)"
-          @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
-          class="o1-mb-4"
+          <MediaItem
+            v-for="mediaItem in mediaItems"
+            :key="mediaItem.id"
+            :mediaItem="mediaItem"
+            @click.stop.prevent="openViewModal(mediaItem)"
+            @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
+            class="o1-mb-4"
+          />
+        </div>
+
+        <PaginationLinks
+          class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200"
+          :page="mediaResponse.current_page"
+          :pages="mediaResponse.last_page"
+          @page="switchToPage"
         />
       </div>
     </div>
 
-    <!-- Fake download button -->
-    <a
-      :href="targetMediaItem && targetMediaItem.url"
-      download
-      ref="downloadAnchor"
-      target="_BLANK"
-      rel="noopener noreferrer"
-      class="o1-hidden"
+    <MediaViewModal :show="showMediaViewModal" :mediaItem="ctxMediaItem" @close="showMediaViewModal = false" />
+
+    <MediaUploadModal :show="showMediaUploadModal" @close="closeMediaUploadModal" :active-collection="collection" />
+
+    <MediaItemContextMenu
+      id="media-hub-ctx-menu"
+      :showEvent="ctxShowEvent"
+      :options="ctxOptions"
+      @close="ctxShowEvent = void 0"
+      :mediaItem="ctxMediaItem"
+      @optionClick="contextOptionClick"
     />
 
-    <MediaUploadModal
-      :show="showMediaUploadModal"
-      @close="closeMediaUploadModal"
-      :active-collection="selectedCollection"
-    />
-
-    <MediaViewModal :show="showMediaViewModal" :mediaItem="targetMediaItem" @close="showMediaViewModal = false" />
-
-    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="targetMediaItem" @close="handleDeleteModalClose" />
+    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
 
     <MoveToCollectionModal
       :show="showMoveCollectionModal"
-      :mediaItem="targetMediaItem"
+      :mediaItem="ctxMediaItem"
       @close="handleMoveCollectionModalClose"
-    />
-
-    <VueSimpleContextMenu
-      elementId="mediaItemContextMenu"
-      :options="contextMenuOptions"
-      ref="vueSimpleContextMenu"
-      @option-clicked="onMediaItemContextMenuClick"
     />
   </LoadingView>
 </template>
 
 <script>
-import API from '../api';
 import MediaItem from '../components/MediaItem';
 import MediaViewModal from '../modals/MediaViewModal';
 import MediaUploadModal from '../modals/MediaUploadModal';
+import HandlesMediaLists from '../mixins/HandlesMediaLists';
+import PaginationLinks from '../components/PaginationLinks';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MoveToCollectionModal from '../modals/MoveToCollectionModal';
-import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
+import MediaItemContextMenu from '../components/MediaItemContextMenu';
 
 export default {
+  mixins: [HandlesMediaLists],
+
   components: {
-    MediaUploadModal,
-    MoveToCollectionModal,
     MediaItem,
-    VueSimpleContextMenu,
     MediaViewModal,
+    PaginationLinks,
+    MediaUploadModal,
     ConfirmDeleteModal,
+    MediaItemContextMenu,
+    MoveToCollectionModal,
   },
 
   data: () => ({
     loading: true,
-    mediaLoading: false,
 
-    selectedCollection: void 0,
-    collections: [],
-    mediaItems: [],
-    currentPage: 1,
+    ctxOptions: [],
+    ctxShowEvent: false,
+    ctxMediaItem: void 0,
 
     showMediaViewModal: false,
     showMediaUploadModal: false,
     showConfirmDeleteModal: false,
     showMoveCollectionModal: false,
-
-    contextMenuOptions: [],
-    targetMediaItem: void 0,
   }),
 
   async created() {
-    this.selectedCollection = this.$page.props.collectionId || 'default';
+    this.collection = this.$page.props.collectionId || 'default';
 
-    this.contextMenuOptions = [
+    this.ctxOptions = [
       { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
       { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
       { name: 'Move to collection', action: 'move-collection', class: 'o1-text-slate-600' },
@@ -148,31 +143,15 @@ export default {
   },
 
   methods: {
-    async getCollections() {
-      const { data } = await API.getCollections();
-      this.collections = data || [];
-
-      if (!this.selectedCollection) {
-        this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
-      }
-    },
-
-    async getMedia() {
-      this.mediaLoading = true;
-      const { data } = await API.getMedia(this.selectedCollection);
-      this.mediaItems = data.data;
-      this.mediaLoading = false;
-    },
-
     async selectCollection(collectionName) {
-      this.selectedCollection = collectionName;
+      this.collection = collectionName;
       await this.getMedia();
     },
 
     async closeMediaUploadModal(updateData, collectionName) {
       if (updateData) {
         await this.getCollections();
-        this.selectedCollection = collectionName;
+        this.collection = collectionName;
         await this.getMedia();
       }
       this.showMediaUploadModal = false;
@@ -180,22 +159,13 @@ export default {
 
     // Media item handlers
     openContextMenu(event, mediaItem) {
-      this.$refs.vueSimpleContextMenu.showMenu(event, mediaItem);
+      this.ctxShowEvent = event;
+      this.ctxMediaItem = mediaItem;
     },
 
-    onMediaItemContextMenuClick(event) {
+    contextOptionClick(event) {
       const action = event.option.action || void 0;
-      this.targetMediaItem = event.item;
-
-      if (action === 'view') {
-        this.showMediaViewModal = true;
-      }
-
-      if (action === 'download') {
-        this.$nextTick(() => {
-          this.$refs.downloadAnchor.click();
-        });
-      }
+      this.ctxMediaItem = event.item;
 
       if (action === 'delete') {
         this.showConfirmDeleteModal = true;
@@ -207,8 +177,8 @@ export default {
     },
 
     openViewModal(mediaItem) {
-      this.$refs.vueSimpleContextMenu.hideContextMenu();
-      this.targetMediaItem = mediaItem;
+      this.ctxShowEvent = false;
+      this.ctxMediaItem = mediaItem;
       this.showMediaViewModal = true;
     },
 
@@ -220,6 +190,11 @@ export default {
     handleMoveCollectionModalClose(update = false) {
       this.showMoveCollectionModal = false;
       if (update) this.getMedia();
+    },
+
+    async switchToPage(page) {
+      await this.goToMediaPage(page);
+      Nova.$emit('resources-loaded');
     },
   },
 };

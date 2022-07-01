@@ -54,11 +54,15 @@ export default {
 
       if (action === 'view') {
         this.showMediaViewModal = true;
+        return;
       }
 
       if (action === 'download') {
         this.$nextTick(() => this.$refs.downloadAnchor.click());
+        return;
       }
+
+      this.$emit('optionClick', event);
     },
   },
 };

@@ -39,7 +39,7 @@ class MediaHubController extends Controller
 
         $mediaQuery->orderBy('created_at', 'DESC');
 
-        return response()->json($mediaQuery->paginate(), 200);
+        return response()->json($mediaQuery->paginate(18), 200);
     }
 
     public function uploadMediaToCollection(Request $request)

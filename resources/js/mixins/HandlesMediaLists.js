@@ -7,15 +7,26 @@ export default {
     collections: [],
     mediaItems: [],
 
+    currentPage: 1,
+    mediaResponse: {},
+
     loadingCollections: false,
     loadingMedia: false,
   }),
 
   methods: {
-    async getMedia(collection = void 0) {
+    async getMedia(collection = void 0, pageNr = void 0) {
       this.loadingMedia = true;
-      const { data } = await API.getMedia(collection);
+
+      if (!collection) collection = this.collection;
+      if (!pageNr) pageNr = this.currentPage;
+
+      const { data } = await API.getMedia(collection, pageNr);
+      this.mediaResponse = data;
       this.mediaItems = data.data || [];
+
+      console.info(this.mediaResponse.current_page, this.mediaResponse.last_page);
+
       this.loadingMedia = false;
     },
 
@@ -28,6 +39,11 @@ export default {
         this.collection = this.collections.length ? this.collections[0] : void 0;
       }
       this.loadingCollections = false;
+    },
+
+    async goToMediaPage(pageNr) {
+      this.currentPage = pageNr;
+      await this.getMedia();
     },
   },
 };
