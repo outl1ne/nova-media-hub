@@ -49,6 +49,7 @@ public function tools()
 
 - Add 'collection()' to select default collection in FormField
 - Index field
+- Style context menu to look more native
 - i18n support
 - Thumbnails for Nova (?)
 
