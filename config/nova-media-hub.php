@@ -21,6 +21,11 @@ return [
     // Path configuration
     'path_prefix' => 'media',
 
+    // Locales (for translatable alt texts and titles)
+    // Set to null if you don't want translatability
+    // ['et' => 'Estonian', 'en' => 'English']
+    'locales' => null,
+
     // File size upper limit
     'max_uploaded_file_size_in_kb' => 15000,
 

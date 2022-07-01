@@ -88,8 +88,30 @@ class MediaHubController extends Controller
 
         $media = MediaHub::getMediaModel()::findOrFail($mediaId);
 
-
         $media->collection_name = $collectionName;
+        $media->save();
+
+        return response()->json($media, 200);
+    }
+
+    public function updateMediaData(Request $request, $mediaId)
+    {
+        $media = MediaHub::getMediaModel()::findOrFail($mediaId);
+        $locales = MediaHub::getLocales();
+
+        // No translations, we hardcoded frontend to always send data as 'en'
+        if (empty($locales)) {
+            $mediaData = $media->data;
+            $mediaData['alt'] = $request->input('alt.en') ?? null;
+            $mediaData['title'] = $request->input('title.en') ?? null;
+            $media->data = $mediaData;
+        } else {
+            $mediaData = $media->data;
+            $mediaData['alt'] = $request->input('alt') ?? null;
+            $mediaData['title'] = $request->input('title') ?? null;
+            $media->data = $mediaData;
+        }
+
         $media->save();
 
         return response()->json($media, 200);

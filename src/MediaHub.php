@@ -22,6 +22,7 @@ class MediaHub extends Tool
             'novaMediaHub' => [
                 'basePath' => MediaHub::getBasePath(),
                 'canCreateCollections' => MediaHub::userCanCreateCollections(),
+                'locales' => MediaHub::getLocales(),
             ],
         ]);
     }
@@ -88,6 +89,11 @@ class MediaHub extends Tool
         $ogRules = config('nova-media-hub.original_image_manipulations');
         if (!$ogRules['optimize']) return false;
         return $ogRules;
+    }
+
+    public static function getLocales()
+    {
+        return config('nova-media-hub.locales');
     }
 
     public static function getDefaultCollections(): array

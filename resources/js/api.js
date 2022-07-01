@@ -22,4 +22,8 @@ export default {
   async moveMediaToCollection(mediaId, collection) {
     return Nova.request().post(`${PREFIX}/media/${mediaId}/move`, { collection });
   },
+
+  async updateMediaData(mediaId, formData) {
+    return Nova.request().post(`${PREFIX}/media/${mediaId}/data`, formData);
+  },
 };
