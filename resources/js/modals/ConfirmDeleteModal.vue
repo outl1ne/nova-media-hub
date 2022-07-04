@@ -50,6 +50,8 @@ export default {
       await API.deleteMedia(this.mediaItem.id);
 
       this.$emit('close', true);
+
+      this.loading = false;
     },
   },
 };
