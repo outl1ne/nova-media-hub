@@ -8,18 +8,20 @@
   >
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
-        <ModalHeader class="flex items-center">Upload media</ModalHeader>
+        <ModalHeader class="flex items-center">{{ __('novaMediaHub.uploadMediaTitle') }}</ModalHeader>
 
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
-          <span>Select collection to add media to:</span>
+          <span>{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
           <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
-            <option value="media-hub-new-collection" v-if="canCreateCollections">Create new collection</option>
+            <option value="media-hub-new-collection" v-if="canCreateCollections">
+              {{ __('novaMediaHub.uploadModalCreateNewOption') }}
+            </option>
             <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
           </SelectControl>
 
           <template v-if="newCollection">
-            <span class="mt-6"> Enter new collection name: </span>
+            <span class="mt-6">{{ __('novaMediaHub.enterNewCollectionName') }}</span>
             <input
               type="text"
               name="collection_name"
@@ -43,10 +45,10 @@
       <ModalFooter>
         <div class="ml-auto">
           <LoadingButton @click.prevent="$emit('close')" class="o1-mr-4">
-            {{ __('Close') }}
+            {{ __('novaMediaHub.closeButton') }}
           </LoadingButton>
 
-          <LoadingButton @click.prevent="uploadFiles">Upload files</LoadingButton>
+          <LoadingButton @click.prevent="uploadFiles">{{ __('novaMediaHub.uploadFilesButton') }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>

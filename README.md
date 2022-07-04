@@ -47,9 +47,7 @@ public function tools()
 
 ## TODO
 
-- Index field
-- i18n support
-- Thumbnails for Nova (?)
+- Docs
 
 ## Usage
 

@@ -13,11 +13,14 @@
           <div class="o1-flex">
             <!-- File info and media fields -->
             <div class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full">
-              <MediaViewModalInfoListItem label="ID" :value="mediaItem.id" />
-              <MediaViewModalInfoListItem label="File name" :value="mediaItem.file_name" />
-              <MediaViewModalInfoListItem label="File size" :value="fileSize" />
-              <MediaViewModalInfoListItem label="Mime type" :value="mediaItem.mime_type" />
-              <MediaViewModalInfoListItem label="Collection" :value="mediaItem.collection_name" />
+              <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
+              <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
+              <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
+              <MediaViewModalInfoListItem :label="__('novaMediaHub.mimeTypeTitle')" :value="mediaItem.mime_type" />
+              <MediaViewModalInfoListItem
+                :label="__('novaMediaHub.collectionTitle')"
+                :value="mediaItem.collection_name"
+              />
 
               <div class="o1-flex o1-flex-col" v-if="show">
                 <form-translatable-field
@@ -63,7 +66,7 @@
             {{ __('Close') }}
           </CancelButton>
 
-          <LoadingButton @click.prevent="saveAndExit">Save and exit</LoadingButton>
+          <LoadingButton @click.prevent="saveAndExit">{{ __('novaMediaHub.saveAndClose') }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -98,7 +101,10 @@ export default {
       if (newValue) {
         await this.getCollections();
         this.selectedCollection = this.activeCollection;
-        this.dataFields = [this.createField('alt', 'Alt text'), this.createField('title', 'Title')];
+        this.dataFields = [
+          this.createField('alt', this.__('novaMediaHub.altTextTitle')),
+          this.createField('title', this.__('novaMediaHub.titleTextTitle')),
+        ];
       } else {
         this.dataFields = [];
       }

@@ -4,7 +4,9 @@
 
     <!-- Header -->
     <div class="o1-flex o1-mb-4">
-      <LoadingButton class="o1-ml-auto" @click="showMediaUploadModal = true">Upload media</LoadingButton>
+      <LoadingButton class="o1-ml-auto" @click="showMediaUploadModal = true">{{
+        __('novaMediaHub.uploadMediaButton')
+      }}</LoadingButton>
     </div>
 
     <!-- Content wrapper -->
@@ -14,11 +16,13 @@
     >
       <!-- Collections list -->
       <div class="o1-flex o1-flex-col o1-border-r o1-border-slate-200" style="min-width: 160px">
-        <div class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center">Collections</div>
+        <div class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center">
+          {{ __('novaMediaHub.collectionsTitle') }}
+        </div>
 
         <div class="o1-flex o1-flex-col">
           <div v-if="!collections.length" class="o1-text-sm o1-text-slate-400 o1-p-4 o1-whitespace-nowrap">
-            No collections found
+            {{ __('novaMediaHub.noCollectionsFoundText') }}
           </div>
 
           <Link
@@ -44,7 +48,9 @@
           class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
           :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
-          <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">No media items found</div>
+          <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
+            {{ __('novaMediaHub.noMediaItemsFoundText') }}
+          </div>
 
           <MediaItem
             v-for="mediaItem in mediaItems"
@@ -127,11 +133,11 @@ export default {
     this.collection = this.$page.props.collectionId || 'default';
 
     this.ctxOptions = [
-      { name: 'View / Edit', action: 'view' },
-      { name: 'Download', action: 'download' },
-      { name: 'Move to collection', action: 'move-collection' },
+      { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
+      { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
+      { name: this.__('novaMediaHub.contextMoveCollection'), action: 'move-collection' },
       { type: 'divider' },
-      { name: 'Delete', action: 'delete', class: 'warning' },
+      { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
     ];
   },
 

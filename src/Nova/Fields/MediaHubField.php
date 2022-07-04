@@ -21,6 +21,9 @@ class MediaHubField extends Field
             'user_can_create_collections' => MediaHub::userCanCreateCollections(),
             'defaultCollectionName' => $defaultCollectionName,
         ]);
+
+        // TODO Add index field
+        $this->hideFromIndex();
     }
 
     public function defaultCollection($defaultCollectionName = null)

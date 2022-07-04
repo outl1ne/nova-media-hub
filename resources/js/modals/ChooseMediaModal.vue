@@ -5,7 +5,9 @@
         <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
           <div class="o1-flex o1-flex-col o1-py-6 o1-border-b o1-border-slate-200">
-            <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Selected media</div>
+            <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
+              {{ __('novaMediaHub.selectedMediaTitle') }}
+            </div>
             <div class="o1-flex o1-flex-wrap" v-if="!!selectedMediaItems.length">
               <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-wrap">
                 <template #item="{ element: mediaItem }">
@@ -21,13 +23,15 @@
                 </template>
               </Draggable>
             </div>
-            <div v-else class="o1-text-slate-400">No media items selected</div>
+            <div v-else class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
           </div>
 
           <div class="o1-flex">
             <!-- Choose collection -->
             <div class="o1-flex o1-flex-col o1-py-6 o1-pr-8 o1-w-full o1-max-w-xs">
-              <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Choose collection</div>
+              <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
+                {{ __('novaMediaHub.chooseCollectionTitle') }}
+              </div>
               <SelectControl v-model:selected="collection" @change="c => (collection = c)">
                 <option value="">{{ '> Show all' }}</option>
                 <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
@@ -36,7 +40,9 @@
 
             <!-- Collection media -->
             <div class="o1-flex o1-flex-col o1-pt-6 o1-w-full">
-              <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">Choose media</div>
+              <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
+                {{ __('novaMediaHub.chooseMediaTitle') }}
+              </div>
               <div class="o1-w-full">
                 <div
                   id="media-items-list"
@@ -55,11 +61,11 @@
               </div>
 
               <div v-show="allCollectionItemsSelected" class="o1-text-slate-400">
-                All media items from collection selected
+                {{ __('novaMediaHub.allItemsFromCollectionSelected') }}
               </div>
 
               <div v-show="!allCollectionItemsSelected && !mediaItems.length" class="o1-text-slate-400">
-                No media items found
+                {{ __('novaMediaHub.noMediaItemsFoundText') }}
               </div>
 
               <PaginationLinks
@@ -77,12 +83,14 @@
       <ModalFooter>
         <div class="ml-auto">
           <CancelButton @click.prevent="$emit('close')" class="o1-mr-4">
-            {{ __('Close') }}
+            {{ __('novaMediaHub.closeButton') }}
           </CancelButton>
 
-          <LoadingButton @click.prevent="showMediaUploadModal = true" class="o1-mr-4">Upload media</LoadingButton>
+          <LoadingButton @click.prevent="showMediaUploadModal = true" class="o1-mr-4">{{
+            __('novaMediaHub.uploadMediaButton')
+          }}</LoadingButton>
 
-          <LoadingButton @click.prevent="confirm">Confirm</LoadingButton>
+          <LoadingButton @click.prevent="confirm">{{ __('novaMediaHub.confirmButton') }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -190,12 +198,12 @@ export default {
     openContextMenuFromSelected(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxOptions = [
-        { name: 'View / Edit', action: 'view' },
-        { name: 'Download', action: 'download' },
-        { name: 'Open collection', action: 'open-collection' },
+        { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
+        { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
+        { name: this.__('novaMediaHub.contextOpenCollection'), action: 'open-collection' },
         { type: 'divider' },
-        { name: 'Deselect', action: 'deselect', class: 'warning' },
-        { name: 'Deselect others', action: 'deselect-others', class: 'warning' },
+        { name: this.__('novaMediaHub.contextDeselect'), action: 'deselect', class: 'warning' },
+        { name: this.__('novaMediaHub.contextDeselectOthers'), action: 'deselect-others', class: 'warning' },
       ];
 
       this.$nextTick(() => (this.ctxShowEvent = event));
@@ -204,11 +212,11 @@ export default {
     openContextMenuFromChoose(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxOptions = [
-        { name: 'Select', action: 'select' },
-        { name: 'View / Edit', action: 'view' },
-        { name: 'Download', action: 'download' },
+        { name: this.__('novaMediaHub.contextSelect'), action: 'select' },
+        { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
+        { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
         { type: 'divider' },
-        { name: 'Delete', action: 'delete', class: 'warning' },
+        { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
       ];
 
       this.$nextTick(() => (this.ctxShowEvent = event));
