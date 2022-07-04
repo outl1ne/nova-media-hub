@@ -23,6 +23,11 @@ class MediaHubField extends Field
         ]);
     }
 
+    public function defaultCollection($defaultCollectionName = null)
+    {
+        return $this->withMeta(['defaultCollectionName' => $defaultCollectionName]);
+    }
+
     public function multiple($multiple = true)
     {
         return $this->withMeta(['multiple' => $multiple]);

@@ -120,7 +120,6 @@ export default {
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
 
   data: () => ({
-    collectionName: '',
     selectedMediaItems: [],
 
     showMediaUploadModal: false,
@@ -133,6 +132,7 @@ export default {
   }),
 
   async mounted() {
+    if (this.field.defaultCollectionName) this.collection = this.field.defaultCollectionName;
     await this.getCollections();
     this.$nextTick(() => (this.loading = false));
   },
