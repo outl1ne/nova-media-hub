@@ -120,4 +120,9 @@ class MediaHub extends Tool
     {
         return config('nova-media-hub.image_conversions_job_queue', config('queue.default'));
     }
+
+    public static function getThumbnailConversionName()
+    {
+        return config('nova-media-hub.thumbnail_conversion_name', null);
+    }
 }

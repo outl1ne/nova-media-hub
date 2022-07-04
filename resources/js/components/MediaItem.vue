@@ -10,7 +10,7 @@
   >
     <img
       v-if="type === 'image'"
-      :src="mediaItem.url"
+      :src="mediaItem.thumbnail_url || mediaItem.url"
       :alt="mediaItem.file_name"
       class="o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-h-full"
     />

@@ -38,7 +38,14 @@ return [
         'default',
     ],
 
+    // Defines whether user can create collections in the "Upload media" modal
+    // If set to false, the user can only use the collections defined in the config
     'user_can_create_collections' => true,
+
+    // Thumbnail conversion name
+    // If you want Nova to use thumbnails instead of full size files
+    // when dispalying media, define the name of the conversion here
+    'thumbnail_conversion_name' => null,
 
     // -- Conversions
     // 'collection_name' => ['conversion_name' => [options]]

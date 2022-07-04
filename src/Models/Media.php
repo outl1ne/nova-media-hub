@@ -16,7 +16,7 @@ class Media extends Model
         'optimized_at' => 'datetime',
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'thumbnail_url'];
 
     public function __construct(array $attributes = [])
     {
@@ -30,8 +30,27 @@ class Media extends Model
         return $pathMaker->getPath($this) . $this->file_name;
     }
 
+    public function getConversionsPathAttribute()
+    {
+        $pathMaker = MediaHub::getPathMaker();
+        return $pathMaker->getConversionsPath($this);
+    }
+
     public function getUrlAttribute()
     {
         return Storage::disk($this->disk)->url($this->path);
+    }
+
+    public function getThumbnailUrlAttribute()
+    {
+        $thumbnailConversionName = MediaHub::getThumbnailConversionName();
+        if (!$thumbnailConversionName) return null;
+
+        $thumbnailName = $this->conversions[$thumbnailConversionName] ?? null;
+        if (!$thumbnailName) return null;
+
+
+
+        return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $thumbnailName);
     }
 }
