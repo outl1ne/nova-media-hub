@@ -190,12 +190,12 @@ export default {
     openContextMenuFromSelected(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxOptions = [
-        { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
-        { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
-        { name: 'Open collection', action: 'open-collection', class: 'o1-text-slate-600' },
+        { name: 'View / Edit', action: 'view' },
+        { name: 'Download', action: 'download' },
+        { name: 'Open collection', action: 'open-collection' },
         { type: 'divider' },
-        { name: 'Deselect', action: 'deselect', class: 'o1-text-rose-600' },
-        { name: 'Deselect others', action: 'deselect-others', class: 'o1-text-rose-600' },
+        { name: 'Deselect', action: 'deselect', class: 'warning' },
+        { name: 'Deselect others', action: 'deselect-others', class: 'warning' },
       ];
 
       this.$nextTick(() => (this.ctxShowEvent = event));
@@ -204,10 +204,11 @@ export default {
     openContextMenuFromChoose(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxOptions = [
-        { name: 'Select', action: 'select', class: 'o1-text-slate-600' },
-        { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
-        { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
-        { name: 'Delete', action: 'delete', class: 'o1-text-rose-600' },
+        { name: 'Select', action: 'select' },
+        { name: 'View / Edit', action: 'view' },
+        { name: 'Download', action: 'download' },
+        { type: 'divider' },
+        { name: 'Delete', action: 'delete', class: 'warning' },
       ];
 
       this.$nextTick(() => (this.ctxShowEvent = event));

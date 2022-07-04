@@ -57,8 +57,8 @@ export default {
 
   created() {
     this.ctxOptions = [
-      { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
-      { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
+      { name: 'View / Edit', action: 'view' },
+      { name: 'Download', action: 'download' },
     ];
   },
 

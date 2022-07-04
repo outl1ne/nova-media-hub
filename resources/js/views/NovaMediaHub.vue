@@ -127,11 +127,11 @@ export default {
     this.collection = this.$page.props.collectionId || 'default';
 
     this.ctxOptions = [
-      { name: 'View / Edit', action: 'view', class: 'o1-text-slate-600' },
-      { name: 'Download', action: 'download', class: 'o1-text-slate-600' },
-      { name: 'Move to collection', action: 'move-collection', class: 'o1-text-slate-600' },
+      { name: 'View / Edit', action: 'view' },
+      { name: 'Download', action: 'download' },
+      { name: 'Move to collection', action: 'move-collection' },
       { type: 'divider' },
-      { name: 'Delete', action: 'delete', class: 'o1-text-red-500' },
+      { name: 'Delete', action: 'delete', class: 'warning' },
     ];
   },
 
@@ -206,29 +206,23 @@ export default {
 </script>
 
 <style lang="scss">
-$light-grey: #ecf0f1;
-$grey: darken($light-grey, 15%);
-$blue: #007aff;
-$white: #fff;
-$black: #333;
-
 #media-items-list {
   grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
 }
 
 .vue-simple-context-menu {
-  background-color: #f1f5f9;
+  background-color: #fff;
   border-bottom-width: 0px;
   border-radius: 2px;
-  box-shadow: 0 3px 6px 0 rgba($black, 0.2);
+  box-shadow: 0 3px 6px 0 rgba(#000, 0.2);
   display: none;
-  left: 0;
   list-style: none;
   margin: 0;
   padding: 0;
 
   position: fixed;
   top: 0;
+  left: 0;
 
   z-index: 1000000;
 
@@ -237,11 +231,16 @@ $black: #333;
   }
 
   &__item {
+    display: flex;
     align-items: center;
     cursor: pointer;
-    display: flex;
     padding: 5px 15px;
     font-weight: 700;
+    color: #64748b;
+
+    &.warning {
+      color: #f43f5e;
+    }
 
     &:hover {
       background-color: rgba(var(--colors-primary-500), 1);
@@ -251,21 +250,21 @@ $black: #333;
 
   &__divider {
     background-clip: content-box;
-    background-color: #cbd5e1;
+    background-color: #e2e8f0;
     box-sizing: content-box;
-    height: 2px;
-    padding: 4px 0;
+    height: 1px;
+    padding: 2px 0;
     pointer-events: none;
   }
 
   // Have to use the element so we can make use of `first-of-type` and `last-of-type`
   li {
     &:first-of-type {
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
     &:last-of-type {
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
   }
 }
