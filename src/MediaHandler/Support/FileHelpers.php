@@ -38,7 +38,7 @@ class FileHelpers
 
     public static function sanitizeFileName($fileName)
     {
-        return str_replace(['#', '/', '\\', ' '], '-', $fileName);
+        return str_replace(['#', '/', '\\', ' ', '?', '='], '-', $fileName);
     }
 
     // Returns [$fileName, $extension]

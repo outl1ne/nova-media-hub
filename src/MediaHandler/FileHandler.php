@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaMediaHub\MediaHandler;
 
 use Outl1ne\NovaMediaHub\MediaHub;
+use Illuminate\Support\Facades\File;
 use Outl1ne\NovaMediaHub\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
@@ -53,6 +54,7 @@ class FileHandler
         }
 
         if ($file instanceof RemoteFile) {
+            $file->downloadFileToCurrentFilesystem();
             $this->pathToFile = $file->getKey();
             $this->fileName = $file->getFilename();
             return $this;
@@ -106,7 +108,9 @@ class FileHandler
         }
 
         $sanitizedFileName = FileHelpers::sanitizeFileName($this->fileName);
-        [$fileName, $extension] = FileHelpers::splitNameAndExtension($sanitizedFileName);
+        [$fileName, $rawExtension] = FileHelpers::splitNameAndExtension($sanitizedFileName);
+        $extension = File::guessExtension($this->pathToFile) ?? $rawExtension;
+
         $this->fileName = MediaHub::getFileNamer()->formatFileName($fileName, $extension);
 
         $mediaClass = MediaHub::getMediaModel();
@@ -114,8 +118,8 @@ class FileHandler
 
         $media->file_name = $this->fileName;
         $media->collection_name = $this->collectionName;
-        $media->size = filesize($this->pathToFile);
-        $media->mime_type = FileHelpers::getMimeType($this->pathToFile);
+        $media->size = File::size($this->pathToFile);
+        $media->mime_type = File::mimeType($this->pathToFile);
         $media->original_file_hash = FileHelpers::getFileHash($this->pathToFile);
         $media->data = [];
         $media->conversions = [];

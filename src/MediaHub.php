@@ -10,6 +10,7 @@ use Outl1ne\NovaMediaHub\Models\Media;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 
 class MediaHub extends Tool
 {
@@ -32,6 +33,28 @@ class MediaHub extends Tool
         return MenuSection::make(__('novaMediaHub.navigationItemTitle'))
             ->path(self::getBasePath())
             ->icon('photograph');
+    }
+
+    public static function storeMediaFromDisk($filePath, $disk, $collectionName, $targetDisk = '', $targetConversionsDisk = '')
+    {
+        $remoteFile = new RemoteFile($filePath, $disk);
+
+        return FileHandler::fromFile($remoteFile)
+            ->storeOnDisk($targetDisk)
+            ->storeConversionOnDisk($targetConversionsDisk)
+            ->withCollection($collectionName)
+            ->save();
+    }
+
+    public static function storeMediaFromUrl($fileUrl, $collectionName, $targetDisk = '', $targetConversionsDisk = ''): Media
+    {
+        $remoteFile = new RemoteFile($fileUrl);
+
+        return FileHandler::fromFile($remoteFile)
+            ->storeOnDisk($targetDisk)
+            ->storeConversionOnDisk($targetConversionsDisk)
+            ->withCollection($collectionName)
+            ->save();
     }
 
 
