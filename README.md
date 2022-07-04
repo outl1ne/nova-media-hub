@@ -17,10 +17,14 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 - Image optimization and multiple conversions support
 - File naming and path making customization
 - Dark mode support
+- A lot configuration options
+  - See [the configuration file](config/nova-media-hub.php).
 
 ## Screenshots
 
-![Media index view](docs/index.png)
+![Media Hub](docs/media-hub-dark.jpeg)
+
+![Choose media](docs/choose-media-dark.jpeg)
 
 ## Installation
 
