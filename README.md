@@ -1,4 +1,4 @@
-# Nova Media Library
+# Nova Media Hub
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
 [![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
@@ -92,4 +92,4 @@ php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvi
 
 ## License
 
-Nova Media Library is open-sourced software licensed under the [MIT license](LICENSE.md).
+Nova Media Hub is open-sourced software licensed under the [MIT license](LICENSE.md).
