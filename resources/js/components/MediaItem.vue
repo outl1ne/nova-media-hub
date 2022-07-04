@@ -1,9 +1,9 @@
 <template>
   <button
-    class="o1-relative o1-bg-slate-100 o1-rounded-sm"
+    class="o1-relative o1-bg-slate-100 o1-rounded-sm dark:o1-bg-slate-900"
     :class="[
-      { 'o1-ring-2 o1-ring-teal-200 hover:o1-ring-rose-300': selected },
-      { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:o1-ring-teal-200': !selected },
+      { 'o1-ring-2 o1-ring-teal-200 hover:o1-ring-rose-300 dark:o1-ring-teal-800': selected },
+      { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:o1-ring-teal-200 dark:o1-ring-slate-700': !selected },
       sizeClasses,
     ]"
     type="button"

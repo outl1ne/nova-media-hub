@@ -4,7 +4,7 @@
       <slot>
         <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
-          <div class="o1-flex o1-flex-col o1-py-6 o1-border-b o1-border-slate-200">
+          <div class="o1-flex o1-flex-col o1-py-6 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
             <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
               {{ __('novaMediaHub.selectedMediaTitle') }}
             </div>

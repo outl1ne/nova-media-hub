@@ -11,12 +11,17 @@
 
     <!-- Content wrapper -->
     <div
-      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow"
+      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700"
       style="min-height: 500px"
     >
       <!-- Collections list -->
-      <div class="o1-flex o1-flex-col o1-border-r o1-border-slate-200" style="min-width: 160px">
-        <div class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center">
+      <div
+        class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700"
+        style="min-width: 160px"
+      >
+        <div
+          class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-slate-700"
+        >
           {{ __('novaMediaHub.collectionsTitle') }}
         </div>
 
@@ -29,7 +34,7 @@
             v-for="collectionName in collections"
             :key="collectionName"
             :href="`/${basePath}/${collectionName}`"
-            class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100"
+            class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100 dark:o1-border-slate-600 dark:o1-bg-slate-700 dark:hover:o1-bg-slate-800"
             :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }"
           >
             {{ collectionName }}
@@ -62,7 +67,7 @@
         </div>
 
         <PaginationLinks
-          class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200"
+          class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 dark:o1-border-slate-700"
           :page="mediaResponse.current_page"
           :pages="mediaResponse.last_page"
           @page="switchToPage"

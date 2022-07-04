@@ -12,7 +12,9 @@
         <ModalContent class="o1-px-8 o1-flex o1-flex-col">
           <div class="o1-flex">
             <!-- File info and media fields -->
-            <div class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full">
+            <div
+              class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full dark:o1-border-slate-700"
+            >
               <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
               <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
               <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
@@ -39,7 +41,7 @@
             >
               <img
                 v-if="type === 'image'"
-                class="o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0"
+                class="o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0 dark:o1-bg-slate-900 dark:o1-border-slate-700"
                 :src="mediaItem.url"
                 :alt="mediaItem.file_name"
               />

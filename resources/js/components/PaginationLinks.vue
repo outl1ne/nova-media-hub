@@ -39,7 +39,7 @@
         class="border-r border-gray-200 dark:border-gray-700 h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
         :class="{
           'o1-text-teal-500': page !== n,
-          'o1-text-teal-500 o1-bg-teal-50': page === n,
+          'o1-text-teal-500 o1-bg-teal-50 dark:o1-bg-teal-900': page === n,
         }"
         @click.prevent="selectPage(n)"
         :dusk="`page:${n}`"
