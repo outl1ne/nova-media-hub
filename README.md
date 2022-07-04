@@ -16,6 +16,7 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 - Media Hub field for selecting single/multiple media
 - Image optimization and multiple conversions support
 - File naming and path making customization
+- Dark mode support
 
 ## Screenshots
 
