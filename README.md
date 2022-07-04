@@ -12,8 +12,10 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 
 ## Features
 
-- Media management via separate UI
-- Media addition fields
+- Media Hub UI in separate view
+- Media Hub field for selecting single/multiple media
+- Image optimization and multiple conversions support
+- File naming and path making customization
 
 ## Screenshots
 
@@ -45,17 +47,39 @@ public function tools()
 }
 ```
 
-## TODO
-
-- Docs
-
 ## Usage
 
-### Migrate
+### Fields
+
+This package provides a field `MediaHubField` which allows you to select media. This saves the media as a JSON array into the database.
+
+Example usage:
+
+```php
+use Outl1ne\NovaMediaHub\Nova\Fields\MediaHubField;
+
+// ...
+
+MediaHubField::make('Media', 'media')
+  ->defaultCollection('products') // Define the default collection the "Choose media" modal shows
+  ->multiple(), // Define whether multiple media can be selected
+```
 
 ### Configure
 
-### Use fields
+The config file can be published using the following command:
+
+```bash
+php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="config"
+```
+
+## Localization
+
+The translation file(s) can be published by using the following command:
+
+```bash
+php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="translations"
+```
 
 ## Credits
 
