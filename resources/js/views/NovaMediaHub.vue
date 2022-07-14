@@ -210,6 +210,10 @@ export default {
 
   computed: {
     basePath() {
+      if (['', '/'].includes(Nova.appConfig.base)) {
+        return '/' + Nova.appConfig.novaMediaHub.basePath;
+      }
+
       return Nova.appConfig.base + '/' + Nova.appConfig.novaMediaHub.basePath;
     },
   },
