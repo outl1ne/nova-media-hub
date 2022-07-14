@@ -9,7 +9,7 @@ export default {
 
   methods: {
     setInitialValue() {
-      let value = this.field.value;
+      let value = JSON.parse(this.field.value);
       const multiple = this.field.multiple;
 
       if (multiple && Array.isArray(value)) {

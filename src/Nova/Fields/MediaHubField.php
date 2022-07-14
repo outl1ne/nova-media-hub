@@ -41,7 +41,7 @@ class MediaHubField extends Field
         $jsonSerialized = parent::jsonSerialize();
         $jsonSerialized['media'] = [];
 
-        $value = $jsonSerialized['value'];
+        $value = json_decode($jsonSerialized['value'], true);
         if (is_array($value)) {
             $jsonSerialized['media'] = MediaHub::getMediaModel()::findMany($value)->keyBy('id')->toArray();
         } else if (!empty($value)) {
