@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaMediaHub\Nova\Fields;
 
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Outl1ne\NovaMediaHub\MediaHub;
 
 class MediaHubField extends Field
@@ -49,5 +50,18 @@ class MediaHubField extends Field
         }
 
         return $jsonSerialized;
+    }
+
+    protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
+    {
+        if (!$request->exists($requestAttribute)) {
+            return;
+        }
+
+        $value = $request[$requestAttribute];
+
+        $model->{$attribute} = $this->isNullValue($value)
+            ? null
+            : (is_array($value) ? json_encode($value) : $value);
     }
 }

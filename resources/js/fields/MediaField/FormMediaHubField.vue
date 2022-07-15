@@ -108,7 +108,7 @@ export default {
 
   computed: {
     hasValue() {
-      return this.field.multiple ? !!this.value.length : !!this.value;
+      return this.field.multiple ? !!this.value?.length : !!this.value;
     },
   },
 };
