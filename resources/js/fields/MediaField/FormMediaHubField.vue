@@ -89,7 +89,7 @@ export default {
           formData.append(`${this.field.attribute}[]`, mediaItem.id);
         });
       } else if (!!this.value) {
-        formData.append(this.field.attribute, this.value.id);
+        formData.append(this.field.attribute, this.value.id || '');
       } else {
         formData.append(this.field.attribute, '');
       }
