@@ -33,7 +33,7 @@
           <Link
             v-for="collectionName in collections"
             :key="collectionName"
-            :href="`/${basePath}/${collectionName}`"
+            :href="`${basePath}/${collectionName}`"
             class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100 dark:o1-border-slate-600 dark:o1-bg-slate-700 dark:hover:o1-bg-slate-800"
             :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }"
           >
@@ -210,7 +210,13 @@ export default {
 
   computed: {
     basePath() {
-      return Nova.appConfig.novaMediaHub.basePath;
+      const novaRoot = Nova.appConfig.base;
+
+      let basePath = Nova.appConfig.novaMediaHub.basePath || 'media-hub';
+      basePath = basePath.replace(/^\/|\/$/g, '');
+
+      if (['', '/'].includes(novaRoot)) return `/${basePath}`;
+      return `${novaRoot}/${basePath}`;
     },
   },
 };
