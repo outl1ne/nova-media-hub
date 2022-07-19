@@ -57,6 +57,30 @@ class MediaHub extends Tool
             ->save();
     }
 
+    public static function getConversionForMedia(Media $media)
+    {
+        $allConversions = static::getConversions();
+
+        $appliesToAllConversions = $allConversions['*'] ?? [];
+        $appliesToCollectionConv = $allConversions[$media->collection_name] ?? [];
+
+        // Create merged conversions array
+        $conversions = array_replace_recursive(
+            $appliesToAllConversions,
+            $appliesToCollectionConv,
+        );
+
+        // Remove invalid configurations
+        $conversions = array_filter($conversions, function ($c) {
+            if (empty($c)) return false;
+            if (empty($c['fit'])) return false;
+            if (empty($c['height']) && empty($c['width'])) return false;
+            return true;
+        });
+
+        return $conversions;
+    }
+
 
 
     // ------------------------------

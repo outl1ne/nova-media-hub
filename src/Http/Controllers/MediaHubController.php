@@ -75,7 +75,39 @@ class MediaHubController extends Controller
     {
         $mediaId = $request->route('mediaId');
         if ($mediaId && $media = MediaHub::getMediaModel()::find($mediaId)) {
-            Storage::disk($media->disk)->delete($media->path);
+            // Delete main file
+            Storage::disk($media->disk)->delete("{$media->path}{$media->file_name}");
+
+            // Delete conversions
+            $conversionsPath = $media->conversionsPath;
+            $conversions = $media->conversions ?? [];
+
+            foreach ($conversions as $conversionName => $fileName) {
+                Storage::disk($media->conversions_disk)->delete("{$conversionsPath}/{$fileName}");
+            }
+
+            // Check if conversions folder is empty, if so, delete it
+            $convDisk = Storage::disk($media->conversions_disk);
+            if ($convDisk->exists($conversionsPath)) {
+                $fileCount = count($convDisk->files($conversionsPath));
+                $dirCount = count($convDisk->allDirectories($conversionsPath));
+
+                if ($fileCount === 0 && $dirCount === 0) {
+                    $convDisk->deleteDirectory($conversionsPath);
+                }
+            }
+
+            // Check if main media folder is empty, if so, delete it
+            $mainDisk = Storage::disk($media->disk);
+            if ($mainDisk->exists($media->path)) {
+                $fileCount = count($convDisk->files($media->path));
+                $dirCount = count($convDisk->allDirectories($media->path));
+
+                if ($fileCount === 0 && $dirCount === 0) {
+                    $convDisk->deleteDirectory($media->path);
+                }
+            }
+
             $media->delete();
         }
         return response()->json('', 204);

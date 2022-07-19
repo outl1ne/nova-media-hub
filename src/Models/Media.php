@@ -27,7 +27,7 @@ class Media extends Model
     public function getPathAttribute()
     {
         $pathMaker = MediaHub::getPathMaker();
-        return $pathMaker->getPath($this) . $this->file_name;
+        return $pathMaker->getPath($this);
     }
 
     public function getConversionsPathAttribute()
@@ -38,7 +38,7 @@ class Media extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::disk($this->disk)->url($this->path);
+        return Storage::disk($this->disk)->url("{$this->path}{$this->file_name}");
     }
 
     public function getThumbnailUrlAttribute()
@@ -48,8 +48,6 @@ class Media extends Model
 
         $thumbnailName = $this->conversions[$thumbnailConversionName] ?? null;
         if (!$thumbnailName) return null;
-
-
 
         return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $thumbnailName);
     }
