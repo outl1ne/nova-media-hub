@@ -2,8 +2,10 @@
 
 namespace Outl1ne\NovaMediaHub\Nova\Fields;
 
+use Exception;
 use Laravel\Nova\Fields\Field;
 use Outl1ne\NovaMediaHub\MediaHub;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class MediaHubField extends Field
 {
@@ -42,6 +44,16 @@ class MediaHubField extends Field
         $jsonSerialized['media'] = [];
 
         $value = $jsonSerialized['value'];
+
+        // Maybe user hasn't set the cast to array, try to JSON parse it manually
+        try {
+            if (!is_array($value)) {
+                $value = json_decode($value, true);
+                if (is_array($value)) $jsonSerialized['value'] = $value;
+            }
+        } catch (Exception $e) {
+        }
+
         if (is_array($value)) {
             $jsonSerialized['media'] = MediaHub::getMediaModel()::findMany($value)->keyBy('id')->toArray();
         } else if (!empty($value)) {
@@ -49,5 +61,13 @@ class MediaHubField extends Field
         }
 
         return $jsonSerialized;
+    }
+
+    protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
+    {
+        if ($request->exists($requestAttribute)) {
+            $value = $request[$requestAttribute];
+            $model->{$attribute} = $this->isNullValue($value) ? null : $value;
+        }
     }
 }
