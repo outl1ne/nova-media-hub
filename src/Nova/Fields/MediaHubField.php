@@ -67,7 +67,10 @@ class MediaHubField extends Field
     {
         if ($request->exists($requestAttribute)) {
             $value = $request[$requestAttribute];
-            $model->{$attribute} = $this->isNullValue($value) ? null : $value;
+            
+            $model->{$attribute} = $this->isNullValue($value)
+                ? null
+                : (is_array($value) ? json_encode($value) : $value);
         }
     }
 }
