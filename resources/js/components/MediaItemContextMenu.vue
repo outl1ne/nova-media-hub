@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Teleport to="body">
     <VueSimpleContextMenu
       :elementId="id || 'simple-ctx-menu'"
       :options="options"
@@ -8,7 +8,7 @@
     />
 
     <!-- View media modal -->
-    <MediaViewModal :show="showMediaViewModal" :mediaItem="mediaItem" @close="closeViewModal" />
+    <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal" />
 
     <!-- Fake download button -->
     <a
@@ -20,7 +20,7 @@
       rel="noopener noreferrer"
       class="o1-hidden"
     />
-  </div>
+  </Teleport>
 </template>
 
 <script>
@@ -63,7 +63,6 @@ export default {
     },
 
     openViewModal() {
-      console.info('emitting showModal');
       this.$emit('showModal');
       this.showMediaViewModal = true;
     },
