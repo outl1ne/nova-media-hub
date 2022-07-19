@@ -26,10 +26,15 @@
       </div>
 
       <MediaItemContextMenu
-        id="detail-media-hub-field-ctx-menu"
+        :id="`detail-media-hub-field-ctx-menu-${field.attribute}`"
         :showEvent="ctxShowEvent"
         :options="ctxOptions"
-        @close="ctxShowEvent = void 0"
+        @close="
+          () => {
+            ctxShowEvent = void 0;
+            ctxMediaItem = void 0;
+          }
+        "
         :mediaItem="ctxMediaItem"
       />
     </template>

@@ -30,7 +30,7 @@
       <LoadingButton type="button" @click.prevent.stop="openChooseModal">Choose media</LoadingButton>
 
       <MediaItemContextMenu
-        id="form-media-hub-field-ctx-menu"
+        :id="`form-media-hub-field-ctx-menu-${field.attribute}`"
         :showEvent="ctxShowEvent"
         :options="ctxOptions"
         @close="ctxShowEvent = void 0"
