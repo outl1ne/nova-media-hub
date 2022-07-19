@@ -4,11 +4,11 @@
       <slot>
         <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
-          <div class="o1-flex o1-flex-col o1-py-6 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
+          <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-2 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
             <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
-              {{ __('novaMediaHub.selectedMediaTitle') }}
+              {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
-            <div class="o1-flex o1-flex-wrap" v-if="!!selectedMediaItems.length">
+            <div class="o1-flex o1-flex-wrap" v-if="!!selectedCount">
               <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-wrap">
                 <template #item="{ element: mediaItem }">
                   <MediaItem
@@ -18,7 +18,7 @@
                     :selected="true"
                     :size="36"
                     @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
-                    class="o1-mr-4"
+                    class="o1-mr-4 o1-mb-4"
                   />
                 </template>
               </Draggable>
@@ -271,6 +271,10 @@ export default {
 
     hasFilteredMediaItems() {
       return !!this.filteredMediaItems.length;
+    },
+
+    selectedCount() {
+      return this.selectedMediaItems.length;
     },
   },
 };
