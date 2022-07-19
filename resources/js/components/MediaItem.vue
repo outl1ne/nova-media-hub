@@ -1,6 +1,6 @@
 <template>
   <button
-    class="o1-relative o1-bg-slate-100 o1-rounded-sm dark:o1-bg-slate-900"
+    class="o1-relative o1-bg-slate-100 o1-rounded-sm dark:o1-bg-slate-900 o1-overflow-hidden o1-whitespace-no-wrap"
     :class="[
       { 'o1-ring-2 o1-ring-teal-200 hover:o1-ring-rose-300 dark:o1-ring-teal-800': selected },
       { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:o1-ring-teal-200 dark:o1-ring-slate-700': !selected },
@@ -20,7 +20,11 @@
       <VideoIcon v-if="type === 'video'" />
       <OtherIcon v-if="type === 'other'" />
 
-      <span class="o1-mt-4">{{ mediaItem.file_name }}</span>
+      <span
+        class="o1-mt-2 o1-whitespace-nowrap o1-text-ellipsis o1-overflow-hidden o1-text-xs o1-px-2 o1-text-center o1-w-full"
+      >
+        {{ mediaItem.file_name }}
+      </span>
     </div>
 
     <div
