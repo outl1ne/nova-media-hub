@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
 use Finfo;
+use Illuminate\Support\Str;
 
 class FileHelpers
 {
@@ -23,6 +24,22 @@ class FileHelpers
     {
         $finfo = new Finfo(FILEINFO_MIME_TYPE);
         return $finfo->file($path);
+    }
+
+    public static function getBase64FileInfo($base64): ?array
+    {
+        $finfo = new Finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->buffer(base64_decode($base64));
+        dump($mimeType);
+        if (!Str::startsWith($mimeType, 'image')) return null;
+        $extension = static::getExtensionFromMimeType($mimeType);
+        return [$mimeType, $extension];
+    }
+
+    public static function getExtensionFromMimeType(string $mimeType): ?string
+    {
+        if (!Str::startsWith($mimeType, 'image')) return null;
+        return explode('/', $mimeType)[1] ?? null;
     }
 
     public static function getFileHash(string $path): string

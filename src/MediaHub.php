@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 use Outl1ne\NovaMediaHub\Models\Media;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
@@ -51,6 +52,17 @@ class MediaHub extends Tool
         $remoteFile = new RemoteFile($fileUrl);
 
         return FileHandler::fromFile($remoteFile)
+            ->storeOnDisk($targetDisk)
+            ->storeConversionOnDisk($targetConversionsDisk)
+            ->withCollection($collectionName)
+            ->save();
+    }
+
+    public static function storeMediaFromBase64($base64String, $fileName = null, $collectionName, $targetDisk = '', $targetConversionsDisk = ''): Media
+    {
+        $base64File = new Base64File($base64String, $fileName);
+
+        return FileHandler::fromFile($base64File)
             ->storeOnDisk($targetDisk)
             ->storeConversionOnDisk($targetConversionsDisk)
             ->withCollection($collectionName)

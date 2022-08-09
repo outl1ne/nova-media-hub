@@ -6,6 +6,7 @@ use Outl1ne\NovaMediaHub\MediaHub;
 use Illuminate\Support\Facades\File;
 use Outl1ne\NovaMediaHub\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 use Outl1ne\NovaMediaHub\Exceptions\FileTooLargeException;
@@ -73,6 +74,13 @@ class FileHandler
             return $this;
         }
 
+        if ($file instanceof Base64File) {
+            $filePath = $file->saveBase64ImageToTemporaryFile();
+            $this->pathToFile = $filePath;
+            $this->fileName = pathinfo($file->getFilename(), PATHINFO_BASENAME);
+            return $this;
+        }
+
         $this->file = null;
         throw new UnknownFileTypeException();
     }
@@ -104,9 +112,7 @@ class FileHandler
     public function save($file = null): Media
     {
         if (!empty($file)) $this->withFile($file);
-
         if (empty($this->file)) throw new NoFileProvidedException();
-
         if (!is_file($this->pathToFile)) throw new FileDoesNotExistException($this->pathToFile);
 
         $maxSizeBytes = MediaHub::getMaxFileSizeInBytes();
@@ -121,7 +127,7 @@ class FileHandler
         $this->fileName = MediaHub::getFileNamer()->formatFileName($fileName, $extension);
 
         $mediaClass = MediaHub::getMediaModel();
-        $media = new $mediaClass($this->modelData);
+        $media = new $mediaClass($this->modelData ?? []);
 
         $media->file_name = $this->fileName;
         $media->collection_name = $this->collectionName;
