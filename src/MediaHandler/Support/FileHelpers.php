@@ -30,7 +30,6 @@ class FileHelpers
     {
         $finfo = new Finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->buffer(base64_decode($base64));
-        dump($mimeType);
         if (!Str::startsWith($mimeType, 'image')) return null;
         $extension = static::getExtensionFromMimeType($mimeType);
         return [$mimeType, $extension];
