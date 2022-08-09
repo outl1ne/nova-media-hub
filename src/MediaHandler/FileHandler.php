@@ -31,6 +31,7 @@ class FileHandler
     protected string $diskName = '';
     protected string $conversionsDiskName = '';
     protected string $collectionName = '';
+    protected array $modelData = [];
 
     public function __construct()
     {
@@ -94,6 +95,12 @@ class FileHandler
         return $this;
     }
 
+    public function withModelData(array $modelData)
+    {
+        $this->modelData = $modelData;
+        return $this;
+    }
+
     public function save($file = null): Media
     {
         if (!empty($file)) $this->withFile($file);
@@ -114,7 +121,7 @@ class FileHandler
         $this->fileName = MediaHub::getFileNamer()->formatFileName($fileName, $extension);
 
         $mediaClass = MediaHub::getMediaModel();
-        $media = new $mediaClass();
+        $media = new $mediaClass($this->modelData);
 
         $media->file_name = $this->fileName;
         $media->collection_name = $this->collectionName;
