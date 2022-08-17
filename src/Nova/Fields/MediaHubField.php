@@ -13,10 +13,9 @@ class MediaHubField extends Field
 
     protected $defaultCollectionName = null;
 
-    public function __construct($name, $attribute, $defaultCollectionName = null)
+    public function __construct($name, $attribute = null, $defaultCollectionName = null)
     {
-        $this->name = $name;
-        $this->attribute = $attribute;
+        parent::__construct($name, $attribute, null);
 
         $this->withMeta([
             'multiple' => false,
