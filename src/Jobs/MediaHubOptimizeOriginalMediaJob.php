@@ -27,7 +27,7 @@ class MediaHubOptimizeOriginalMediaJob implements ShouldQueue
 
     public function handle()
     {
-        $media = MediaHub::getMediaModel()->find($this->mediaId);
+        $media = MediaHub::getQuery()->find($this->mediaId);
         if (!$media) return;
 
         MediaOptimizer::optimizeOriginalImage($media);
