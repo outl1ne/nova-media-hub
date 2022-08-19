@@ -109,6 +109,13 @@ class MediaHub extends Tool
         return config('nova-media-hub.model');
     }
 
+    public static function getQuery()
+    {
+        $model = self::getMediaModel();
+
+        return (new $model)->query();
+    }
+
     public static function getBasePath()
     {
         return config('nova-media-hub.base_path');
