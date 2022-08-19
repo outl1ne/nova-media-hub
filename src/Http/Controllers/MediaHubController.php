@@ -31,7 +31,7 @@ class MediaHubController extends Controller
     {
         $collectionName = $request->get('collection');
 
-        $mediaQuery = Media::query();
+        $mediaQuery = MediaHub::getMediaModel()->query();
 
         if ($collectionName) {
             $mediaQuery->where('collection_name', $collectionName);
