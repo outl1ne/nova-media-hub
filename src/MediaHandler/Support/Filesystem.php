@@ -25,12 +25,7 @@ class Filesystem
         return $this->filesystem->disk($media->disk)->delete($path);
     }
 
-    public function create(string $file, Media $media, ?string $targetFileName = null): void
-    {
-        $this->copyFileToMediaFolder($file, $media, $targetFileName);
-    }
-
-    public function copyFileToMediaFolder(string $pathToFile, Media $media, ?string $targetFileName = null, ?string $type = null)
+    public function copyFileToMediaFolder(string $pathToFile, Media $media, ?string $targetFileName = null, ?string $type = null, $deleteFile = true)
     {
         $forOriginal = $type !== static::TYPE_CONVERSION;
         $newFileName = $targetFileName ?: pathinfo($pathToFile, PATHINFO_BASENAME);
@@ -50,10 +45,18 @@ class Filesystem
             fclose($file);
 
             // Delete old file
-            if ($pathToFile !== $destination) {
+            if ($deleteFile && $pathToFile !== $destination) {
                 unlink($pathToFile);
             }
         }
+    }
+
+    public function copyFromMediaLibrary(Media $media, string $targetFilePath): string
+    {
+        $filePath = $this->getMediaDirectory($media) . $media->file_name;
+        $fileStream = $this->filesystem->disk($media->disk)->readStream($filePath);
+        file_put_contents($targetFilePath, $fileStream);
+        return $targetFilePath;
     }
 
     public function getMediaDirectory(Media $media, ?string $type = null): string

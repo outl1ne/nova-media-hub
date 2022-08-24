@@ -17,6 +17,7 @@ class MediaOptimizer
         if (!MediaHub::isOptimizable($media)) return;
         if (!$origOptimRules = MediaHub::shouldOptimizeOriginal()) return;
 
+        $fileSystem = self::getFilesystem();
         $pathToFile = MediaHub::getPathMaker()->getFullPathWithFileName($media);
 
         $manipulations = (new Manipulations());
@@ -28,59 +29,60 @@ class MediaOptimizer
 
         $manipulations->apply();
 
-        $tempFilePath = static::getTemporaryFilePath();
-        Image::load($pathToFile)
-            ->manipulate($manipulations)
-            ->save($tempFilePath);
+        // Copy media from whatever disk to local filesystem for manipulations
+        $localFilePath = FileHelpers::getTemporaryFilePath();
+        $fileSystem->copyFromMediaLibrary($media, $localFilePath);
 
-        $fileSystem = self::getFilesystem();
-        $fileSystem->copyFileToMediaFolder($tempFilePath, $media, $media->file_name, Filesystem::TYPE_ORIGINAL);
+        // Load and save modified version
+        Image::load($localFilePath)
+            ->manipulate($manipulations)
+            ->save();
+
+        $fileSystem->copyFileToMediaFolder($localFilePath, $media, $media->file_name, Filesystem::TYPE_ORIGINAL, true);
 
         $media->size = filesize($pathToFile);
         $media->optimized_at = now();
         $media->save();
     }
 
-    public static function makeConversion(Media $media, $conversioName, $conversionConfig)
+    public static function makeConversion(Media $media, $localFilePath, $conversionName, $conversionConfig)
     {
-        if (!empty($media->conversion[$conversioName])) return;
+        if (!empty($media->conversion[$conversionName])) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
         if (!MediaHub::isOptimizable($media)) return;
 
         $pathMaker = MediaHub::getPathMaker();
+        $fileSystem = self::getFilesystem();
 
         // Check if has necessary data for resize
         $cFitMethod = $conversionConfig['fit'] ?? null;
         $cWidth = $conversionConfig['width'] ?? null;
         $cHeight = $conversionConfig['height'] ?? null;
 
-        $pathToOriginalFile = $pathMaker->getFullPathWithFileName($media);
-
         $manipulations = (new Manipulations())
             ->optimize(config('nova-media-hub.image_optimizers'))
             ->fit($cFitMethod, $cWidth, $cHeight)
             ->apply();
 
+        // Copy media from whatever disk to local filesystem for manipulations
+        if (!$localFilePath || !is_file($localFilePath)) {
+            $localFilePath = FileHelpers::getTemporaryFilePath();
+            $fileSystem->copyFromMediaLibrary($media, $localFilePath);
+        }
 
-        $tempFilePath = static::getTemporaryFilePath();
-        Image::load($pathToOriginalFile)
+        // Load and save modified version
+        Image::load($localFilePath)
             ->manipulate($manipulations)
-            ->save($tempFilePath);
+            ->save();
 
-        $fileSystem = self::getFilesystem();
-        $conversionFileName = $pathMaker->getConversionFileName($media, $conversioName);
-        $fileSystem->copyFileToMediaFolder($tempFilePath, $media, $conversionFileName, Filesystem::TYPE_CONVERSION);
+        $conversionFileName = $pathMaker->getConversionFileName($media, $conversionName);
+        $fileSystem->copyFileToMediaFolder($localFilePath, $media, $conversionFileName, Filesystem::TYPE_CONVERSION, false);
 
         $newConversions = $media->conversions;
-        $newConversions[$conversioName] = $conversionFileName;
+        $newConversions[$conversionName] = $conversionFileName;
 
         $media->conversions = $newConversions;
         $media->save();
-    }
-
-    protected static function getTemporaryFilePath()
-    {
-        return tempnam(sys_get_temp_dir(), 'media-');
     }
 
     protected static function getFilesystem(): Filesystem

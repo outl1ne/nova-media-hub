@@ -145,7 +145,7 @@ class FileHandler
 
         $media->save();
 
-        $this->filesystem->create($this->pathToFile, $media, $this->fileName);
+        $this->filesystem->copyFileToMediaFolder($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, true);
 
         MediaHubOptimizeOriginalMediaJob::dispatch($media);
         MediaHubCreateConversionsJob::dispatch($media);
@@ -155,7 +155,6 @@ class FileHandler
 
 
     // Helpers
-
     protected function getDiskName(): string
     {
         return $this->diskName ?: config('nova-media-hub.disk_name');

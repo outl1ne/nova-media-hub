@@ -44,17 +44,12 @@ class RemoteFile
             $fileContents = file_get_contents($this->getKey());
         }
 
-        $tempFilePath = $this->getTemporaryFilePath();
+        $tempFilePath = FileHelpers::getTemporaryFilePath();
         file_put_contents($tempFilePath, $fileContents);
 
         $this->originalFileName = $this->getName();
         $this->key = $tempFilePath;
 
         return $tempFilePath;
-    }
-
-    protected function getTemporaryFilePath()
-    {
-        return tempnam(sys_get_temp_dir(), 'remote-file-');
     }
 }

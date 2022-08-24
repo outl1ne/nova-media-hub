@@ -72,4 +72,9 @@ class FileHelpers
         $name = mb_substr($name, 0, - (mb_strlen($extension) + 1));
         return [$name, $extension];
     }
+
+    public static function getTemporaryFilePath($prefix = 'media-')
+    {
+        return tempnam(sys_get_temp_dir(), $prefix);
+    }
 }

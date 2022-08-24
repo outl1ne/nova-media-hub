@@ -9,6 +9,8 @@ use Outl1ne\NovaMediaHub\Models\Media;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\MediaOptimizer;
 
 class MediaHubCreateConversionsJob implements ShouldQueue
@@ -30,10 +32,22 @@ class MediaHubCreateConversionsJob implements ShouldQueue
         $media = MediaHub::getQuery()->find($this->mediaId);
         if (!$media) return;
 
+        $fileSystem = $this->getFileSystem();
         $conversions = MediaHub::getConversionForMedia($media);
 
+        $localFilePath = $fileSystem->copyFromMediaLibrary($media, FileHelpers::getTemporaryFilePath('conversion-temp-media-'));
+
         foreach ($conversions as $conversionName => $conversion) {
-            MediaOptimizer::makeConversion($media, $conversionName, $conversion);
+            MediaOptimizer::makeConversion($media, $localFilePath, $conversionName, $conversion);
         }
+
+        if (is_file($localFilePath)) {
+            unlink($localFilePath);
+        }
+    }
+
+    protected function getFileSystem(): Filesystem
+    {
+        return app()->make(Filesystem::class);
     }
 }

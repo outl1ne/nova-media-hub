@@ -33,14 +33,9 @@ class Base64File
         if (Str::contains($fileData, [';', ','])) $fileData = explode(',', $fileData)[1];
         [$mimeType, $extension] = FileHelpers::getBase64FileInfo($fileData);
         if (!$mimeType && !$extension) throw new UnknownFileTypeException('File had no detectable mime-type or extension.');
-        $tmpFilePath = $this->getTemporaryFilePath() . ".$extension";
+        $tmpFilePath = FileHelpers::getTemporaryFilePath('base64-file-') . ".$extension";
         file_put_contents($tmpFilePath, base64_decode($fileData));
         $this->fileName = $this->getFilename() . ".$extension";
         return $tmpFilePath;
-    }
-
-    protected function getTemporaryFilePath()
-    {
-        return tempnam(sys_get_temp_dir(), 'base64-file-');
     }
 }
