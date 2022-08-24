@@ -51,4 +51,15 @@ class Media extends Model
 
         return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $thumbnailName);
     }
+
+    public function formatForNova()
+    {
+        return [
+            'id' => $this->id,
+            'collection_name' => $this->collection_name,
+            'url' => $this->url,
+            'thumbnail_url' => $this->thumbnailUrl,
+            'mime_type' => $this->mime_type,
+        ];
+    }
 }

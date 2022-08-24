@@ -39,7 +39,11 @@ class MediaHubController extends Controller
 
         $mediaQuery->orderBy('created_at', 'DESC');
 
-        return response()->json($mediaQuery->paginate(18), 200);
+        $paginatedMedia = $mediaQuery->paginate(18);
+        $newCollection = $paginatedMedia->getCollection()->map->formatForNova();
+        $paginatedMedia->setCollection($newCollection);
+
+        return response()->json($paginatedMedia, 200);
     }
 
     public function uploadMediaToCollection(Request $request)

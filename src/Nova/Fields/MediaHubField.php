@@ -54,9 +54,9 @@ class MediaHubField extends Field
         }
 
         if (is_array($value)) {
-            $jsonSerialized['media'] = MediaHub::getMediaModel()::findMany($value)->keyBy('id')->toArray();
+            $jsonSerialized['media'] = MediaHub::getMediaModel()::findMany($value)->keyBy('id')->map->formatForNova()->toArray();
         } else if (!empty($value)) {
-            $jsonSerialized['media'][$value] = MediaHub::getMediaModel()::find($value);
+            $jsonSerialized['media'][$value] = MediaHub::getMediaModel()::find($value)?->formatForNova();
         }
 
         return $jsonSerialized;
