@@ -60,6 +60,10 @@ class Media extends Model
             'url' => $this->url,
             'thumbnail_url' => $this->thumbnailUrl,
             'mime_type' => $this->mime_type,
+            'size' => $this->size,
+            'file_name' => $this->file_name,
+            'data' => $this->data,
+            'conversions' => $this->conversions,
         ];
     }
 }
