@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 23-08-2022
+
+### Changed
+
+- Fixed Media model incorrect references (thanks to [@vodnicearv](https://github.com/vodnicearv))
+- Mark selected media items with a checkmark instead of hiding them
+- Fixed overriding of toArray breaking Nova UI when overriding configurable media model
+- Fixed inertia navigation crashing after using a context menu
+- Updated packages
+
 ## [1.0.5] - 17-08-2022
 
 ### Changed
