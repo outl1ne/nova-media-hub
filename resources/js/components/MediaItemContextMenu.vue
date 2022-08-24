@@ -7,10 +7,8 @@
       @option-clicked="onOptionClicked"
     />
 
-    <!-- View media modal -->
     <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal" />
 
-    <!-- Fake download button -->
     <a
       v-if="mediaItem"
       :href="mediaItem.url"
