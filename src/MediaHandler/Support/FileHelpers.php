@@ -3,7 +3,9 @@
 namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
 use Finfo;
+use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class FileHelpers
 {
@@ -41,13 +43,18 @@ class FileHelpers
         return explode('/', $mimeType)[1] ?? null;
     }
 
-    public static function getFileHash(string $path): string
+    public static function getFileHash(string $path, string $disk = null): string
     {
-        if (!$path || !is_file($path)) return null;
+        if (!$path) return null;
+        if (!$disk && !is_file($path)) return null;
 
-        $fileStream = fopen($path, 'r');
-        $fileHash = md5(fread($fileStream, 1000000));
-        fclose($fileStream);
+        try {
+            $fileStream = ($disk) ? Storage::disk($disk)->readStream($path) : fopen($path, 'r');
+            $fileHash = md5(fread($fileStream, 1000000));
+            fclose($fileStream);
+        } catch (Exception $e) {
+            return null;
+        }
 
         return $fileHash;
     }
