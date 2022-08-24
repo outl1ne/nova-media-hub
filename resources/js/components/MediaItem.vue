@@ -35,7 +35,7 @@
     </div>
 
     <div
-      v-if="selected"
+      v-if="showCollectionName"
       class="o1-absolute o1-bottom-2 o1-left-2 o1-bg-teal-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700"
     >
       {{ mediaItem.collection_name }}
@@ -52,7 +52,7 @@ import CheckMarkIcon from '../icons/CheckMarkIcon';
 export default {
   components: { AudioIcon, VideoIcon, OtherIcon, CheckMarkIcon },
 
-  props: ['mediaItem', 'selected', 'showCollectionName', 'size'],
+  props: ['mediaItem', 'selected', 'showCollectionName', 'size', 'showCollectionName'],
 
   computed: {
     type() {

@@ -16,6 +16,7 @@
                     :mediaItem="mediaItem"
                     @click="toggleMediaSelection(mediaItem)"
                     :selected="true"
+                    :show-collection-name="true"
                     :size="36"
                     @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
                     class="o1-mr-4 o1-mb-4"
@@ -23,7 +24,7 @@
                 </template>
               </Draggable>
             </div>
-            <div v-else class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
+            <div v-else-if="!selectedCount" class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
           </div>
 
           <div class="o1-flex">
@@ -47,30 +48,28 @@
                 <div
                   id="media-items-list"
                   class="o1-w-full o1-grid o1-gap-4 o1-justify-items-center"
-                  v-show="!!filteredMediaItems.length"
+                  v-show="!!mediaItems.length"
                 >
                   <MediaItem
-                    v-for="mediaItem in filteredMediaItems"
+                    v-for="mediaItem in mediaItems"
                     :key="'media-' + mediaItem.id"
                     :mediaItem="mediaItem"
                     @click="toggleMediaSelection(mediaItem)"
                     @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
                     class="o1-mb-4"
+                    :selected="selectedMediaItems.find(m => m.id === mediaItem.id)"
                   />
                 </div>
               </div>
 
-              <div v-show="allCollectionItemsSelected" class="o1-text-slate-400">
-                {{ __('novaMediaHub.allItemsFromCollectionSelected') }}
-              </div>
-
-              <div v-show="!allCollectionItemsSelected && !mediaItems.length" class="o1-text-slate-400">
+              <div v-show="!mediaItems.length" class="o1-text-slate-400">
                 {{ __('novaMediaHub.noMediaItemsFoundText') }}
               </div>
 
               <PaginationLinks
-                v-show="!!filteredMediaItems.length && mediaResponse.last_page > 1"
-                class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 o1-border-l"
+                v-show="mediaResponse.last_page > 1"
+                class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 o1-border-l dark:o1-border-gray-700"
+                style="border-radius: 0px"
                 :page="mediaResponse.current_page"
                 :pages="mediaResponse.last_page"
                 @page="switchToPage"
@@ -261,18 +260,6 @@ export default {
   },
 
   computed: {
-    allCollectionItemsSelected() {
-      return !!this.mediaItems.length && !this.filteredMediaItems.length;
-    },
-
-    filteredMediaItems() {
-      return this.mediaItems.filter(mi => !this.selectedMediaItems.find(m => m.id === mi.id));
-    },
-
-    hasFilteredMediaItems() {
-      return !!this.filteredMediaItems.length;
-    },
-
     selectedCount() {
       return this.selectedMediaItems.length;
     },
