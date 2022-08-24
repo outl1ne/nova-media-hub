@@ -31,7 +31,7 @@ class MediaHubController extends Controller
     {
         $collectionName = $request->get('collection');
 
-        $mediaQuery = Media::query();
+        $mediaQuery = MediaHub::getQuery();
 
         if ($collectionName) {
             $mediaQuery->where('collection_name', $collectionName);
@@ -74,7 +74,7 @@ class MediaHubController extends Controller
     public function deleteMedia(Request $request)
     {
         $mediaId = $request->route('mediaId');
-        if ($mediaId && $media = MediaHub::getMediaModel()::find($mediaId)) {
+        if ($mediaId && $media = MediaHub::getQuery()->find($mediaId)) {
             // Delete main file
             Storage::disk($media->disk)->delete("{$media->path}{$media->file_name}");
 
@@ -118,7 +118,7 @@ class MediaHubController extends Controller
         $collectionName = $request->get('collection');
         if (!$collectionName) return response()->json(['error' => 'Collection name required.'], 400);
 
-        $media = MediaHub::getMediaModel()::findOrFail($mediaId);
+        $media = MediaHub::getQuery()->findOrFail($mediaId);
 
         $media->collection_name = $collectionName;
         $media->save();
@@ -128,7 +128,7 @@ class MediaHubController extends Controller
 
     public function updateMediaData(Request $request, $mediaId)
     {
-        $media = MediaHub::getMediaModel()::findOrFail($mediaId);
+        $media = MediaHub::getQuery()->findOrFail($mediaId);
         $locales = MediaHub::getLocales();
 
         // No translations, we hardcoded frontend to always send data as 'en'

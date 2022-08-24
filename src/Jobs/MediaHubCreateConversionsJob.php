@@ -27,7 +27,7 @@ class MediaHubCreateConversionsJob implements ShouldQueue
 
     public function handle()
     {
-        $media = Media::find($this->mediaId);
+        $media = MediaHub::getQuery()->find($this->mediaId);
         if (!$media) return;
 
         $conversions = MediaHub::getConversionForMedia($media);
