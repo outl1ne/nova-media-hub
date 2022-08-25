@@ -10,7 +10,7 @@ use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaOptimizer
 {
-    public static function optimizeOriginalImage(Media $media)
+    public static function optimizeOriginalImage(Media $media, $localFilePath = null)
     {
         if (!empty($media->optimized_at)) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
@@ -29,8 +29,10 @@ class MediaOptimizer
         $manipulations->apply();
 
         // Copy media from whatever disk to local filesystem for manipulations
-        $localFilePath = FileHelpers::getTemporaryFilePath();
-        $fileSystem->copyFromMediaLibrary($media, $localFilePath);
+        if (!$localFilePath || !is_file($localFilePath)) {
+            $localFilePath = FileHelpers::getTemporaryFilePath();
+            $fileSystem->copyFromMediaLibrary($media, $localFilePath);
+        }
 
         // Load and save modified version
         Image::load($localFilePath)
@@ -40,7 +42,7 @@ class MediaOptimizer
         $media->size = filesize($localFilePath);
         $media->optimized_at = now();
 
-        $fileSystem->copyFileToMediaLibrary($localFilePath, $media, $media->file_name, Filesystem::TYPE_ORIGINAL, true);
+        $fileSystem->copyFileToMediaLibrary($localFilePath, $media, $media->file_name, Filesystem::TYPE_ORIGINAL, false);
 
         $media->save();
     }

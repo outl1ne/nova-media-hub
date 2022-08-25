@@ -9,11 +9,11 @@ use Outl1ne\NovaMediaHub\Models\Media;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\MediaOptimizer;
 
-class MediaHubCreateConversionsJob implements ShouldQueue
+class MediaHubOptimizeAndConvertJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -33,14 +33,18 @@ class MediaHubCreateConversionsJob implements ShouldQueue
         if (!$media) return;
 
         $fileSystem = $this->getFileSystem();
+        $localFilePath = $fileSystem->copyFromMediaLibrary($media, FileHelpers::getTemporaryFilePath('job-tmp-media-'));
+
+        // Optimize original
+        MediaOptimizer::optimizeOriginalImage($media, $localFilePath);
+
+        // Create conversions
         $conversions = MediaHub::getConversionForMedia($media);
-
-        $localFilePath = $fileSystem->copyFromMediaLibrary($media, FileHelpers::getTemporaryFilePath('conversion-temp-media-'));
-
         foreach ($conversions as $conversionName => $conversion) {
             MediaOptimizer::makeConversion($media, $localFilePath, $conversionName, $conversion);
         }
 
+        // Delete local file
         if (is_file($localFilePath)) {
             unlink($localFilePath);
         }
