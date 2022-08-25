@@ -12,7 +12,12 @@ return [
     // Classes configuration
     'model' => \Outl1ne\NovaMediaHub\Models\Media::class,
     'file_namer' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer::class,
+
+    // This default PathMaker puts files in a /prefix/<mediaid>/* structure
     'path_maker' => \Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker::class,
+
+    // If you want files to be in a /prefix/year/month/<mediaid>/* folder structure, use DatePathMaker instead
+    // 'path_maker' => \Outl1ne\NovaMediaHub\MediaHandler\Support\DatePathMaker::class,
 
     // Disk configurations
     'disk_name' => 'public',
