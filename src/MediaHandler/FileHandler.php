@@ -115,6 +115,12 @@ class FileHandler
         if (empty($this->file)) throw new NoFileProvidedException();
         if (!is_file($this->pathToFile)) throw new FileDoesNotExistException($this->pathToFile);
 
+        // Check if file already exists
+        $fileHash = FileHelpers::getFileHash($this->pathToFile);
+        $existingMedia = MediaHub::getQuery()->where('original_file_hash', $fileHash)->first();
+        if ($existingMedia) return $existingMedia;
+
+        // Check file size
         $maxSizeBytes = MediaHub::getMaxFileSizeInBytes();
         if ($maxSizeBytes && filesize($this->pathToFile) > $maxSizeBytes) {
             throw new FileTooLargeException($this->pathToFile);
@@ -133,7 +139,7 @@ class FileHandler
         $media->collection_name = $this->collectionName;
         $media->size = File::size($this->pathToFile);
         $media->mime_type = File::mimeType($this->pathToFile);
-        $media->original_file_hash = FileHelpers::getFileHash($this->pathToFile);
+        $media->original_file_hash = $fileHash;
         $media->data = [];
         $media->conversions = [];
 
