@@ -157,6 +157,7 @@ export default {
         attribute,
         visible: true,
         stacked: true,
+        extraClass: 'field-wrapper',
         translatable: { locales: this.locales, original_component: 'text-field', value },
       };
     },
@@ -204,15 +205,27 @@ export default {
   }
 
   .nova-media-hub-media-modal-translatable-field {
-    .nova-translatable-locale-tabs,
-    .field-wrapper > * {
+    margin-bottom: 15px;
+
+    .nova-translatable-locale-tabs {
       padding-left: 0;
       padding-right: 0;
     }
 
-    .field-wrapper {
-      margin-top: -15px;
+    > div:not(.nova-translatable-locale-tabs) {
+      > div {
+        margin-top: -25px;
+      }
+
+      > div > div {
+        padding-left: 0;
+        padding-right: 0;
+      }
     }
+
+    /* > * {
+
+    } */
   }
 }
 </style>

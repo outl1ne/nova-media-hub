@@ -35,6 +35,13 @@
     </div>
 
     <div
+      v-if="showFileName"
+      class="o1-absolute o1-bottom-2 o1-left-2 o1-right-2 o1-bg-teal-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700 o1-whitespace-nowrap o1-overflow-hidden o1-text-ellipsis"
+    >
+      {{ mediaItem.file_name }}
+    </div>
+
+    <div
       v-if="showCollectionName"
       class="o1-absolute o1-bottom-2 o1-left-2 o1-bg-teal-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700"
     >
@@ -52,7 +59,7 @@ import CheckMarkIcon from '../icons/CheckMarkIcon';
 export default {
   components: { AudioIcon, VideoIcon, OtherIcon, CheckMarkIcon },
 
-  props: ['mediaItem', 'selected', 'showCollectionName', 'size', 'showCollectionName'],
+  props: ['mediaItem', 'selected', 'showCollectionName', 'size', 'showCollectionName', 'showFileName'],
 
   computed: {
     type() {

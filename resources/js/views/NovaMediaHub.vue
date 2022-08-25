@@ -61,6 +61,7 @@
             v-for="mediaItem in mediaItems"
             :key="mediaItem.id"
             :mediaItem="mediaItem"
+            :showFileName="true"
             @click.stop.prevent="openViewModal(mediaItem)"
             @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
           />

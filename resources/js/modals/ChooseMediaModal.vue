@@ -16,7 +16,7 @@
                     :mediaItem="mediaItem"
                     @click="toggleMediaSelection(mediaItem)"
                     :selected="true"
-                    :show-collection-name="true"
+                    :showFileName="true"
                     :size="36"
                     @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
                     class="o1-mr-4 o1-mb-4"
@@ -58,6 +58,7 @@
                     @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
                     class="o1-mb-4"
                     :selected="selectedMediaItems.find(m => m.id === mediaItem.id)"
+                    :showFileName="true"
                   />
                 </div>
               </div>
