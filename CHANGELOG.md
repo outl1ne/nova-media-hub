@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fixed cloud storage support for file processing
+- Fixed cloud storage directory count calculation
 - Filesystem refactoring and misc improvements
 - Fixed missing `formatForNova` data
 - Fixed data fields UI in media view modal
