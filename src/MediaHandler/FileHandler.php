@@ -145,7 +145,7 @@ class FileHandler
 
         $media->save();
 
-        $this->filesystem->copyFileToMediaFolder($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, true);
+        $this->filesystem->copyFileToMediaLibrary($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, true);
 
         MediaHubOptimizeOriginalMediaJob::dispatch($media);
         MediaHubCreateConversionsJob::dispatch($media);

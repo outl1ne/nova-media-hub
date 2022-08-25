@@ -18,7 +18,6 @@ class MediaOptimizer
         if (!$origOptimRules = MediaHub::shouldOptimizeOriginal()) return;
 
         $fileSystem = self::getFilesystem();
-        $pathToFile = MediaHub::getPathMaker()->getFullPathWithFileName($media);
 
         $manipulations = (new Manipulations());
         $manipulations->optimize(config('nova-media-hub.image_optimizers'));
@@ -38,10 +37,11 @@ class MediaOptimizer
             ->manipulate($manipulations)
             ->save();
 
-        $fileSystem->copyFileToMediaFolder($localFilePath, $media, $media->file_name, Filesystem::TYPE_ORIGINAL, true);
-
-        $media->size = filesize($pathToFile);
+        $media->size = filesize($localFilePath);
         $media->optimized_at = now();
+
+        $fileSystem->copyFileToMediaLibrary($localFilePath, $media, $media->file_name, Filesystem::TYPE_ORIGINAL, true);
+
         $media->save();
     }
 
@@ -76,7 +76,7 @@ class MediaOptimizer
             ->save();
 
         $conversionFileName = $pathMaker->getConversionFileName($media, $conversionName);
-        $fileSystem->copyFileToMediaFolder($localFilePath, $media, $conversionFileName, Filesystem::TYPE_CONVERSION, false);
+        $fileSystem->copyFileToMediaLibrary($localFilePath, $media, $conversionFileName, Filesystem::TYPE_CONVERSION, false);
 
         $newConversions = $media->conversions;
         $newConversions[$conversionName] = $conversionFileName;

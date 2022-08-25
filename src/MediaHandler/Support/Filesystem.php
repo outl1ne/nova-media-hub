@@ -19,13 +19,49 @@ class Filesystem
         $this->filesystem = $filesystem;
     }
 
-    public function deleteFromMediaFolder(Media $media)
+    public function deleteFromMediaLibrary(Media $media)
     {
-        $path = MediaHub::getPathMaker()->getPath($media);
-        return $this->filesystem->disk($media->disk)->delete($path);
+        // Delete main file
+        $this->filesystem->disk($media->disk)->delete("{$media->path}{$media->file_name}");
+
+        // Delete conversions
+        $conversionsPath = $media->conversionsPath;
+        $conversions = $media->conversions ?? [];
+
+        foreach ($conversions as $conversionName => $fileName) {
+            $this->filesystem->disk($media->conversions_disk)->delete("{$conversionsPath}/{$fileName}");
+        }
+
+        // Check if conversions folder is empty, if so, delete it
+        $convDisk = $this->filesystem->disk($media->conversions_disk);
+        if ($convDisk->exists($conversionsPath)) {
+            $fileCount = count($convDisk->files($conversionsPath));
+            $dirCount = count($convDisk->allDirectories($conversionsPath));
+
+            ray(compact('fileCount', 'dirCount', 'conversionsPath'));
+
+            if ($fileCount === 0 && $dirCount === 0) {
+                $convDisk->deleteDirectory($conversionsPath);
+            }
+        }
+
+        // Check if main media folder is empty, if so, delete it
+        $mainDisk = $this->filesystem->disk($media->disk);
+        if ($mainDisk->exists($media->path)) {
+            $fileCount = count($convDisk->files($media->path));
+            $dirCount = count($convDisk->allDirectories($media->path));
+
+            ray(compact('fileCount', 'dirCount'));
+
+            if ($fileCount === 0 && $dirCount === 0) {
+                $convDisk->deleteDirectory($media->path);
+            }
+        }
+
+        return true;
     }
 
-    public function copyFileToMediaFolder(string $pathToFile, Media $media, ?string $targetFileName = null, ?string $type = null, $deleteFile = true)
+    public function copyFileToMediaLibrary(string $pathToFile, Media $media, ?string $targetFileName = null, ?string $type = null, $deleteFile = true)
     {
         $forOriginal = $type !== static::TYPE_CONVERSION;
         $newFileName = $targetFileName ?: pathinfo($pathToFile, PATHINFO_BASENAME);
@@ -41,13 +77,11 @@ class Filesystem
             ->disk($diskName)
             ->put($destination, $file);
 
-        if (is_resource($file)) {
-            fclose($file);
+        if (is_resource($file)) fclose($file);
 
-            // Delete old file
-            if ($deleteFile && $pathToFile !== $destination) {
-                unlink($pathToFile);
-            }
+        // Delete old file
+        if ($deleteFile && $pathToFile !== $destination) {
+            unlink($pathToFile);
         }
     }
 
@@ -56,6 +90,7 @@ class Filesystem
         $filePath = $this->getMediaDirectory($media) . $media->file_name;
         $fileStream = $this->filesystem->disk($media->disk)->readStream($filePath);
         file_put_contents($targetFilePath, $fileStream);
+        if (is_resource($fileStream)) fclose($fileStream);
         return $targetFilePath;
     }
 

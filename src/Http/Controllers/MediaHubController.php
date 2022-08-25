@@ -5,9 +5,8 @@ namespace Outl1ne\NovaMediaHub\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
 use Outl1ne\NovaMediaHub\MediaHub;
-use Outl1ne\NovaMediaHub\Models\Media;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 
 class MediaHubController extends Controller
 {
@@ -79,39 +78,9 @@ class MediaHubController extends Controller
     {
         $mediaId = $request->route('mediaId');
         if ($mediaId && $media = MediaHub::getQuery()->find($mediaId)) {
-            // Delete main file
-            Storage::disk($media->disk)->delete("{$media->path}{$media->file_name}");
-
-            // Delete conversions
-            $conversionsPath = $media->conversionsPath;
-            $conversions = $media->conversions ?? [];
-
-            foreach ($conversions as $conversionName => $fileName) {
-                Storage::disk($media->conversions_disk)->delete("{$conversionsPath}/{$fileName}");
-            }
-
-            // Check if conversions folder is empty, if so, delete it
-            $convDisk = Storage::disk($media->conversions_disk);
-            if ($convDisk->exists($conversionsPath)) {
-                $fileCount = count($convDisk->files($conversionsPath));
-                $dirCount = count($convDisk->allDirectories($conversionsPath));
-
-                if ($fileCount === 0 && $dirCount === 0) {
-                    $convDisk->deleteDirectory($conversionsPath);
-                }
-            }
-
-            // Check if main media folder is empty, if so, delete it
-            $mainDisk = Storage::disk($media->disk);
-            if ($mainDisk->exists($media->path)) {
-                $fileCount = count($convDisk->files($media->path));
-                $dirCount = count($convDisk->allDirectories($media->path));
-
-                if ($fileCount === 0 && $dirCount === 0) {
-                    $convDisk->deleteDirectory($media->path);
-                }
-            }
-
+            /** @var Filesystem */
+            $fileSystem = app()->make(Filesystem::class);
+            $fileSystem->deleteFromMediaLibrary($media);
             $media->delete();
         }
         return response()->json('', 204);
