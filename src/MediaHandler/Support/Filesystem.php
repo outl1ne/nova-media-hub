@@ -36,9 +36,10 @@ class Filesystem
         $convDisk = $this->filesystem->disk($media->conversions_disk);
         if ($convDisk->exists($conversionsPath)) {
             $fileCount = count($convDisk->files($conversionsPath));
-            $dirCount = count($convDisk->allDirectories($conversionsPath));
-
-            ray(compact('fileCount', 'dirCount', 'conversionsPath'));
+            $dirCount = count(array_filter(
+                $convDisk->allDirectories($conversionsPath),
+                fn ($path) => rtrim($path, '/') !== rtrim($conversionsPath, '/')
+            ));
 
             if ($fileCount === 0 && $dirCount === 0) {
                 $convDisk->deleteDirectory($conversionsPath);
@@ -49,9 +50,10 @@ class Filesystem
         $mainDisk = $this->filesystem->disk($media->disk);
         if ($mainDisk->exists($media->path)) {
             $fileCount = count($convDisk->files($media->path));
-            $dirCount = count($convDisk->allDirectories($media->path));
-
-            ray(compact('fileCount', 'dirCount'));
+            $dirCount = count(array_filter(
+                $convDisk->allDirectories($media->path),
+                fn ($path) => rtrim($path, '/') !== rtrim($media->path, '/')
+            ));
 
             if ($fileCount === 0 && $dirCount === 0) {
                 $convDisk->deleteDirectory($media->path);
