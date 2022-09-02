@@ -31,6 +31,8 @@ class MediaHub extends Tool
 
     public function menu(Request $request)
     {
+        if (! config('nova-media-hub.enable_menu')) return;
+
         return MenuSection::make(__('novaMediaHub.navigationItemTitle'))
             ->path(self::getBasePath())
             ->icon('photograph');

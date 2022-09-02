@@ -43,6 +43,9 @@ return [
         'default',
     ],
 
+    // Defines whether the Nova menu item for Media Hub is shown
+    'enable_menu' => true,
+
     // Defines whether user can create collections in the "Upload media" modal
     // If set to false, the user can only use the collections defined in the config
     'user_can_create_collections' => true,
