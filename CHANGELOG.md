@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 06-09-2022
+
+### Changed
+
+- Append array values to formData with index
+  - Fixes an issue when using alongside other packages that don't respect `data[]` key, but instead want `data[0...n]`
+
 ## [1.1.3] - 06-09-2022
 
 ### Changed

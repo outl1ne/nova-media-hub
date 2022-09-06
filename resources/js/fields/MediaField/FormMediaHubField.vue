@@ -85,8 +85,8 @@ export default {
 
     fill(formData) {
       if (this.value && this.value.length) {
-        this.value.map(mediaItem => {
-          formData.append(`${this.field.attribute}[]`, mediaItem.id);
+        this.value.map((mediaItem, index) => {
+          formData.append(`${this.field.attribute}[${index}]`, mediaItem.id);
         });
       } else if (this.value && this.value.id) {
         formData.append(this.field.attribute, this.value.id);
