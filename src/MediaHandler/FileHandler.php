@@ -117,7 +117,12 @@ class FileHandler
         // Check if file already exists
         $fileHash = FileHelpers::getFileHash($this->pathToFile);
         $existingMedia = MediaHub::getQuery()->where('original_file_hash', $fileHash)->first();
-        if ($existingMedia) return $existingMedia;
+        if ($existingMedia) {
+            $existingMedia->updated_at = now();
+            $existingMedia->save();
+            $existingMedia->wasExisting = true;
+            return $existingMedia;
+        }
 
         // Check file size
         $maxSizeBytes = MediaHub::getMaxFileSizeInBytes();

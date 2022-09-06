@@ -92,9 +92,18 @@ export default {
           formData.append('files[]', file);
         }
 
-        await API.saveMediaToCollection(this.finalCollectionName, formData);
+        const { data } = await API.saveMediaToCollection(this.finalCollectionName, formData);
 
-        this.$emit('close', true, this.finalCollectionName);
+        let goToCollection = this.finalCollectionName;
+        if (data.hadExisting) {
+          Nova.$toasted.info(this.__('novaMediaHub.existingMediaDetected'));
+
+          // Find possible new collection name
+          const diffCollNameMedia = data.media.find(mi => mi.collection_name !== this.finalCollectionName);
+          if (diffCollNameMedia) goToCollection = diffCollNameMedia.collection_name;
+        }
+
+        this.$emit('close', true, goToCollection);
       } catch (e) {
         if (e && e.response && e.response.data) {
           const data = e.response.data;

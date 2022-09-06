@@ -36,7 +36,7 @@ class MediaHubController extends Controller
             $mediaQuery->where('collection_name', $collectionName);
         }
 
-        $mediaQuery->orderBy('created_at', 'DESC');
+        $mediaQuery->orderBy('updated_at', 'DESC');
 
         $paginatedMedia = $mediaQuery->paginate(18);
         $newCollection = $paginatedMedia->getCollection()->map->formatForNova();
@@ -71,7 +71,10 @@ class MediaHubController extends Controller
             ], 400);
         }
 
-        return response()->json($uploadedMedia, 200);
+        return response()->json([
+            'media' => collect($uploadedMedia)->map->formatForNova(),
+            'hadExisting' => count(array_filter($uploadedMedia, fn ($m) => $m->wasExisting ?? false)) > 0,
+        ], 200);
     }
 
     public function deleteMedia(Request $request)
