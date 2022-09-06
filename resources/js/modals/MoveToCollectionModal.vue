@@ -58,6 +58,8 @@ export default {
       Nova.$toasted.success(`Media successfully moved to collection "${this.collection}".`);
 
       this.$emit('close', true);
+
+      this.$nextTick(() => (this.loading = false));
     },
   },
 
