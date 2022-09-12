@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaMediaHub\Nova\Fields;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Laravel\Nova\Fields\Field;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -42,7 +43,7 @@ class MediaHubField extends Field
         $jsonSerialized = parent::jsonSerialize();
         $jsonSerialized['media'] = [];
 
-        $value = $jsonSerialized['value'];
+        $value = $jsonSerialized['value'] ?? $jsonSerialized['displayedAs'] ?? null;
 
         // Maybe user hasn't set the cast to array, try to JSON parse it manually
         try {
@@ -51,6 +52,11 @@ class MediaHubField extends Field
                 if (is_array($value)) $jsonSerialized['value'] = $value;
             }
         } catch (Exception $e) {
+        }
+
+        // If is nova-translatable, resolve all medias manually without overriding $json['value']
+        if ($jsonSerialized['translatable'] ?? false) {
+            $value = Arr::flatten(array_values($jsonSerialized['translatable']['value'] ?? []), 1);
         }
 
         if (is_array($value)) {
