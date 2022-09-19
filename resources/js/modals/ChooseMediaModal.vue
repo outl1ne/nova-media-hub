@@ -1,5 +1,12 @@
 <template>
-  <Modal :show="show" @close-via-escape="closeViaEscape" role="alertdialog" maxWidth="w-full" class="o1-px-8">
+  <Modal
+    :show="show"
+    @close-via-escape="closeViaEscape"
+    role="alertdialog"
+    maxWidth="w-full"
+    size="custom"
+    class="o1-px-8"
+  >
     <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
         <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">

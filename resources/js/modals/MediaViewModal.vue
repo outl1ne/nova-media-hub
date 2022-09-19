@@ -1,5 +1,6 @@
 <template>
   <Modal
+    size="custom"
     :show="show"
     @close-via-escape="$emit('close')"
     role="alertdialog"
