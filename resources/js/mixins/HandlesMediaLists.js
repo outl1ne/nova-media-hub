@@ -24,7 +24,7 @@ export default {
       orderBy = this.orderBy,
       orderDirection = this.orderDirection,
       page = this.currentPage,
-    }) {
+    } = {}) {
       this.loadingMedia = true;
 
       await API.getMedia({ collection, page, search, orderBy, orderDirection })

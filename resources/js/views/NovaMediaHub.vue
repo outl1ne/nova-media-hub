@@ -4,6 +4,8 @@
 
     <!-- Header -->
     <div class="o1-flex o1-mb-4">
+      <IndexSearchInput class="o1-mb-0" v-model:keyword="search" @update:keyword="search = $event" />
+
       <LoadingButton class="o1-ml-auto" @click="showMediaUploadModal = true">{{
         __('novaMediaHub.uploadMediaButton')
       }}</LoadingButton>
@@ -11,14 +13,10 @@
 
     <!-- Content wrapper -->
     <div
-      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700"
-      style="min-height: 500px"
+      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700 o1-min-h-[500px]"
     >
       <!-- Collections list -->
-      <div
-        class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700"
-        style="min-width: 160px"
-      >
+      <div class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700 o1-min-w-[160px]">
         <div
           class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-slate-700"
         >
@@ -145,6 +143,11 @@ export default {
       { type: 'divider' },
       { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
     ];
+
+    this.$watch(
+      () => ({ search: this.search }),
+      data => this.getMedia({ ...data, page: 1 })
+    );
   },
 
   async mounted() {
@@ -155,11 +158,6 @@ export default {
   },
 
   methods: {
-    async selectCollection(collectionName) {
-      this.collection = collectionName;
-      await this.getMedia();
-    },
-
     async closeMediaUploadModal(updateData, collectionName) {
       if (updateData) {
         await this.getCollections();
