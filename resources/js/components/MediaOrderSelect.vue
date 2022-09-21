@@ -1,5 +1,4 @@
 <template>
-  <!-- v-model:selected="orderBy" @change="selected => (orderBy = selected)" -->
   <SelectControl v-bind="$attrs">
     <option value="">{{ '> Show all' }}</option>
     <template v-for="column in columns" :key="column">
