@@ -6,9 +6,14 @@
     <div class="o1-flex o1-mb-4">
       <IndexSearchInput class="o1-mb-0" v-model:keyword="search" @update:keyword="search = $event" />
 
-      <LoadingButton class="o1-ml-auto" @click="showMediaUploadModal = true">{{
-        __('novaMediaHub.uploadMediaButton')
-      }}</LoadingButton>
+      <div class="o1-ml-auto o1-flex o1-gap-2">
+        <MediaOrderSelect
+          :columns="orderColumns"
+          v-model:selected="orderBy"
+          @change="selected => (orderBy = selected)"
+        />
+        <LoadingButton @click="showMediaUploadModal = true">{{ __('novaMediaHub.uploadMediaButton') }}</LoadingButton>
+      </div>
     </div>
 
     <!-- Content wrapper -->
@@ -106,6 +111,7 @@ import PaginationLinks from '../components/PaginationLinks';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
+import MediaOrderSelect from '../components/MediaOrderSelect';
 
 export default {
   mixins: [HandlesMediaLists],
@@ -118,6 +124,7 @@ export default {
     ConfirmDeleteModal,
     MediaItemContextMenu,
     MoveToCollectionModal,
+    MediaOrderSelect,
   },
 
   data: () => ({
@@ -145,7 +152,7 @@ export default {
     ];
 
     this.$watch(
-      () => ({ search: this.search }),
+      () => ({ search: this.search, orderBy: this.orderBy }),
       data => this.getMedia({ ...data, page: 1 })
     );
   },

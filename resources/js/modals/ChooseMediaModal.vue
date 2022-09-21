@@ -59,19 +59,11 @@
 
               <!-- Choose order -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
-                <SelectControl v-model:selected="orderBy" @change="selected => (orderBy = selected)">
-                  <option value="">{{ '> Show all' }}</option>
-                  <template v-for="column in orderColumns" :key="column">
-                    <option
-                      v-for="direction in ['asc', 'desc']"
-                      :key="`${column}:${direction}`"
-                      :value="`${column}:${direction}`"
-                    >
-                      <span class="o1-ml-auto">{{ direction === 'asc' ? '&uarr;' : '&darr;' }}</span>
-                      {{ __(`novaMediaHub.orderBy.${column}`) }}
-                    </option>
-                  </template>
-                </SelectControl>
+                <MediaOrderSelect
+                  :columns="orderColumns"
+                  v-model:selected="orderBy"
+                  @change="selected => (orderBy = selected)"
+                />
               </ModalFilterItem>
             </div>
 
@@ -156,7 +148,7 @@ import HandlesMediaLists from '../mixins/HandlesMediaLists';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import ModalFilterItem from '../components/ModalFilterItem';
-import IconArrow from '../../../vendor/laravel/nova/resources/js/components/Icons/IconArrow.vue';
+import MediaOrderSelect from '../components/MediaOrderSelect';
 
 export default {
   mixins: [HandlesMediaLists],
@@ -169,6 +161,7 @@ export default {
     PaginationLinks,
     ModalFilterItem,
     IconArrow,
+    MediaOrderSelect,
   },
 
   emits: ['close', 'confirm'],
