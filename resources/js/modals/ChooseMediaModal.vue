@@ -34,20 +34,41 @@
             <div v-else-if="!selectedCount" class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
           </div>
 
-          <div class="o1-flex">
-            <!-- Choose collection -->
-            <div class="o1-flex o1-flex-col o1-py-6 o1-pr-8 o1-w-full o1-max-w-xs">
-              <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
-                {{ __('novaMediaHub.chooseCollectionTitle') }}
-              </div>
-              <SelectControl v-model:selected="collection" @change="c => (collection = c)">
-                <option value="">{{ '> Show all' }}</option>
-                <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-              </SelectControl>
+          <div class="o1-flex o1-py-6">
+            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8">
+              <!-- Choose collection -->
+              <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
+                <SelectControl v-model:selected="collection" @change="c => (collection = c)">
+                  <option value="">{{ '> Show all' }}</option>
+                  <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
+                </SelectControl>
+              </ModalFilterItem>
+
+              <!-- Search -->
+              <ModalFilterItem :title="__('novaMediaHub.searchMediaTitle')">
+                <input
+                  v-model="search"
+                  ref="search"
+                  class="w-full form-control form-input form-input-bordered"
+                  tabindex="-1"
+                  type="search"
+                  :placeholder="__('Search')"
+                  spellcheck="false"
+                />
+              </ModalFilterItem>
+
+              <!-- Choose order -->
+              <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
+                <MediaOrderSelect
+                  :columns="orderColumns"
+                  v-model:selected="orderBy"
+                  @change="selected => (orderBy = selected)"
+                />
+              </ModalFilterItem>
             </div>
 
             <!-- Collection media -->
-            <div class="o1-flex o1-flex-col o1-pt-6 o1-w-full">
+            <div class="o1-flex o1-flex-col o1-w-full">
               <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
@@ -126,10 +147,21 @@ import PaginationLinks from '../components/PaginationLinks';
 import HandlesMediaLists from '../mixins/HandlesMediaLists';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
+import ModalFilterItem from '../components/ModalFilterItem';
+import MediaOrderSelect from '../components/MediaOrderSelect';
 
 export default {
   mixins: [HandlesMediaLists],
-  components: { Draggable, MediaItem, MediaUploadModal, ConfirmDeleteModal, MediaItemContextMenu, PaginationLinks },
+  components: {
+    Draggable,
+    MediaItem,
+    MediaUploadModal,
+    ConfirmDeleteModal,
+    MediaItemContextMenu,
+    PaginationLinks,
+    ModalFilterItem,
+    MediaOrderSelect,
+  },
 
   emits: ['close', 'confirm'],
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
@@ -145,6 +177,13 @@ export default {
     ctxShowEvent: void 0,
     ctxShowingModal: false,
   }),
+
+  created() {
+    this.$watch(
+      () => ({ collection: this.collection, search: this.search, orderBy: this.orderBy }),
+      data => this.getMedia({ ...data, page: 1 })
+    );
+  },
 
   async mounted() {
     if (this.field.defaultCollectionName) this.collection = this.field.defaultCollectionName;
@@ -167,11 +206,6 @@ export default {
           this.selectedMediaItems = [];
         }
       }
-    },
-
-    async collection(newValue) {
-      this.currentPage = 1;
-      await this.getMedia(newValue);
     },
   },
 
@@ -198,7 +232,7 @@ export default {
       if (updateData) {
         await this.getCollections();
         this.collection = collectionName;
-        await this.getMedia(this.collection);
+        await this.getMedia({ collection: this.collection });
       }
     },
 
@@ -251,7 +285,7 @@ export default {
 
     handleDeleteModalClose(update = false) {
       this.showConfirmDeleteModal = false;
-      if (update) this.getMedia(this.collection);
+      if (update) this.getMedia({ collection: this.collection });
     },
 
     async switchToPage(page) {

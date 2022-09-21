@@ -4,6 +4,7 @@ namespace Outl1ne\NovaMediaHub\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
@@ -26,23 +27,20 @@ class MediaHubController extends Controller
         return response()->json($collections, 200);
     }
 
-    public function getMedia(Request $request)
+    public function getMedia()
     {
-        $collectionName = $request->get('collection');
+        $media = app(Pipeline::class)
+            ->send(MediaHub::getQuery())->through([
+                \Outl1ne\NovaMediaHub\Filters\Collection::class,
+                \Outl1ne\NovaMediaHub\Filters\Search::class,
+                \Outl1ne\NovaMediaHub\Filters\Sort::class,
+            ])->thenReturn()->paginate(18);
 
-        $mediaQuery = MediaHub::getQuery();
 
-        if ($collectionName) {
-            $mediaQuery->where('collection_name', $collectionName);
-        }
+        $newCollection = $media->getCollection()->map->formatForNova();
+        $media->setCollection($newCollection);
 
-        $mediaQuery->orderBy('updated_at', 'DESC');
-
-        $paginatedMedia = $mediaQuery->paginate(18);
-        $newCollection = $paginatedMedia->getCollection()->map->formatForNova();
-        $paginatedMedia->setCollection($newCollection);
-
-        return response()->json($paginatedMedia, 200);
+        return response()->json($media, 200);
     }
 
     public function uploadMediaToCollection(Request $request)

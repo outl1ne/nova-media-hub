@@ -2,10 +2,13 @@ import API from '../api';
 
 export default {
   data: () => ({
-    collection: void 0,
+    collection: undefined,
+    search: undefined,
+    orderBy: undefined,
 
     collections: [],
     mediaItems: [],
+    orderColumns: ['updated_at', 'created_at'],
 
     currentPage: 1,
     mediaResponse: {},
@@ -15,17 +18,24 @@ export default {
   }),
 
   methods: {
-    async getMedia(collection = void 0, pageNr = void 0) {
+    async getMedia({
+      collection = this.collection,
+      search = this.search,
+      orderBy = this.orderBy,
+      orderDirection = this.orderDirection,
+      page = this.currentPage,
+    } = {}) {
       this.loadingMedia = true;
 
-      if (!collection) collection = this.collection;
-      if (!pageNr) pageNr = this.currentPage;
-
-      const { data } = await API.getMedia(collection, pageNr);
-      this.mediaResponse = data;
-      this.mediaItems = data.data || [];
-
-      this.loadingMedia = false;
+      await API.getMedia({ collection, page, search, orderBy, orderDirection })
+        .then(({ data: res }) => {
+          this.mediaResponse = res;
+          this.mediaItems = res.data || [];
+          if (this.currentPage !== page) this.currentPage = page;
+        })
+        .finally(() => {
+          this.loadingMedia = false;
+        });
     },
 
     async getCollections() {

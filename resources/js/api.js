@@ -1,10 +1,8 @@
 const PREFIX = '/nova-vendor/media-hub';
 
 export default {
-  async getMedia(collection, page) {
-    return Nova.request().get(`${PREFIX}/media`, {
-      params: { collection, page },
-    });
+  async getMedia(params) {
+    return Nova.request().get(`${PREFIX}/media`, { params });
   },
 
   async getCollections() {

@@ -4,21 +4,24 @@
 
     <!-- Header -->
     <div class="o1-flex o1-mb-4">
-      <LoadingButton class="o1-ml-auto" @click="showMediaUploadModal = true">{{
-        __('novaMediaHub.uploadMediaButton')
-      }}</LoadingButton>
+      <IndexSearchInput class="o1-mb-0" v-model:keyword="search" @update:keyword="search = $event" />
+
+      <div class="o1-ml-auto o1-flex o1-gap-2">
+        <MediaOrderSelect
+          :columns="orderColumns"
+          v-model:selected="orderBy"
+          @change="selected => (orderBy = selected)"
+        />
+        <LoadingButton @click="showMediaUploadModal = true">{{ __('novaMediaHub.uploadMediaButton') }}</LoadingButton>
+      </div>
     </div>
 
     <!-- Content wrapper -->
     <div
-      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700"
-      style="min-height: 500px"
+      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700 o1-min-h-[500px]"
     >
       <!-- Collections list -->
-      <div
-        class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700"
-        style="min-width: 160px"
-      >
+      <div class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700 o1-min-w-[160px]">
         <div
           class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-slate-700"
         >
@@ -108,6 +111,7 @@ import PaginationLinks from '../components/PaginationLinks';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
+import MediaOrderSelect from '../components/MediaOrderSelect';
 
 export default {
   mixins: [HandlesMediaLists],
@@ -120,6 +124,7 @@ export default {
     ConfirmDeleteModal,
     MediaItemContextMenu,
     MoveToCollectionModal,
+    MediaOrderSelect,
   },
 
   data: () => ({
@@ -145,6 +150,11 @@ export default {
       { type: 'divider' },
       { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
     ];
+
+    this.$watch(
+      () => ({ search: this.search, orderBy: this.orderBy }),
+      data => this.getMedia({ ...data, page: 1 })
+    );
   },
 
   async mounted() {
@@ -155,11 +165,6 @@ export default {
   },
 
   methods: {
-    async selectCollection(collectionName) {
-      this.collection = collectionName;
-      await this.getMedia();
-    },
-
     async closeMediaUploadModal(updateData, collectionName) {
       if (updateData) {
         await this.getCollections();
