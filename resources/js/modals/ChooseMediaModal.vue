@@ -160,7 +160,6 @@ export default {
     MediaItemContextMenu,
     PaginationLinks,
     ModalFilterItem,
-    IconArrow,
     MediaOrderSelect,
   },
 
