@@ -61,7 +61,10 @@ class FileHelpers
 
     public static function sanitizeFileName($fileName)
     {
-        return str_replace(['#', '/', '\\', ' ', '?', '='], '-', $fileName);
+        [$extension, $name] = explode('.', strrev($fileName), 2);
+        $sanitizedName = urlencode(str_replace(['#', '/', '\\', ' ', '?', '=', '.'], '-', $name));
+
+        return strrev("{$extension}.{$sanitizedName}");
     }
 
     // Returns [$fileName, $extension]
