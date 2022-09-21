@@ -8,7 +8,7 @@ class Collection
 {
     public function handle($query, Closure $next)
     {
-        if (!request()->has('collection')) {
+        if (empty(request()->get('collection'))) {
             return $next($query);
         }
 

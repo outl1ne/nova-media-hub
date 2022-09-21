@@ -9,7 +9,7 @@ class Sort
 {
     public function handle($query, Closure $next)
     {
-        if (!request()->has('orderBy')) {
+        if (empty(request()->get('orderBy'))) {
             return $next($query)->orderBy('updated_at', 'DESC');
         }
 

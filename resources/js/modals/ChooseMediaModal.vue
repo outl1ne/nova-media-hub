@@ -58,7 +58,7 @@
               </ModalFilterItem>
 
               <!-- Choose order -->
-              <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
+              <ModalFilterItem :title="__('novaMediaHub.chooseMediaOrder')">
                 <MediaOrderSelect
                   :columns="orderColumns"
                   v-model:selected="orderBy"

@@ -9,6 +9,7 @@
   "novaMediaHub.noMediaSelectedText": "No media items selected",
   "novaMediaHub.chooseCollectionTitle": "Choose collection",
   "novaMediaHub.chooseMediaTitle": "Choose media",
+  "novaMediaHub.chooseMediaOrder": "Sort by",
   "novaMediaHub.confirmButton": "Confirm",
   "novaMediaHub.closeButton": "Close",
   "novaMediaHub.deleteModalTitle": "Delete media",
