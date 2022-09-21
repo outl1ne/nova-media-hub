@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 21-09-2022
+
+### Added
+
+- FileHandler now encodes file names.
+  - This is backwards compatible, since we will avoid double encoding.
+  - New files will now be urlencoded using php's `urlencode`
+- `OrderBy` and `Search` filters
+
 ## [1.1.6] - 19-09-2022
 
 ### Fixed
