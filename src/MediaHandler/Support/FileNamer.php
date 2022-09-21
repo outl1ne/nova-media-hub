@@ -13,4 +13,11 @@ class FileNamer
     {
         return "{$fileName}.{$conversion}.{$extension}";
     }
+
+    public static function encode(string $fileName): string
+    {
+        // For backwards compatibility.
+        // Encodes fileName while avoiding double encoding.
+        return urlencode(urldecode($fileName));
+    }
 }
