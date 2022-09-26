@@ -179,12 +179,12 @@ class MediaHub extends Tool
 
     public static function getOriginalImageManipulationsJobQueue()
     {
-        return config('nova-media-hub.original_image_manipulations_job_queue', config('queue.default'));
+        return config('nova-media-hub.original_image_manipulations_job_queue', null);
     }
 
     public static function getImageConversionsJobQueue()
     {
-        return config('nova-media-hub.image_conversions_job_queue', config('queue.default'));
+        return config('nova-media-hub.image_conversions_job_queue', null);
     }
 
     public static function getThumbnailConversionName()
