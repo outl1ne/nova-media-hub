@@ -39,7 +39,7 @@ class Media extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::disk($this->disk)->url(FileNamer::encode("{$this->path}{$this->file_name}"));
+        return Storage::disk($this->disk)->url($this->path . FileNamer::encode($this->file_name));
     }
 
     public function getThumbnailUrlAttribute()
@@ -50,7 +50,7 @@ class Media extends Model
         $thumbnailName = $this->conversions[$thumbnailConversionName] ?? null;
         if (!$thumbnailName) return null;
 
-        return Storage::disk($this->conversions_disk)->url(FileNamer::encode($this->conversionsPath . $thumbnailName));
+        return Storage::disk($this->conversions_disk)->url($this->conversionsPath . FileNamer::encode($thumbnailName));
     }
 
     public function formatForNova()
