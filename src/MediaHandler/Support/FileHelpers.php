@@ -4,6 +4,7 @@ namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
 use Finfo;
 use Exception;
+use Throwable;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -61,10 +62,26 @@ class FileHelpers
 
     public static function sanitizeFileName($fileName)
     {
-        [$extension, $name] = explode('.', strrev($fileName), 2);
-        $sanitizedName = urlencode(str_replace(['#', '/', '\\', ' ', '?', '=', '.'], '-', $name));
+        try {
+            $reverseFileName = strrev($fileName);
 
-        return strrev("{$extension}.{$sanitizedName}");
+            if (str_contains($fileName, '.')) {
+                [$extension, $name] = explode('.', $reverseFileName, 2);
+            } else {
+                $extension = null;
+                $name = $reverseFileName;
+            }
+
+            if (empty($name)) $name = $extension;
+
+            $sanitizedName = urlencode(str_replace(['#', '/', '\\', ' ', '?', '=', '.'], '-', $name));
+
+            if (!empty($extension)) return strrev("{$extension}.{$sanitizedName}");
+            return strrev($sanitizedName);
+        } catch (Throwable $e) {
+            report($e);
+            return $fileName;
+        }
     }
 
     // Returns [$fileName, $extension]
