@@ -16,8 +16,6 @@ class FileNamer
 
     public static function encode(string $fileName): string
     {
-        // For backwards compatibility.
-        // Encodes fileName while avoiding double encoding.
-        return urlencode(urldecode($fileName));
+        return urlencode($fileName);
     }
 }

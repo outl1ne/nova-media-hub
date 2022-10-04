@@ -74,7 +74,7 @@ class FileHelpers
 
             if (empty($name)) $name = $extension;
 
-            $sanitizedName = urlencode(str_replace(['#', '/', '\\', ' ', '?', '=', '.'], '-', $name));
+            $sanitizedName = str_replace(['#', '/', '\\', ' ', '?', '=', '.', '@', '%'], '-', $name);
 
             if (!empty($extension)) return strrev("{$extension}.{$sanitizedName}");
             return strrev($sanitizedName);
