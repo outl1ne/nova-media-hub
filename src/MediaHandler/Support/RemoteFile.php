@@ -2,6 +2,7 @@
 
 namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class RemoteFile
@@ -38,14 +39,13 @@ class RemoteFile
 
     public function downloadFileToCurrentFilesystem()
     {
-        if ($this->disk) {
-            $fileContents = Storage::disk($this->disk)->get($this->getKey());
-        } else {
-            $fileContents = file_get_contents($this->getKey());
-        }
-
         $tempFilePath = FileHelpers::getTemporaryFilePath();
-        file_put_contents($tempFilePath, $fileContents);
+
+        if ($this->disk) {
+            Storage::disk('local')->writeStream($tempFilePath, Storage::disk($this->disk)->readStream($this->getKey()));
+        } else {
+            Http::get($this->getKey())->sink($tempFilePath);
+        }
 
         $this->originalFileName = $this->getName();
         $this->key = $tempFilePath;
