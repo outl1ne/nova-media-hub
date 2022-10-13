@@ -44,7 +44,7 @@ class RemoteFile
         if ($this->disk) {
             Storage::disk('local')->writeStream($tempFilePath, Storage::disk($this->disk)->readStream($this->getKey()));
         } else {
-            Http::get($this->getKey())->sink($tempFilePath);
+            Http::sink($tempFilePath)->get($this->getKey());
         }
 
         $this->originalFileName = $this->getName();
