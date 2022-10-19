@@ -54,6 +54,7 @@ class FileHelpers
             $fileHash = md5(fread($fileStream, 1000000));
             fclose($fileStream);
         } catch (Exception $e) {
+            report($e);
             return null;
         }
 

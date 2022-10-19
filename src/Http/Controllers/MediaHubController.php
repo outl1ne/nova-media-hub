@@ -59,6 +59,7 @@ class MediaHubController extends Controller
                     ->save();
             } catch (Exception $e) {
                 $exceptions[] = class_basename(get_class($e));
+                report($e);
             }
         }
 
