@@ -52,7 +52,6 @@ class MediaHubField extends Field
                 if (is_array($value)) $jsonSerialized['value'] = $value;
             }
         } catch (Exception $e) {
-            report($e);
         }
 
         // If is nova-translatable, resolve all medias manually without overriding $json['value']
