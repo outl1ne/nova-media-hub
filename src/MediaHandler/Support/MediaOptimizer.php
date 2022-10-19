@@ -36,6 +36,7 @@ class MediaOptimizer
 
         // Load and save modified version
         Image::load($localFilePath)
+            ->useImageDriver(config('image.driver'))
             ->manipulate($manipulations)
             ->save();
 
@@ -74,6 +75,7 @@ class MediaOptimizer
 
         // Load and save modified version
         Image::load($localFilePath)
+            ->useImageDriver(config('image.driver'))
             ->manipulate($manipulations)
             ->save();
 
