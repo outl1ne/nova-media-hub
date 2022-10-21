@@ -52,6 +52,12 @@ return [
     // when dispalying media, define the name of the conversion here
     'thumbnail_conversion_name' => null,
 
+    // Image manipulation driver
+    // If null, it will try to read config('image.driver')
+    // Final fallback is 'gd'
+    // Options: null, 'imagick', 'gd'
+    'image_driver' => null,
+
     // -- Conversions
     // 'collection_name' => ['conversion_name' => [options]]
     // Use '*' as wildcard for all collections

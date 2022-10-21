@@ -35,9 +35,7 @@ class MediaOptimizer
         }
 
         // Load and save modified version
-        Image::load($localFilePath)
-            ->manipulate($manipulations)
-            ->save();
+        static::manipulate($localFilePath, $manipulations);
 
         $media->size = filesize($localFilePath);
         $media->optimized_at = now();
@@ -73,9 +71,7 @@ class MediaOptimizer
         }
 
         // Load and save modified version
-        Image::load($localFilePath)
-            ->manipulate($manipulations)
-            ->save();
+        static::manipulate($localFilePath, $manipulations);
 
         $conversionFileName = $pathMaker->getConversionFileName($media, $conversionName);
         $fileSystem->copyFileToMediaLibrary($localFilePath, $media, $conversionFileName, Filesystem::TYPE_CONVERSION, false);
@@ -90,5 +86,12 @@ class MediaOptimizer
     protected static function getFilesystem(): Filesystem
     {
         return app()->make(Filesystem::class);
+    }
+
+    protected static function manipulate($path, $manipulations)
+    {
+        $image = Image::load($path)->manipulate($manipulations);
+        if ($driver = MediaHub::getImageDriver()) $image->useImageDriver($driver);
+        $image->save();
     }
 }

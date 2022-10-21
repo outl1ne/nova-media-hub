@@ -201,4 +201,9 @@ class MediaHub extends Tool
     {
         return config('nova-media-hub.thumbnail_conversion_name', null);
     }
+
+    public static function getImageDriver()
+    {
+        return config('nova-media-hub.image_driver', config('image.driver'));
+    }
 }
