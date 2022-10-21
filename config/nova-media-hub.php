@@ -28,7 +28,7 @@ return [
 
     // Locales (for translatable alt texts and titles)
     // Set to null if you don't want translatability
-    // ['et' => 'Estonian', 'en' => 'English']
+    // Example value: ['et' => 'Estonian', 'en' => 'English']
     'locales' => null,
 
     // File size upper limit

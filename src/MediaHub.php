@@ -15,6 +15,8 @@ use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 
 class MediaHub extends Tool
 {
+    protected $hideFromMenu = false;
+
     public function boot()
     {
         Nova::script('nova-media-hub', __DIR__ . '/../dist/js/entry.js');
@@ -31,6 +33,8 @@ class MediaHub extends Tool
 
     public function menu(Request $request)
     {
+        if ($this->hideFromMenu) return;
+
         return MenuSection::make(__('novaMediaHub.navigationItemTitle'))
             ->path(self::getBasePath())
             ->icon('photograph');
@@ -91,6 +95,12 @@ class MediaHub extends Tool
         });
 
         return $conversions;
+    }
+
+    public function hideFromMenu()
+    {
+        $this->hideFromMenu = true;
+        return $this;
     }
 
 
