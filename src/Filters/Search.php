@@ -15,6 +15,8 @@ class Search
         }
 
         $search = ['%', str_replace('*', '%', request()->get('search')), '%'];
-        return $next($query)->where('file_name', 'like', Arr::join($search, ''));
+        return $next($query)
+            ->where('file_name', 'like', Arr::join($search, ''))
+            ->orWhere('data', 'like', Arr::join($search, ''));
     }
 }
