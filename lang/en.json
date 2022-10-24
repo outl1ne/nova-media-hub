@@ -26,6 +26,8 @@
   "novaMediaHub.collectionTitle": "Collection",
   "novaMediaHub.altTextTitle": "Alt text",
   "novaMediaHub.titleTextTitle": "Title text",
+  "novaMediaHub.captionTextTitle": "Caption text",
+  "novaMediaHub.copyrightTextTitle": "Copyright",
   "novaMediaHub.saveAndClose": "Save and close",
   "novaMediaHub.movaCollectionTitle": "Move to collection",
   "novaMediaHub.moveCollectionText": "Choose collection to move the media item to",

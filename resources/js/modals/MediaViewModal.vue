@@ -107,6 +107,8 @@ export default {
         this.dataFields = [
           this.createField('alt', this.__('novaMediaHub.altTextTitle')),
           this.createField('title', this.__('novaMediaHub.titleTextTitle')),
+          this.createField('caption', this.__('novaMediaHub.captionTextTitle')),
+          this.createField('copyright', this.__('novaMediaHub.copyrightTextTitle')),
         ];
       } else {
         this.dataFields = [];
