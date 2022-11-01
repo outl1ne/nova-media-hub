@@ -34,7 +34,7 @@ class MediaHubController extends Controller
                 \Outl1ne\NovaMediaHub\Filters\Collection::class,
                 \Outl1ne\NovaMediaHub\Filters\Search::class,
                 \Outl1ne\NovaMediaHub\Filters\Sort::class,
-            ])->thenReturn()->paginate(18);
+            ])->thenReturn()->paginate(72);
 
 
         $newCollection = $media->getCollection()->map->formatForNova();
