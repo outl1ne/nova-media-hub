@@ -111,11 +111,15 @@ class MediaHubController extends Controller
             $mediaData = $media->data;
             $mediaData['alt'] = $request->input('alt.en') ?? null;
             $mediaData['title'] = $request->input('title.en') ?? null;
+            $mediaData['caption'] = $request->input('caption.en') ?? null;
+            $mediaData['copyright'] = $request->input('copyright.en') ?? null;
             $media->data = $mediaData;
         } else {
             $mediaData = $media->data;
             $mediaData['alt'] = $request->input('alt') ?? null;
             $mediaData['title'] = $request->input('title') ?? null;
+            $mediaData['caption'] = $request->input('caption') ?? null;
+            $mediaData['copyright'] = $request->input('copyright') ?? null;
             $media->data = $mediaData;
         }
 
