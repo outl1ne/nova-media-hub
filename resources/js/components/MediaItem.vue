@@ -34,8 +34,10 @@
       <CheckMarkIcon />
     </div>
 
-    <div class="o1-absolute o1-top-0 o1-right-0 o1-bg-teal-100 o1-text-xs o1-py-0.5 o1-px-1 o1-rounded-bl">
-      #{{mediaItem.id}}
+    <div
+      class="o1-absolute o1-top-0 o1-right-0 o1-bg-teal-100 o1-text-xs o1-py-0.5 o1-px-1 o1-rounded-bl o1-text-slate-700"
+    >
+      #{{ mediaItem.id }}
     </div>
 
     <div
