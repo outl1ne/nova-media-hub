@@ -102,14 +102,12 @@ export default {
   watch: {
     async show(newValue) {
       if (newValue) {
+        const fields = Nova.config('novaMediaHub')?.mediaDataFields || {};
+        const fieldKeys = Object.keys(fields);
+
         await this.getCollections();
         this.selectedCollection = this.activeCollection;
-        this.dataFields = [
-          this.createField('alt', this.__('novaMediaHub.altTextTitle')),
-          this.createField('title', this.__('novaMediaHub.titleTextTitle')),
-          this.createField('caption', this.__('novaMediaHub.captionTextTitle')),
-          this.createField('copyright', this.__('novaMediaHub.copyrightTextTitle')),
-        ];
+        this.dataFields = fieldKeys.map(key => this.createField(key, fields[key]));
       } else {
         this.dataFields = [];
       }
@@ -129,7 +127,7 @@ export default {
         this.mediaItem.data = data.data;
 
         this.$emit('close');
-        Nova.$toasted.success('Updated');
+        Nova.$toasted.success(this.__('novaMediaHub.mediaItemUpdated'));
       } catch (e) {
         console.error(e);
       }

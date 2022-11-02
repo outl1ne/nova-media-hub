@@ -55,7 +55,7 @@ export default {
 
       await API.moveMediaToCollection(this.mediaItem.id, this.collection);
 
-      Nova.$toasted.success(`Media successfully moved to collection "${this.collection}".`);
+      Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', { collection: this.collection }));
 
       this.$emit('close', true);
 

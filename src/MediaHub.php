@@ -16,6 +16,17 @@ use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 class MediaHub extends Tool
 {
     protected $hideFromMenu = false;
+    protected $customFields = [];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->withCustomFields([
+            'alt' => __('novaMediaHub.altTextTitle'),
+            'title' => __('novaMediaHub.titleTextTitle'),
+        ]);
+    }
 
     public function boot()
     {
@@ -27,8 +38,31 @@ class MediaHub extends Tool
                 'basePath' => MediaHub::getBasePath(),
                 'canCreateCollections' => MediaHub::userCanCreateCollections(),
                 'locales' => MediaHub::getLocales(),
+                'mediaDataFields' => $this->customFields,
             ],
         ]);
+    }
+
+    /**
+     * Allows custom (text) fields and data to be included with each media item.
+     *
+     * @param array $fields Key-value pairs of fields where key is the field attribute
+     * and value is the string displayed to the user.
+     *
+     * For example: ['copyright' => __('Copyright')]
+     *
+     * @param bool $overwrite Optionally force overwrite pre-existing fields.
+     *
+     * @return self
+     **/
+    public function withCustomFields(array $fields, $overwrite = false)
+    {
+        if ($overwrite) {
+            $this->customFields = $fields;
+        } else {
+            $this->customFields = array_merge($this->customFields, $fields);
+        }
+        return $this;
     }
 
     public function menu(Request $request)

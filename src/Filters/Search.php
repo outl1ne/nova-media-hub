@@ -4,6 +4,7 @@ namespace Outl1ne\NovaMediaHub\Filters;
 
 use Closure;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class Search
 {
@@ -19,8 +20,8 @@ class Search
 
         return $next($query)->where(
             fn ($subQuery) => $subQuery
-                ->where('file_name', 'LIKE', $search)
-                ->orWhere('data', 'LIKE', $search)
+                ->where(DB::raw('UPPER(file_name)'), 'LIKE', $search)
+                ->orWhere(DB::raw('UPPER(data)'), 'LIKE', $search)
         );
     }
 }
