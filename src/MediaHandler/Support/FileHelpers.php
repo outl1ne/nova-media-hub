@@ -74,7 +74,7 @@ class FileHelpers
 
             if (empty($name)) $name = $extension;
 
-            $sanitizedName = str_replace(['#', '/', '\\', ' ', '?', '=', '.', '@', '%'], '-', $name);
+            $sanitizedName = Str::replace(['#', '/', '\\', ' ', '?', '=', '.', '@', '%'], '-', $name);
 
             if (!empty($extension)) return strrev("{$extension}.{$sanitizedName}");
             return strrev($sanitizedName);
