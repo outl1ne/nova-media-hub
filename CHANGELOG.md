@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 02-11-2022
+
+### Added
+
+- Added `withCustomFields()` to MediaHub Tool which allows adding custom data fields for media items
+- Added quick upload to "choose media" modal (thanks to [@ndrez-outl1ne](https://github.com/ndrez-outl1ne))
+- Added media ID to MediaItem component (thanks to [@murdercode](https://github.com/murdercode))
+- Added Italian translations (thanks to [@murdercode](https://github.com/murdercode))
+
+### Changed
+
+- Fetch more images per page (now 72 per page, instead of 18) (thanks to [@ndrez-outl1ne](https://github.com/ndrez-outl1ne))
+- Choose media modal is now full-screen and the media items list is scrollable (thanks to [@ndrez-outl1ne](https://github.com/ndrez-outl1ne))
+- Selected media items now scroll horizontally instead of wrapping (thanks to [@ndrez-outl1ne](https://github.com/ndrez-outl1ne))
+- Allow searching items by their data fields (thanks to [@murdercode](https://github.com/murdercode))
+- Clicking on a MediaItem component's file name now opens view/edit modal for quick access
+- Misc UI fixes (reduced media items size in some places)
+- Updated packages
+
 ## [1.2.8] - 21-10-2022
 
 ### Added
