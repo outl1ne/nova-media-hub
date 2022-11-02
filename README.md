@@ -47,7 +47,15 @@ public function tools()
 {
     return [
         // ...
-        new \Outl1ne\NovaMediaHub\MediaHub
+        \Outl1ne\NovaMediaHub\MediaHub::make()
+        // You can choose to hide the Tool from the sidebar
+          ->hideFromMenu()
+
+          // Optionally add additional fields to Media items
+          ->withCustomFields(
+            ['copyright' => __('Copyright')],
+            overwrite: false
+          )
     ];
 }
 ```
