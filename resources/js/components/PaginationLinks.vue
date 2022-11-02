@@ -4,7 +4,7 @@
       <!-- First Link -->
       <button
         :disabled="!hasPreviousPages || linksDisabled"
-        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 rounded-bl-lg focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
+        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 rounded-bl-lg focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'o1-text-teal-500': hasPreviousPages,
           'o1-text-slate-200': !hasPreviousPages || linksDisabled,
@@ -19,7 +19,7 @@
       <!-- Previous Link -->
       <button
         :disabled="!hasPreviousPages || linksDisabled"
-        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
+        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'o1-text-teal-500': hasPreviousPages,
           'o1-text-slate-200': !hasPreviousPages || linksDisabled,
@@ -36,7 +36,7 @@
         :disabled="linksDisabled"
         v-for="n in printPages"
         :key="n"
-        class="border-r border-gray-200 dark:border-gray-700 h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
+        class="border-r border-gray-200 dark:border-gray-700 h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'o1-text-teal-500': page !== n,
           'o1-text-teal-500 o1-bg-teal-50 dark:o1-bg-teal-900': page === n,
@@ -50,7 +50,7 @@
       <!-- Next Link -->
       <button
         :disabled="!hasMorePages || linksDisabled"
-        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
+        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'o1-text-teal-500': hasMorePages,
           'o1-text-slate-200': !hasMorePages || linksDisabled,
@@ -65,7 +65,7 @@
       <!-- Last Link -->
       <button
         :disabled="!hasMorePages || linksDisabled"
-        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
+        class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'o1-text-teal-500': hasMorePages,
           'o1-text-slate-200': !hasMorePages || linksDisabled,
