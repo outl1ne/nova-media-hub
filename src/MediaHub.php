@@ -15,8 +15,8 @@ use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 
 class MediaHub extends Tool
 {
-    protected $hideFromMenu = false;
-    protected $customFields = [];
+    public $hideFromMenu = false;
+    public $customFields = [];
 
     public function __construct()
     {
@@ -72,6 +72,17 @@ class MediaHub extends Tool
         return MenuSection::make(__('novaMediaHub.navigationItemTitle'))
             ->path(self::getBasePath())
             ->icon('photograph');
+    }
+
+    public static function getDataFields(): array
+    {
+        $mediaHubTool = static::getSelfTool();
+        return $mediaHubTool?->customFields ?? [];
+    }
+
+    public static function getSelfTool(): MediaHub|null
+    {
+        return collect(Nova::registeredTools())->first(fn ($tool) => $tool instanceof MediaHub);
     }
 
     public static function storeMediaFromDisk($filePath, $disk, $collectionName, $targetDisk = '', $targetConversionsDisk = '')
