@@ -43,6 +43,7 @@
     <div
       v-if="showFileName"
       class="o1-absolute o1-bottom-2 o1-left-2 o1-right-2 o1-bg-teal-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700 o1-whitespace-nowrap o1-overflow-hidden o1-text-ellipsis"
+      @click.stop.prevent="$emit('nameClick')"
     >
       {{ mediaItem.file_name }}
     </div>

@@ -40,7 +40,7 @@
   "novaMediaHub.contextDeselectOthers": "Deselect others",
   "novaMediaHub.contextOpenCollection": "Open collection",
   "novaMediaHub.existingMediaDetected": "Some media items were already found on the server and were not (re)uploaded. However, they were moved to the start of the collection to make them easier to find.",
-  "novaMediaHub.searchMediaTitle": "Search by name",
+  "novaMediaHub.searchMediaTitle": "Search",
   "novaMediaHub.orderBy.updated_at": "Updated at",
   "novaMediaHub.orderBy.created_at": "Created at",
   "novaMediaHub.mediaItemUpdated": "Media item successfully updated",
