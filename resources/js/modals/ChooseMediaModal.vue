@@ -7,15 +7,18 @@
     size="custom"
     class="o1-px-8 overflow-hidden full-modal"
   >
-    <LoadingCard :loading="loading" class="o1-flex o1-flex-col o1-h-full mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <LoadingCard
+      :loading="loading"
+      class="o1-flex o1-flex-col o1-h-full mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+    >
       <slot>
-        <ModalContent class="o1-min-h-[90%] o1-px-8 o1-py-0 o1-flex o1-flex-col">
+        <ModalContent class="o1-min-h-[90%] o1-grow o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
-          <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-2 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
+          <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-1 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
             <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
-            <div class="o1-flex overflow-x-auto o1-p-1" v-if="!!selectedCount">
+            <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-if="!!selectedCount">
               <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-shrink-0">
                 <template #item="{ element: mediaItem }">
                   <MediaItem
@@ -24,7 +27,8 @@
                     @click="toggleMediaSelection(mediaItem)"
                     :selected="true"
                     :showFileName="true"
-                    :size="36"
+                    :size="32"
+                    @nameClick="openViewMediaModal(mediaItem)"
                     @contextmenu.stop.prevent="openContextMenuFromSelected($event, mediaItem)"
                     class="o1-mr-4 o1-mb-4"
                   />
@@ -34,7 +38,7 @@
             <div v-else-if="!selectedCount" class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
           </div>
 
-          <div class="o1-flex o1-py-6 o1-min-h-[30%]">
+          <div class="o1-flex o1-pt-4 o1-min-h-[30%] o1-h-full">
             <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8 overflow-y-auto">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
@@ -66,7 +70,7 @@
                 />
               </ModalFilterItem>
 
-              <div class="o1-flex o1-flex-col o1-w-full">
+              <div class="o1-flex o1-flex-col o1-w-full media-hub-dropzone">
                 <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-mb-2">
                   {{ __('novaMediaHub.quickUpload') }}
                 </div>
@@ -91,9 +95,11 @@
                     :mediaItem="mediaItem"
                     @click="toggleMediaSelection(mediaItem)"
                     @contextmenu.stop.prevent="openContextMenuFromChoose($event, mediaItem)"
+                    @nameClick="openViewMediaModal(mediaItem)"
                     class="o1-mb-4"
                     :selected="selectedMediaItems.find(m => m.id === mediaItem.id)"
                     :showFileName="true"
+                    :size="40"
                   />
                 </div>
               </div>
@@ -127,6 +133,7 @@
     </LoadingCard>
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
+    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal" />
 
     <MediaItemContextMenu
       id="media-choose-modal-ctx-menu"
@@ -150,6 +157,7 @@ import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import ModalFilterItem from '../components/ModalFilterItem';
 import MediaOrderSelect from '../components/MediaOrderSelect';
+import MediaViewModal from '../modals/MediaViewModal';
 
 export default {
   mixins: [HandlesMediaLists],
@@ -161,6 +169,7 @@ export default {
     PaginationLinks,
     ModalFilterItem,
     MediaOrderSelect,
+    MediaViewModal,
   },
 
   emits: ['close', 'confirm'],
@@ -171,6 +180,7 @@ export default {
 
     loading: false,
     showConfirmDeleteModal: false,
+    showMediaViewModal: false,
 
     ctxOptions: [],
     ctxMediaItem: void 0,
@@ -303,6 +313,15 @@ export default {
       if (update) this.getMedia({ collection: this.collection });
     },
 
+    openViewMediaModal(mediaItem) {
+      this.ctxMediaItem = mediaItem;
+      this.showMediaViewModal = true;
+    },
+
+    closeViewModal() {
+      this.showMediaViewModal = false;
+    },
+
     async switchToPage(page) {
       await this.goToMediaPage(page);
       Nova.$emit('resources-loaded');
@@ -310,7 +329,7 @@ export default {
 
     closeViaEscape() {
       // Close only if context isn't showing anything
-      if (!this.ctxShowingModal && !this.showConfirmDeleteModal) {
+      if (!this.ctxShowingModal && !this.showConfirmDeleteModal && !this.showMediaViewModal) {
         this.$emit('close');
       }
     },
@@ -327,5 +346,11 @@ export default {
 <style lang="scss">
 .full-modal {
   height: calc(100vh - 3rem);
+}
+
+.media-hub-dropzone {
+  label > div > p > div.rounded {
+    white-space: nowrap;
+  }
 }
 </style>
