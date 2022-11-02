@@ -5,18 +5,18 @@
     role="alertdialog"
     maxWidth="w-full"
     size="custom"
-    class="o1-px-8"
+    class="o1-px-8 overflow-hidden full-modal"
   >
-    <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <LoadingCard :loading="loading" class="o1-flex o1-flex-col o1-h-full mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <slot>
-        <ModalContent class="o1-px-8 o1-py-0 o1-flex o1-flex-col">
+        <ModalContent class="o1-min-h-[90%] o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
           <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-2 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
             <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
-            <div class="o1-flex o1-flex-wrap" v-if="!!selectedCount">
-              <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-wrap">
+            <div class="o1-flex overflow-x-auto o1-p-1" v-if="!!selectedCount">
+              <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-shrink-0">
                 <template #item="{ element: mediaItem }">
                   <MediaItem
                     :key="'selected-' + mediaItem.id"
@@ -34,8 +34,8 @@
             <div v-else-if="!selectedCount" class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
           </div>
 
-          <div class="o1-flex o1-py-6">
-            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8">
+          <div class="o1-flex o1-py-6 o1-min-h-[30%]">
+            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8 overflow-y-auto">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
                 <SelectControl v-model:selected="collection" @change="c => (collection = c)">
@@ -65,6 +65,13 @@
                   @change="selected => (orderBy = selected)"
                 />
               </ModalFilterItem>
+
+              <div class="o1-flex o1-flex-col o1-w-full">
+                <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-mb-2">
+                  {{ __('novaMediaHub.quickUpload') }}
+                </div>
+                <DropZone @change="uploadFiles" />
+              </div>
             </div>
 
             <!-- Collection media -->
@@ -72,10 +79,10 @@
               <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
-              <div class="o1-w-full">
+              <div class="o1-w-full overflow-y-auto">
                 <div
                   id="media-items-list"
-                  class="o1-w-full o1-grid o1-gap-4 o1-justify-items-center"
+                  class="o1-w-full o1-grid o1-gap-4 o1-justify-items-center o1-p-1"
                   v-show="!!mediaItems.length"
                 >
                   <MediaItem
@@ -114,16 +121,10 @@
             {{ __('novaMediaHub.closeButton') }}
           </CancelButton>
 
-          <LoadingButton @click.prevent="showMediaUploadModal = true" class="o1-mr-4">{{
-            __('novaMediaHub.uploadMediaButton')
-          }}</LoadingButton>
-
           <LoadingButton @click.prevent="confirm">{{ __('novaMediaHub.confirmButton') }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
-
-    <MediaUploadModal :activeCollection="collection" :show="showMediaUploadModal" @close="handleUploadModalClose" />
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
 
@@ -140,9 +141,9 @@
 </template>
 
 <script>
+import API from '../api';
 import Draggable from 'vuedraggable';
 import MediaItem from '../components/MediaItem';
-import MediaUploadModal from '../modals/MediaUploadModal';
 import PaginationLinks from '../components/PaginationLinks';
 import HandlesMediaLists from '../mixins/HandlesMediaLists';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
@@ -155,7 +156,6 @@ export default {
   components: {
     Draggable,
     MediaItem,
-    MediaUploadModal,
     ConfirmDeleteModal,
     MediaItemContextMenu,
     PaginationLinks,
@@ -169,7 +169,7 @@ export default {
   data: () => ({
     selectedMediaItems: [],
 
-    showMediaUploadModal: false,
+    loading: false,
     showConfirmDeleteModal: false,
 
     ctxOptions: [],
@@ -210,6 +210,31 @@ export default {
   },
 
   methods: {
+    async uploadFiles(selectedFiles) {
+      this.loading = true;
+      try {
+        const formData = new FormData();
+        for (const file of selectedFiles) {
+          formData.append('files[]', file);
+        }
+        const { data } = await API.saveMediaToCollection(this.collection, formData);
+
+        if (data.hadExisting) {
+          Nova.$toasted.info(this.__('novaMediaHub.existingMediaDetected'));
+        }
+        await this.getMedia({ collection: this.collection });
+        data.media?.map(this.toggleMediaSelection);
+      } catch (e) {
+        if (e && e.response && e.response.data) {
+          const data = e.response.data;
+          Nova.$toasted.error(data.message || e.message);
+        } else {
+          Nova.$toasted.error(e.message);
+        }
+      }
+      this.loading = false;
+    },
+
     toggleMediaSelection(mediaItem) {
       if (this.selectedMediaItems.find(mi => mi.id === mediaItem.id)) {
         this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id !== mediaItem.id);
@@ -224,16 +249,6 @@ export default {
 
     confirm() {
       this.$emit('confirm', this.field.multiple ? this.selectedMediaItems : this.selectedMediaItems[0]);
-    },
-
-    async handleUploadModalClose(updateData, collectionName) {
-      this.showMediaUploadModal = false;
-
-      if (updateData) {
-        await this.getCollections();
-        this.collection = collectionName;
-        await this.getMedia({ collection: this.collection });
-      }
     },
 
     openContextMenuFromSelected(event, mediaItem) {
@@ -308,3 +323,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.full-modal {
+  height: calc(100vh - 3rem);
+}
+</style>
