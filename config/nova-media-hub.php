@@ -12,6 +12,7 @@ return [
     // Classes configuration
     'model' => \Outl1ne\NovaMediaHub\Models\Media::class,
     'file_namer' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer::class,
+    'file_validator' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator::class,
 
     // This default PathMaker puts files in a /prefix/<mediaid>/* structure
     'path_maker' => \Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker::class,
