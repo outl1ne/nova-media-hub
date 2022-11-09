@@ -8,7 +8,7 @@ use Outl1ne\NovaMediaHub\Exceptions\MimeTypeNotAllowedException;
 
 class FileValidator
 {
-    public function validateFile(string $localFilePath, string $fileName, string $extension, string $mimeType, int $fileSize): bool
+    public function validateFile(string $collectionName, string $localFilePath, string $fileName, string $extension, string $mimeType, int $fileSize): bool
     {
         $this->validateFileSize($fileSize, $fileName);
         $this->validateMimeType($mimeType, $fileName);

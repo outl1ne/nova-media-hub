@@ -133,7 +133,7 @@ class FileHandler
 
         // Validate file
         $fileValidator = MediaHub::getFileValidator();
-        $fileValidator->validateFile($this->pathToFile, $this->fileName, $extension, $mimeType, $fileSize);
+        $fileValidator->validateFile($this->collectionName, $this->pathToFile, $this->fileName, $extension, $mimeType, $fileSize);
 
         $mediaClass = MediaHub::getMediaModel();
         $media = new $mediaClass($this->modelData ?? []);
