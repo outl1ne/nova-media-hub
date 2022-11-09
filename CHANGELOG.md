@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 09-11-2022
+
+### Added
+
+- Added FileValidator support (see new config option `file_validator`)
+- Added mime type validation (thanks to [@murdercode](https://github.com/murdercode))
+
+### Changed
+
+- Improved toasts on media upload
+- Updated packages
+
 ## [1.3.1] - 08-11-2022
 
 ### Changed
