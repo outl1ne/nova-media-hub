@@ -44,5 +44,6 @@
   "novaMediaHub.orderBy.updated_at": "Updated at",
   "novaMediaHub.orderBy.created_at": "Created at",
   "novaMediaHub.mediaItemUpdated": "Media item successfully updated",
-  "novaMediaHub.successfullyMovedToCollection": "Media item successfully moved to collection \":collection\""
+  "novaMediaHub.successfullyMovedToCollection": "Media item successfully moved to collection \":collection\"",
+  "novaMediaHub.successfullyUploadedNMedia": "Successfully uploaded :count media item(s)"
 }
