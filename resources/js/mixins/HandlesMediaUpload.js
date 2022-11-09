@@ -15,7 +15,6 @@ export default {
           Nova.$toasted.info(this.__('novaMediaHub.existingMediaDetected'));
         }
 
-        console.info(data.success_count);
         if (data.success_count > 0) {
           Nova.$toasted.success(this.__('novaMediaHub.successfullyUploadedNMedia', { count: data.success_count }));
         }
