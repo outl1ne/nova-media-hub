@@ -17,6 +17,7 @@ use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
 use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
+use Outl1ne\NovaMediaHub\Exceptions\MimeTypeNotAllowedException;
 
 class FileHandler
 {
@@ -113,6 +114,13 @@ class FileHandler
         if (!empty($file)) $this->withFile($file);
         if (empty($this->file)) throw new NoFileProvidedException();
         if (!is_file($this->pathToFile)) throw new FileDoesNotExistException($this->pathToFile);
+
+        // Check if mime type is allowed
+        $allowedMimeTypes = MediaHub::getMimeTypesAllowed();
+        $mimeType = FileHelpers::getMimeType($this->pathToFile);
+        if (!in_array($mimeType, $allowedMimeTypes)) {
+            throw new MimeTypeNotAllowedException($this->pathToFile);
+        }
 
         // Check if file already exists
         $fileHash = FileHelpers::getFileHash($this->pathToFile);

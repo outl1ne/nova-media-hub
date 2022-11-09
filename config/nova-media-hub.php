@@ -82,7 +82,20 @@ return [
         'max_dimensions' => 2000,
     ],
 
+    // ------------------------------
+    // -- Mime types whitelist
+    // ------------------------------
 
+    'mime_types_allowed' => [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/svg+xml',
+        'image/webp',
+        'video/mp4',
+        'text/csv',
+        'application/pdf',
+    ],
 
     // ------------------------------
     // -- Image optimizations
