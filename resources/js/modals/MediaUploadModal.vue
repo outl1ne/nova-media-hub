@@ -57,8 +57,10 @@
 
 <script>
 import API from '../api';
+import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
 
 export default {
+  mixins: [HandlesMediaUpload],
   emits: ['close'],
   props: ['show', 'activeCollection'],
 
@@ -86,41 +88,24 @@ export default {
   methods: {
     async uploadFiles() {
       this.loading = true;
-      try {
-        const formData = new FormData();
-        for (const file of this.selectedFiles) {
-          formData.append('files[]', file);
-        }
 
-        const { data } = await API.saveMediaToCollection(this.finalCollectionName, formData);
+      const { success, media, hadExisting } = await this.uploadFilesToCollection(
+        this.selectedFiles,
+        this.finalCollectionName
+      );
 
-        let goToCollection = this.finalCollectionName;
-        if (data.hadExisting) {
-          Nova.$toasted.info(this.__('novaMediaHub.existingMediaDetected'));
+      let goToCollection = this.finalCollectionName;
 
-          // Find possible new collection name
-          const diffCollNameMedia = data.media.find(mi => mi.collection_name !== this.finalCollectionName);
-          if (diffCollNameMedia) goToCollection = diffCollNameMedia.collection_name;
-        }
-
-        this.$emit('close', true, goToCollection);
-      } catch (e) {
-        if (e && e.response && e.response.data) {
-          const data = e.response.data;
-
-          if (data.errors && data.errors.length) {
-            data.errors.forEach(error => Nova.$toasted.error(error));
-          }
-
-          // Some succeeded, let the user know
-          if (data.success_count > 0) {
-            Nova.$toasted.success(this.__('novaMediaHub.successfullyUploadedNMedia', { count: data.success_count }));
-            this.$emit('close', true, this.finalCollectionName);
-          }
-        } else {
-          Nova.$toasted.error(e.message);
-        }
+      if (hadExisting) {
+        // Find possible new collection name
+        const diffCollNameMedia = media.find(mi => mi.collection_name !== this.finalCollectionName);
+        if (diffCollNameMedia) goToCollection = diffCollNameMedia.collection_name;
       }
+
+      if (success) {
+        this.$emit('close', true, goToCollection);
+      }
+
       this.loading = false;
     },
 

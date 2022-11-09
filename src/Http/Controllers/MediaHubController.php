@@ -64,9 +64,16 @@ class MediaHubController extends Controller
             }
         }
 
+        $uploadedMedia = collect($uploadedMedia);
+        $coreResponse = [
+            'media' => $uploadedMedia->map->formatForNova(),
+            'hadExisting' => $uploadedMedia->where(fn ($m) => $m->wasExisting)->count() > 0,
+            'success_count' => count($files) - count($exceptions),
+        ];
+
         if (!empty($exceptions)) {
             return response()->json([
-                'success_count' => count($files) - count($exceptions),
+                ...$coreResponse,
                 'errors' => Arr::map($exceptions, function ($e) {
                     $className = class_basename(get_class($e));
                     return "{$className}: {$e->getMessage()}";
@@ -74,10 +81,7 @@ class MediaHubController extends Controller
             ], 400);
         }
 
-        return response()->json([
-            'media' => collect($uploadedMedia)->map->formatForNova(),
-            'hadExisting' => count(array_filter($uploadedMedia, fn ($m) => $m->wasExisting ?? false)) > 0,
-        ], 200);
+        return response()->json($coreResponse, 200);
     }
 
     public function deleteMedia(Request $request)

@@ -74,10 +74,7 @@
                 <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-mb-2">
                   {{ __('novaMediaHub.quickUpload') }}
                 </div>
-                <DropZone
-                  @change="uploadFiles"
-                  :multiple="true"
-                />
+                <DropZone @change="uploadFiles" :multiple="true" />
               </div>
             </div>
 
@@ -161,9 +158,10 @@ import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import ModalFilterItem from '../components/ModalFilterItem';
 import MediaOrderSelect from '../components/MediaOrderSelect';
 import MediaViewModal from '../modals/MediaViewModal';
+import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
 
 export default {
-  mixins: [HandlesMediaLists],
+  mixins: [HandlesMediaLists, HandlesMediaUpload],
   components: {
     Draggable,
     MediaItem,
@@ -225,26 +223,14 @@ export default {
   methods: {
     async uploadFiles(selectedFiles) {
       this.loading = true;
-      try {
-        const formData = new FormData();
-        for (const file of selectedFiles) {
-          formData.append('files[]', file);
-        }
-        const { data } = await API.saveMediaToCollection(this.collection, formData);
 
-        if (data.hadExisting) {
-          Nova.$toasted.info(this.__('novaMediaHub.existingMediaDetected'));
-        }
+      const { success, media } = await this.uploadFilesToCollection(selectedFiles, this.collection);
+
+      if (success) {
         await this.getMedia({ collection: this.collection });
-        data.media?.map(this.toggleMediaSelection);
-      } catch (e) {
-        if (e && e.response && e.response.data) {
-          const data = e.response.data;
-          Nova.$toasted.error(data.message || e.message);
-        } else {
-          Nova.$toasted.error(e.message);
-        }
+        media.map(this.toggleMediaSelection);
       }
+
       this.loading = false;
     },
 
