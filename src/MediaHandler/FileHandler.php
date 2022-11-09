@@ -2,6 +2,7 @@
 
 namespace Outl1ne\NovaMediaHub\MediaHandler;
 
+use Exception;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Illuminate\Support\Facades\File;
 use Outl1ne\NovaMediaHub\Models\Media;
@@ -124,25 +125,25 @@ class FileHandler
             return $existingMedia;
         }
 
-        // Check file size
-        $maxSizeBytes = MediaHub::getMaxFileSizeInBytes();
-        if ($maxSizeBytes && filesize($this->pathToFile) > $maxSizeBytes) {
-            throw new FileTooLargeException($this->pathToFile);
-        }
-
         $sanitizedFileName = FileHelpers::sanitizeFileName($this->fileName);
         [$fileName, $rawExtension] = FileHelpers::splitNameAndExtension($sanitizedFileName);
         $extension = File::guessExtension($this->pathToFile) ?? $rawExtension;
+        $mimeType = File::mimeType($this->pathToFile);
+        $fileSize = File::size($this->pathToFile);
 
         $this->fileName = MediaHub::getFileNamer()->formatFileName($fileName, $extension);
+
+        // Validate file
+        $fileValidator = MediaHub::getFileValidator();
+        $fileValidator->validateFile($this->pathToFile, $this->fileName, $extension, $mimeType, $fileSize);
 
         $mediaClass = MediaHub::getMediaModel();
         $media = new $mediaClass($this->modelData ?? []);
 
         $media->file_name = $this->fileName;
         $media->collection_name = $this->collectionName;
-        $media->size = File::size($this->pathToFile);
-        $media->mime_type = File::mimeType($this->pathToFile);
+        $media->size = $fileSize;
+        $media->mime_type = $mimeType;
         $media->original_file_hash = $fileHash;
         $media->data = [];
         $media->conversions = [];

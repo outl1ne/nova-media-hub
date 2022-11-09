@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 
@@ -58,7 +59,7 @@ class MediaHubController extends Controller
                     ->withCollection($collectionName)
                     ->save();
             } catch (Exception $e) {
-                $exceptions[] = class_basename(get_class($e));
+                $exceptions[] = $e;
                 report($e);
             }
         }
@@ -66,7 +67,10 @@ class MediaHubController extends Controller
         if (!empty($exceptions)) {
             return response()->json([
                 'success_count' => count($files) - count($exceptions),
-                'message' => 'Error(s): ' . implode(', ', $exceptions),
+                'errors' => Arr::map($exceptions, function ($e) {
+                    $className = class_basename(get_class($e));
+                    return "{$className}: {$e->getMessage()}";
+                }),
             ], 400);
         }
 

@@ -107,10 +107,14 @@ export default {
       } catch (e) {
         if (e && e.response && e.response.data) {
           const data = e.response.data;
-          Nova.$toasted.error(data.message || e.message);
+
+          if (data.errors && data.errors.length) {
+            data.errors.forEach(error => Nova.$toasted.error(error));
+          }
 
           // Some succeeded, let the user know
           if (data.success_count > 0) {
+            Nova.$toasted.success(this.__('novaMediaHub.successfullyUploadedNMedia', { count: data.success_count }));
             this.$emit('close', true, this.finalCollectionName);
           }
         } else {

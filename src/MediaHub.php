@@ -10,6 +10,7 @@ use Outl1ne\NovaMediaHub\Models\Media;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 
@@ -182,6 +183,11 @@ class MediaHub extends Tool
         return $maxInBytes ? $maxInBytes * 1000 : null;
     }
 
+    public static function getAllowedMimeTypes()
+    {
+        return config('nova-media-hub.allowed_mime_types', []);
+    }
+
     public static function getPathMaker(): PathMaker
     {
         $pathMakerClass = config('nova-media-hub.path_maker');
@@ -192,6 +198,12 @@ class MediaHub extends Tool
     {
         $fileNamerClass = config('nova-media-hub.file_namer');
         return new $fileNamerClass;
+    }
+
+    public static function getFileValidator(): FileValidator
+    {
+        $fileValidatorClass = config('nova-media-hub.file_validator');
+        return new $fileValidatorClass;
     }
 
     public static function fileHandler()
