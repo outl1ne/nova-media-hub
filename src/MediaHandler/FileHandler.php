@@ -2,7 +2,6 @@
 
 namespace Outl1ne\NovaMediaHub\MediaHandler;
 
-use Exception;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Illuminate\Support\Facades\File;
 use Outl1ne\NovaMediaHub\Models\Media;
@@ -10,7 +9,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
-use Outl1ne\NovaMediaHub\Exceptions\FileTooLargeException;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
 use Outl1ne\NovaMediaHub\Jobs\MediaHubOptimizeAndConvertJob;
 use Outl1ne\NovaMediaHub\Exceptions\NoFileProvidedException;

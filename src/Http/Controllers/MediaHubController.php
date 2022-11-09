@@ -3,10 +3,10 @@
 namespace Outl1ne\NovaMediaHub\Http\Controllers;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Arr;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 
