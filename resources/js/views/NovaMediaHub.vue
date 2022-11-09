@@ -50,7 +50,24 @@
       </div>
 
       <!-- Media list -->
-      <div v-else class="o1-flex o1-flex-col o1-w-full o1-overflow-hidden">
+      <div
+        v-else
+        class="o1-flex o1-flex-col o1-w-full o1-overflow-hidden o1-relative"
+        @dragenter="toggleShowQuickUpload"
+        @dragleave="toggleShowQuickUpload"
+      >
+        <!-- Dropzone -->
+        <div
+          v-show="showQuickUpload"
+          class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90"
+        >
+          <div class="o1-dropzone-wrapper o1-py-32 o1-px-8 flex o1-items-center o1-justify-center o1-h-full">
+            <DropZone v-if="!quickUploadLoading" :multiple="true" @change="uploadFiles" />
+
+            <Loader v-else class="text-gray-300" width="60" />
+          </div>
+        </div>
+
         <div
           id="media-items-list"
           class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
@@ -112,9 +129,10 @@ import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import MediaOrderSelect from '../components/MediaOrderSelect';
+import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
 
 export default {
-  mixins: [HandlesMediaLists],
+  mixins: [HandlesMediaLists, HandlesMediaUpload],
 
   components: {
     MediaItem,
@@ -138,6 +156,8 @@ export default {
     showMediaUploadModal: false,
     showConfirmDeleteModal: false,
     showMoveCollectionModal: false,
+    showQuickUpload: false,
+    quickUploadLoading: false,
   }),
 
   async created() {
@@ -172,6 +192,31 @@ export default {
         await this.getMedia();
       }
       this.showMediaUploadModal = false;
+    },
+
+    async uploadFiles(selectedFiles) {
+      this.quickUploadLoading = true;
+
+      const { success, hadExisting, media } = await this.uploadFilesToCollection(selectedFiles, this.collection);
+
+      let goToCollection = this.collection;
+      if (hadExisting) {
+        // Find possible new collection name
+        const diffCollNameMedia = media.find(mi => mi.collection_name !== this.finalCollectionName);
+        if (diffCollNameMedia) goToCollection = diffCollNameMedia.collection_name;
+      }
+
+      if (success) {
+        this.collection = goToCollection;
+        await this.getMedia({ collection: goToCollection });
+      }
+
+      this.showQuickUpload = false;
+      this.quickUploadLoading = false;
+    },
+
+    toggleShowQuickUpload() {
+      this.showQuickUpload = !this.showQuickUpload;
     },
 
     // Media item handlers
@@ -231,6 +276,19 @@ export default {
 <style lang="scss">
 #media-items-list {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.o1-dropzone-wrapper {
+  > div {
+    width: 100%;
+  }
+
+  label {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .vue-simple-context-menu {
