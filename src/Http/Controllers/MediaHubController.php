@@ -67,7 +67,10 @@ class MediaHubController extends Controller
         if (!empty($exceptions)) {
             return response()->json([
                 'success_count' => count($files) - count($exceptions),
-                'message' => implode(',', Arr::map($exceptions, fn ($e) => $e->getMessage())),
+                'errors' => Arr::map($exceptions, function ($e) {
+                    $className = class_basename(get_class($e));
+                    return "{$className}: {$e->getMessage()}";
+                }),
             ], 400);
         }
 

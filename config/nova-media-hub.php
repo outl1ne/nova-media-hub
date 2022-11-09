@@ -35,6 +35,18 @@ return [
     // File size upper limit
     'max_uploaded_file_size_in_kb' => 15000,
 
+    // Allowed mime types list
+    'allowed_mime_types' => [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/svg+xml',
+        'image/webp',
+        'video/mp4',
+        'text/csv',
+        'application/pdf',
+    ],
+
     // Job queue configuration
     'original_image_manipulations_job_queue' => null,
     'image_conversions_job_queue' => null,

@@ -183,6 +183,11 @@ class MediaHub extends Tool
         return $maxInBytes ? $maxInBytes * 1000 : null;
     }
 
+    public static function getAllowedMimeTypes()
+    {
+        return config('nova-media-hub.allowed_mime_types', []);
+    }
+
     public static function getPathMaker(): PathMaker
     {
         $pathMakerClass = config('nova-media-hub.path_maker');
