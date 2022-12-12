@@ -102,6 +102,7 @@ class MediaHub extends Tool
         $remoteFile = new RemoteFile($fileUrl);
 
         return FileHandler::fromFile($remoteFile)
+            ->deleteOriginal()
             ->storeOnDisk($targetDisk)
             ->storeConversionOnDisk($targetConversionsDisk)
             ->withCollection($collectionName)
@@ -113,6 +114,7 @@ class MediaHub extends Tool
         $base64File = new Base64File($base64String, $fileName);
 
         return FileHandler::fromFile($base64File)
+            ->deleteOriginal()
             ->storeOnDisk($targetDisk)
             ->storeConversionOnDisk($targetConversionsDisk)
             ->withCollection($collectionName)

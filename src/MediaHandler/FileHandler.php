@@ -32,6 +32,7 @@ class FileHandler
     protected string $conversionsDiskName = '';
     protected string $collectionName = '';
     protected array $modelData = [];
+    protected bool $deleteOriginal = false;
 
     public function __construct()
     {
@@ -86,6 +87,12 @@ class FileHandler
 
         $this->file = null;
         throw new UnknownFileTypeException();
+    }
+
+    public function deleteOriginal($deleteOriginal = true)
+    {
+        $this->deleteOriginal = $deleteOriginal;
+        return $this;
     }
 
     public function withCollection(string $collectionName)
@@ -159,7 +166,7 @@ class FileHandler
 
         $media->save();
 
-        $this->filesystem->copyFileToMediaLibrary($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, true);
+        $this->filesystem->copyFileToMediaLibrary($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, $this->deleteOriginal);
 
         MediaHubOptimizeAndConvertJob::dispatch($media);
 
