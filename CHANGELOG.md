@@ -21,6 +21,7 @@ NB! Breaking change - file names are no longer automagically encoded. This shoul
 - Changed search case insensitivity with LOWER() (instead of UPPER())
 - Improved UploadedFile error handling and displaying
 - Fixed "system" dark mode setting not always setting correct colour
+- Improved media hub view responsiveness
 - Updated packages
 
 ## [1.4.2] - 29-11-2022
