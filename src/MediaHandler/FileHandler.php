@@ -16,6 +16,7 @@ use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
 use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
+use Outl1ne\NovaMediaHub\Exceptions\FileValidationException;
 
 class FileHandler
 {
@@ -61,9 +62,13 @@ class FileHandler
         }
 
         if ($file instanceof UploadedFile) {
-            $this->pathToFile = $file->getPath() . '/' . $file->getFilename();
-            $this->fileName = $file->getClientOriginalName();
-            return $this;
+            if ($file->getError()) {
+                throw new FileValidationException($file->getErrorMessage());
+            } else {
+                $this->pathToFile = $file->getPath() . '/' . $file->getFilename();
+                $this->fileName = $file->getClientOriginalName();
+                return $this;
+            }
         }
 
         if ($file instanceof SymfonyFile) {
