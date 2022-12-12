@@ -20,6 +20,8 @@ NB! Breaking change - file names are no longer automagically encoded. This shoul
 - File names are no longer double encoded with default drivers (thanks to [@SteJaySulli](https://github.com/SteJaySulli))
 - Changed search case insensitivity with LOWER() (instead of UPPER())
 - Improved UploadedFile error handling and displaying
+- Fixed "system" dark mode setting not always setting correct colour
+- Updated packages
 
 ## [1.4.2] - 29-11-2022
 
