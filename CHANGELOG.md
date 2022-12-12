@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 12-12-2022
+
+NB! Breaking change - file names are no longer automagically encoded. This should fix default adapters, but might cause issues with third-party adapters or if you use Thumbor.
+
+### Added
+
+- Added `deleteOriginal(true/false)` option to FileHandler
+- Added `format` option to conversions config
+
+### Changed
+
+- Fixed file naming issue with remote files (thanks to [@michalsrodek](https://github.com/michalsrodek))
+- File names are no longer double encoded with default drivers (thanks to [@SteJaySulli](https://github.com/SteJaySulli))
+- Changed search case insensitivity with LOWER() (instead of UPPER())
+- Improved UploadedFile error handling and displaying
+
 ## [1.4.2] - 29-11-2022
 
 ### Fixed
