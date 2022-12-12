@@ -35,6 +35,7 @@ class RemoteFile
     public function getName(): string
     {
         return pathinfo($this->getFilename(), PATHINFO_FILENAME);
+        return pathinfo($this->getFilename(), PATHINFO_BASENAME);
     }
 
     public function downloadFileToCurrentFilesystem()
