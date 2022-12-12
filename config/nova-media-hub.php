@@ -77,6 +77,9 @@ return [
     'image_conversions' => [
         '*' => [
             'thumbnail' => [
+                // Image format, null for same as original
+                // Other options: jpg, pjpg, png, gif, webp, avif, tiff
+                'format' => null,
                 'width' => 150,
                 'height' => 150,
                 'fit' => Manipulations::FIT_MAX,
