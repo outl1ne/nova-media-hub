@@ -56,6 +56,7 @@ class MediaHubController extends Controller
             try {
                 $uploadedMedia[] = MediaHub::fileHandler()
                     ->withFile($file)
+                    ->deleteOriginal()
                     ->withCollection($collectionName)
                     ->save();
             } catch (Exception $e) {

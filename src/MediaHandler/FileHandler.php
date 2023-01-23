@@ -12,11 +12,11 @@ use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
 use Outl1ne\NovaMediaHub\Jobs\MediaHubOptimizeAndConvertJob;
 use Outl1ne\NovaMediaHub\Exceptions\NoFileProvidedException;
+use Outl1ne\NovaMediaHub\Exceptions\FileValidationException;
 use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
 use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
-use Outl1ne\NovaMediaHub\Exceptions\FileValidationException;
 
 class FileHandler
 {
@@ -37,7 +37,6 @@ class FileHandler
     public function __construct()
     {
         $this->filesystem = app()->make(Filesystem::class);
-        $this->fileNamer = config('nova-media-hub.file_namer');
     }
 
     public static function fromFile($file): self
@@ -119,12 +118,24 @@ class FileHandler
         return $this;
     }
 
-    public function save($file = null): Media
+    public function save($file = null): ?Media
     {
         if (!empty($file)) $this->withFile($file);
         if (empty($this->file)) throw new NoFileProvidedException();
         if (!is_file($this->pathToFile)) throw new FileDoesNotExistException($this->pathToFile);
 
+        try {
+            return $this->saveFile();
+        } finally {
+            // Ensure cleanup
+            if ($this->deleteOriginal && is_file($this->pathToFile)) {
+                unlink($this->pathToFile);
+            }
+        }
+    }
+
+    private function saveFile(): ?Media
+    {
         // Check if file already exists
         $fileHash = FileHelpers::getFileHash($this->pathToFile);
         $existingMedia = MediaHub::getQuery()->where('original_file_hash', $fileHash)->first();
@@ -132,6 +143,12 @@ class FileHandler
             $existingMedia->updated_at = now();
             $existingMedia->save();
             $existingMedia->wasExisting = true;
+
+            // Delete original
+            if ($this->deleteOriginal && is_file($this->pathToFile)) {
+                unlink($this->pathToFile);
+            }
+
             return $existingMedia;
         }
 
