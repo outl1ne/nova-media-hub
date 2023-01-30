@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved collections endpoints (thanks to [@robindrost](https://github.com/robindrost))
 - Italian translations fixes (thanks to [@trippo](https://github.com/trippo))
 - Added `getUrl(forConversion:)` helper function to Media
+- Allow original image optimizations to be disabled on a per-collection basis
 
 ## [1.5.2] - 23-01-2023
 
