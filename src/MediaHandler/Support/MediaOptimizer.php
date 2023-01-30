@@ -15,7 +15,7 @@ class MediaOptimizer
         if (!empty($media->optimized_at)) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
         if (!MediaHub::isOptimizable($media)) return;
-        if (!$origOptimRules = MediaHub::shouldOptimizeOriginal()) return;
+        if (!$origOptimRules = MediaHub::shouldOptimizeOriginal($media)) return;
 
         $fileSystem = self::getFilesystem();
 

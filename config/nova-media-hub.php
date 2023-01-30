@@ -76,6 +76,10 @@ return [
     // Use '*' as wildcard for all collections
     'image_conversions' => [
         '*' => [
+            // Disable oiriginal image optimizations on a per-collection basis
+            // Only accepts 'false' as an argument to disable original image manipulations
+            // 'original' => false,
+
             'thumbnail' => [
                 // Image format, null for same as original
                 // Other options: jpg, pjpg, png, gif, webp, avif, tiff

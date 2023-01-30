@@ -219,10 +219,17 @@ class MediaHub extends Tool
         return in_array($media->mime_type, $optimizableMimeTypes);
     }
 
-    public static function shouldOptimizeOriginal()
+    public static function shouldOptimizeOriginal(Media $media)
     {
         $ogRules = config('nova-media-hub.original_image_manipulations');
         if (!$ogRules['optimize']) return false;
+
+        $allConversions = static::getConversions();
+
+        $allOgDisabled = $allConversions['*']['original'] ?? null;
+        $appliesToCollectionConv = $allConversions[$media->collection_name]['original'] ?? null;
+        if ($allOgDisabled === false || $appliesToCollectionConv === false) return false;
+
         return $ogRules;
     }
 
