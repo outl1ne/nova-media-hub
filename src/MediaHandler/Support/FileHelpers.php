@@ -91,7 +91,7 @@ class FileHelpers
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
 
         if (!empty($extension)) {
-            $name = mb_substr($name, 0, -(mb_strlen($extension) + 1));
+            $name = mb_substr($name, 0, - (mb_strlen($extension) + 1));
         }
 
         return [$name, $extension];
@@ -99,6 +99,8 @@ class FileHelpers
 
     public static function getTemporaryFilePath($prefix = 'media-')
     {
-        return tempnam(sys_get_temp_dir(), $prefix);
+        if (!$prefix) $prefix = '';
+        if (!str_ends_with($prefix, '-')) $prefix = "{$prefix}-";
+        return tempnam(sys_get_temp_dir(), "o1-nmh{$prefix}");
     }
 }
