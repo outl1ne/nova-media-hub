@@ -16,10 +16,7 @@ class MediaHubController extends Controller
     {
         $defaultCollections = MediaHub::getDefaultCollections();
 
-        $collections = MediaHub::getMediaModel()::select('collection_name')
-            ->groupBy('collection_name')
-            ->get()
-            ->pluck('collection_name')
+        $collections = MediaHub::getMediaModel()::pluck('collection_name')
             ->merge($defaultCollections)
             ->unique()
             ->values()
