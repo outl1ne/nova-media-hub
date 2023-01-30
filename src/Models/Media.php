@@ -5,7 +5,6 @@ namespace Outl1ne\NovaMediaHub\Models;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
 
 class Media extends Model
 {
@@ -42,15 +41,19 @@ class Media extends Model
         return Storage::disk($this->disk)->url($this->path . $this->file_name);
     }
 
+    public function getUrl(?string $forConversion = null)
+    {
+        if (!$forConversion) return $this->url;
+
+        $conversionName = $this->conversions[$forConversion] ?? null;
+        if (empty($conversionName)) return null;
+
+        return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $conversionName);
+    }
+
     public function getThumbnailUrlAttribute()
     {
-        $thumbnailConversionName = MediaHub::getThumbnailConversionName();
-        if (!$thumbnailConversionName) return null;
-
-        $thumbnailName = $this->conversions[$thumbnailConversionName] ?? null;
-        if (!$thumbnailName) return null;
-
-        return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $thumbnailName);
+        return $this->getUrl(MediaHub::getThumbnailConversionName());
     }
 
     public function formatForNova()
