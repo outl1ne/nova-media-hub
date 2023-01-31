@@ -42,9 +42,9 @@ class MediaHubOptimizeAndConvertJob implements ShouldQueue
         $conversions = MediaHub::getConversionForMedia($media);
         foreach ($conversions as $conversionName => $conversion) {
             // Make copy of original file and manipulate that
-            $originalCopy = $fileSystem->makeTemporaryCopy($localFilePath);
-            MediaOptimizer::makeConversion($media, $originalCopy, $conversionName, $conversion);
-            if (is_file($localFilePath)) unlink($localFilePath);
+            $copyOfOriginal = $fileSystem->makeTemporaryCopy($localFilePath);
+            MediaOptimizer::makeConversion($media, $copyOfOriginal, $conversionName, $conversion);
+            if (is_file($copyOfOriginal)) unlink($copyOfOriginal);
         }
 
         // Delete local file
