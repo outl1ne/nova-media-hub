@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5] - 09-02-2023
+
+### Added
+
+- Added custom MediaCast casting option (thanks to [@nullthoughts](https://github.com/nullthoughts))
+
+### Changed
+
+- Fixed DropZone not working on latest version of Nova
+- Updated Italian translations (thanks to [@trippo](https://github.com/trippo))
+
 ## [1.5.4] - 31-01-2023
 
 ### Changed
