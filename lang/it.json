@@ -27,8 +27,6 @@
   "novaMediaHub.collectionTitle": "Collezione",
   "novaMediaHub.altTextTitle": "Testo Alt",
   "novaMediaHub.titleTextTitle": "Testo Titolo",
-  "novaMediaHub.captionTextTitle": "Testo Didascalia",
-  "novaMediaHub.copyrightTextTitle": "Copyright",
   "novaMediaHub.saveAndClose": "Salva e chiudi",
   "novaMediaHub.movaCollectionTitle": "Sposta nella collezione",
   "novaMediaHub.moveCollectionText": "Scegli la collezione in cui spostare l'elemento",
@@ -44,5 +42,8 @@
   "novaMediaHub.existingMediaDetected": "Alcuni elementi media sono stati già trovati nel server e non sono stati (ri)caricati. Tuttavia, sono stati spostati all'inizio della collezione per facilitarne la ricerca.",
   "novaMediaHub.searchMediaTitle": "Cerca per nome",
   "novaMediaHub.orderBy.updated_at": "Caricato il",
-  "novaMediaHub.orderBy.created_at": "Creato il"
+  "novaMediaHub.orderBy.created_at": "Creato il",
+  "novaMediaHub.mediaItemUpdated": "Media aggiornato correttamente",
+  "novaMediaHub.successfullyMovedToCollection": "Media spostato correttamente sulla collezione \":collection\"",
+  "novaMediaHub.successfullyUploadedNMedia": "Sono stati caricati con successo :count media"
 }
