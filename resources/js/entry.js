@@ -1,5 +1,6 @@
 import DetailMediaHubField from './fields/MediaField/DetailMediaHubField';
 import FormMediaHubField from './fields/MediaField/FormMediaHubField';
+import DropZone from './components/DropZone';
 
 const handleDarkMode = () => {
   const cls = document.documentElement.classList;
@@ -20,6 +21,7 @@ Nova.booting((Vue, router, store) => {
     attributeFilter: ['class'],
   });
 
+  Vue.component('NMHDropZone', DropZone);
   Vue.component('detail-media-hub-field', DetailMediaHubField);
   Vue.component('form-media-hub-field', FormMediaHubField);
 
