@@ -4,7 +4,7 @@
       <div class="o1-flex" v-if="hasValue">
         <div class="o1-flex">
           <template v-if="field.multiple">
-            <Draggable v-model="value" item-key="id" class="o1-flex o1-flex-wrap">
+            <Draggable v-model="value" item-key="id" class="o1-flex o1-flex-wrap" :disabled="field.readonly">
               <template #item="{ element: mediaItem }">
                 <MediaItem
                   :key="mediaItem.id"
@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <LoadingButton type="button" @click.prevent.stop="openChooseModal">Choose media</LoadingButton>
+      <LoadingButton v-if="!field.readonly" type="button" @click.prevent.stop="openChooseModal">Choose media</LoadingButton>
 
       <MediaItemContextMenu
         :id="`form-media-hub-field-ctx-menu-${field.attribute}`"
@@ -35,6 +35,7 @@
         :options="ctxOptions"
         @close="ctxShowEvent = void 0"
         :mediaItem="ctxMediaItem"
+        :readonly="field.readonly"
       />
 
       <ChooseMediaModal
