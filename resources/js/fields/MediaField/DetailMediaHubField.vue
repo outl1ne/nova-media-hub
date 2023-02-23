@@ -36,6 +36,7 @@
           }
         "
         :mediaItem="ctxMediaItem"
+        :readonly="field.readonly"
       />
     </template>
   </PanelItem>

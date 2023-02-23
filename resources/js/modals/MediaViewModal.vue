@@ -69,7 +69,7 @@
             {{ __('Close') }}
           </CancelButton>
 
-          <LoadingButton @click.prevent="saveAndExit">{{ __('novaMediaHub.saveAndClose') }}</LoadingButton>
+          <LoadingButton v-if="!readonly" @click.prevent="saveAndExit">{{ __('novaMediaHub.saveAndClose') }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -82,7 +82,7 @@ import MediaViewModalInfoListItem from '../components/MediaViewModalInfoListItem
 
 export default {
   emits: ['close'],
-  props: ['show', 'mediaItem'],
+  props: ['show', 'mediaItem', 'readonly'],
 
   components: { MediaViewModalInfoListItem },
 

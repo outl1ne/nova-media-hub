@@ -133,7 +133,7 @@
     </LoadingCard>
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
-    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal" />
+    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal" :readonly="field.readonly" />
 
     <MediaItemContextMenu
       id="media-choose-modal-ctx-menu"
@@ -143,6 +143,7 @@
       @hideModal="ctxShowingModal = false"
       :mediaItem="ctxMediaItem"
       @optionClick="contextOptionClick"
+      :readonly="field.readonly"
     />
   </Modal>
 </template>

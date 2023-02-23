@@ -7,7 +7,7 @@
       @option-clicked="onOptionClicked"
     />
 
-    <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal" />
+    <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal" :readonly="readonly" />
 
     <a
       v-if="mediaItem"
@@ -28,7 +28,7 @@ import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context
 export default {
   components: { VueSimpleContextMenu, MediaViewModal },
 
-  props: ['id', 'showEvent', 'options', 'mediaItem'],
+  props: ['id', 'showEvent', 'options', 'mediaItem', 'readonly'],
 
   emits: ['openModal', 'hideModal', 'optionClick'],
 
