@@ -2,9 +2,11 @@
 
 namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
 
-use Illuminate\Contracts\Filesystem\Factory;
+use Exception;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\Models\Media;
+use Illuminate\Contracts\Filesystem\Factory;
+use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
 
 class Filesystem
 {
@@ -112,5 +114,16 @@ class Filesystem
         $this->filesystem->disk($diskName)->makeDirectory($directory);
 
         return $directory;
+    }
+
+    public function makeTemporaryCopy($localFilePath)
+    {
+        if (!is_file($localFilePath)) throw new FileDoesNotExistException($localFilePath);
+        $newFilePath = FileHelpers::getTemporaryFilePath('tmp-conversion-copy');
+        if (!copy($localFilePath, $newFilePath)) {
+            $err = error_get_last();
+            throw new Exception($err['message'] ?? 'Copy failed due to unknown error.');
+        }
+        return $newFilePath;
     }
 }

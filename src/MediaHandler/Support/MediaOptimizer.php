@@ -15,7 +15,7 @@ class MediaOptimizer
         if (!empty($media->optimized_at)) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
         if (!MediaHub::isOptimizable($media)) return;
-        if (!$origOptimRules = MediaHub::shouldOptimizeOriginal()) return;
+        if (!$origOptimRules = MediaHub::shouldOptimizeOriginal($media)) return;
 
         $fileSystem = self::getFilesystem();
 
@@ -55,14 +55,18 @@ class MediaOptimizer
         $fileSystem = self::getFilesystem();
 
         // Check if has necessary data for resize
+        $cFormat = $conversionConfig['format'] ?? null;
         $cFitMethod = $conversionConfig['fit'] ?? null;
         $cWidth = $conversionConfig['width'] ?? null;
         $cHeight = $conversionConfig['height'] ?? null;
 
         $manipulations = (new Manipulations())
             ->optimize(config('nova-media-hub.image_optimizers'))
-            ->fit($cFitMethod, $cWidth, $cHeight)
-            ->apply();
+            ->fit($cFitMethod, $cWidth, $cHeight);
+
+        if ($cFormat) $manipulations->format($cFormat);
+
+        $manipulations = $manipulations->apply();
 
         // Copy media from whatever disk to local filesystem for manipulations
         if (!$localFilePath || !is_file($localFilePath)) {

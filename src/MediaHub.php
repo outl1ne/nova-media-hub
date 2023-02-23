@@ -10,6 +10,7 @@ use Outl1ne\NovaMediaHub\Models\Media;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
 
@@ -101,6 +102,7 @@ class MediaHub extends Tool
         $remoteFile = new RemoteFile($fileUrl);
 
         return FileHandler::fromFile($remoteFile)
+            ->deleteOriginal()
             ->storeOnDisk($targetDisk)
             ->storeConversionOnDisk($targetConversionsDisk)
             ->withCollection($collectionName)
@@ -112,6 +114,7 @@ class MediaHub extends Tool
         $base64File = new Base64File($base64String, $fileName);
 
         return FileHandler::fromFile($base64File)
+            ->deleteOriginal()
             ->storeOnDisk($targetDisk)
             ->storeConversionOnDisk($targetConversionsDisk)
             ->withCollection($collectionName)
@@ -182,6 +185,11 @@ class MediaHub extends Tool
         return $maxInBytes ? $maxInBytes * 1000 : null;
     }
 
+    public static function getAllowedMimeTypes()
+    {
+        return config('nova-media-hub.allowed_mime_types', []);
+    }
+
     public static function getPathMaker(): PathMaker
     {
         $pathMakerClass = config('nova-media-hub.path_maker');
@@ -192,6 +200,12 @@ class MediaHub extends Tool
     {
         $fileNamerClass = config('nova-media-hub.file_namer');
         return new $fileNamerClass;
+    }
+
+    public static function getFileValidator(): FileValidator
+    {
+        $fileValidatorClass = config('nova-media-hub.file_validator');
+        return new $fileValidatorClass;
     }
 
     public static function fileHandler()
@@ -205,10 +219,17 @@ class MediaHub extends Tool
         return in_array($media->mime_type, $optimizableMimeTypes);
     }
 
-    public static function shouldOptimizeOriginal()
+    public static function shouldOptimizeOriginal(Media $media)
     {
         $ogRules = config('nova-media-hub.original_image_manipulations');
         if (!$ogRules['optimize']) return false;
+
+        $allConversions = static::getConversions();
+
+        $allOgDisabled = $allConversions['*']['original'] ?? null;
+        $appliesToCollectionConv = $allConversions[$media->collection_name]['original'] ?? null;
+        if ($allOgDisabled === false || $appliesToCollectionConv === false) return false;
+
         return $ogRules;
     }
 

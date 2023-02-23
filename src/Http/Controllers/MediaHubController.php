@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaMediaHub\Http\Controllers;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
@@ -15,10 +16,7 @@ class MediaHubController extends Controller
     {
         $defaultCollections = MediaHub::getDefaultCollections();
 
-        $collections = MediaHub::getMediaModel()::select('collection_name')
-            ->groupBy('collection_name')
-            ->get()
-            ->pluck('collection_name')
+        $collections = MediaHub::getMediaModel()::pluck('collection_name')
             ->merge($defaultCollections)
             ->unique()
             ->values()
@@ -55,25 +53,33 @@ class MediaHubController extends Controller
             try {
                 $uploadedMedia[] = MediaHub::fileHandler()
                     ->withFile($file)
+                    ->deleteOriginal()
                     ->withCollection($collectionName)
                     ->save();
             } catch (Exception $e) {
-                $exceptions[] = class_basename(get_class($e));
+                $exceptions[] = $e;
                 report($e);
             }
         }
 
+        $uploadedMedia = collect($uploadedMedia);
+        $coreResponse = [
+            'media' => $uploadedMedia->map->formatForNova(),
+            'hadExisting' => $uploadedMedia->where(fn ($m) => $m->wasExisting)->count() > 0,
+            'success_count' => count($files) - count($exceptions),
+        ];
+
         if (!empty($exceptions)) {
             return response()->json([
-                'success_count' => count($files) - count($exceptions),
-                'message' => 'Error(s): ' . implode(', ', $exceptions),
+                ...$coreResponse,
+                'errors' => Arr::map($exceptions, function ($e) {
+                    $className = class_basename(get_class($e));
+                    return "{$className}: {$e->getMessage()}";
+                }),
             ], 400);
         }
 
-        return response()->json([
-            'media' => collect($uploadedMedia)->map->formatForNova(),
-            'hadExisting' => count(array_filter($uploadedMedia, fn ($m) => $m->wasExisting ?? false)) > 0,
-        ], 200);
+        return response()->json($coreResponse, 200);
     }
 
     public function deleteMedia(Request $request)

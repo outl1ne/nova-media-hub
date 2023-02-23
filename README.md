@@ -78,6 +78,31 @@ MediaHubField::make('Media', 'media')
   ->multiple(), // Define whether multiple media can be selected
 ```
 
+### Casting
+
+The media column of models can be automatically cast as a Collection of Media models:
+
+```php
+class Product extends Model
+{
+    protected $casts = [
+        'media' => \Outl1ne\NovaMediaHub\Casts\MediaCast::class,
+    ];
+}
+```
+
+```php
+    $cover = Product::first()->media->first();
+
+    // ...
+
+    $urls = Product::first()->media->pluck('url');
+
+    // ...
+
+    $collection = Product::first()->media->where('collection_name', 'Details');
+```
+
 ### Configure
 
 The config file can be published using the following command:

@@ -5,6 +5,94 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5] - 09-02-2023
+
+### Added
+
+- Added custom MediaCast casting option (thanks to [@nullthoughts](https://github.com/nullthoughts))
+
+### Changed
+
+- Fixed DropZone not working on latest version of Nova
+- Updated Italian translations (thanks to [@trippo](https://github.com/trippo))
+
+## [1.5.4] - 31-01-2023
+
+### Changed
+
+- Fix post-processing cleanup not deleting temporary copies
+
+## [1.5.3] - 30-01-2023
+
+### Changed
+
+- Fixed issue where all the conversions were performed on the same local file cumulatively
+- Improved collections endpoints (thanks to [@robindrost](https://github.com/robindrost))
+- Italian translations fixes (thanks to [@trippo](https://github.com/trippo))
+- Added `getUrl(forConversion:)` helper function to Media
+- Allow original image optimizations to be disabled on a per-collection basis
+
+## [1.5.2] - 23-01-2023
+
+### Changed
+
+- Fixed some cases where the original file was not deleted from /tmp folder
+
+## [1.5.1] - 14-12-2022
+
+### Changed
+
+- Fixed unexpected InvalidManipulationError when no format was specified
+
+## [1.5.0] - 12-12-2022
+
+NB! Breaking change - file names are no longer automagically encoded. This should fix default adapters, but might cause issues with third-party adapters or if you use Thumbor.
+
+### Added
+
+- Added `deleteOriginal(true/false)` option to FileHandler
+- Added `format` option to conversions config
+
+### Changed
+
+- Fixed file naming issue with remote files (thanks to [@michalsrodek](https://github.com/michalsrodek))
+- File names are no longer double encoded with default drivers (thanks to [@SteJaySulli](https://github.com/SteJaySulli))
+- Changed search case insensitivity with LOWER() (instead of UPPER())
+- Improved UploadedFile error handling and displaying
+- Fixed "system" dark mode setting not always setting correct colour
+- Improved media hub view responsiveness
+- Updated packages
+
+## [1.4.2] - 29-11-2022
+
+### Fixed
+
+- Fixed searching alt and title values when using postgres database.
+
+## [1.4.1] - 09-11-2022
+
+### Added
+
+- Added drag-and-drop support to MediaHub tool view
+
+## [1.4.0] - 09-11-2022
+
+### Added
+
+- Added FileValidator support (see new config option `file_validator`)
+- Added mime type validation (thanks to [@murdercode](https://github.com/murdercode))
+
+### Changed
+
+- Improved toasts on media upload
+- Updated packages
+
+## [1.3.1] - 08-11-2022
+
+### Changed
+
+- Allow multiple files quick upload (thanks to [@ndrez-outl1ne](https://github.com/ndrez-outl1ne))
+
 ## [1.3.0] - 02-11-2022
 
 ### Added

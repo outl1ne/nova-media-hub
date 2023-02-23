@@ -14,14 +14,24 @@ class Search
 
         if (empty($search)) return $next($query);
 
-        $search = Str::upper($search);
+        $search = Str::lower($search);
         $search = Str::replace('*', '%', $search);
         $search = "%{$search}%";
 
         return $next($query)->where(
-            fn ($subQuery) => $subQuery
-                ->where(DB::raw('UPPER(file_name)'), 'LIKE', $search)
-                ->orWhere(DB::raw('UPPER(data)'), 'LIKE', $search)
+            function ($subQuery) use ($search) {
+                $dataColumn = DB::raw("LOWER(data)"); // Mysql
+                $subQuery->where(DB::raw('LOWER(file_name)'), 'LIKE', $search);
+
+                if (config('database.default') === 'pgsql') {
+                    // Postgres
+                    $dataColumn = DB::raw('LOWER("data"::text)');
+                }
+
+                $subQuery->orWhere($dataColumn, 'LIKE', $search);
+
+                return $subQuery;
+            }
         );
     }
 }

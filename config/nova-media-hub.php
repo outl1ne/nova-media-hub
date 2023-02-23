@@ -12,6 +12,7 @@ return [
     // Classes configuration
     'model' => \Outl1ne\NovaMediaHub\Models\Media::class,
     'file_namer' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer::class,
+    'file_validator' => \Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator::class,
 
     // This default PathMaker puts files in a /prefix/<mediaid>/* structure
     'path_maker' => \Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker::class,
@@ -33,6 +34,18 @@ return [
 
     // File size upper limit
     'max_uploaded_file_size_in_kb' => 15000,
+
+    // Allowed mime types list
+    'allowed_mime_types' => [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/svg+xml',
+        'image/webp',
+        'video/mp4',
+        'text/csv',
+        'application/pdf',
+    ],
 
     // Job queue configuration
     'original_image_manipulations_job_queue' => null,
@@ -63,7 +76,14 @@ return [
     // Use '*' as wildcard for all collections
     'image_conversions' => [
         '*' => [
+            // Disable oiriginal image optimizations on a per-collection basis
+            // Only accepts 'false' as an argument to disable original image manipulations
+            // 'original' => false,
+
             'thumbnail' => [
+                // Image format, null for same as original
+                // Other options: jpg, pjpg, png, gif, webp, avif, tiff
+                'format' => null,
                 'width' => 150,
                 'height' => 150,
                 'fit' => Manipulations::FIT_MAX,
