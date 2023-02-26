@@ -52,5 +52,7 @@
   "novaMediaHub.dropZone.uploadFile": "Choose File",
   "novaMediaHub.dropZone.uploadFiles": "Choose Files",
   "novaMediaHub.dropZone.dropFile": "Drop file or click to choose",
-  "novaMediaHub.dropZone.dropFiles": "Drop files or click to choose"
+  "novaMediaHub.dropZone.dropFiles": "Drop files or click to choose",
+  "novaMediaHub.dropZone.fileToUpload": "file to upload",
+  "novaMediaHub.dropZone.filesToUpload": "files to upload"
 }

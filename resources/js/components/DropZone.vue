@@ -12,17 +12,6 @@
     />
 
     <div class="space-y-4">
-      <div v-if="files.length > 0" class="grid grid-cols-4 gap-x-6 gap-y-2">
-        <FilePreviewBlock
-          v-for="(file, index) in files"
-          :key="index"
-          :file="file"
-          @removed="handleRemove"
-          :rounded="rounded"
-          :dusk="$attrs.dusk"
-        />
-      </div>
-
       <label
         @click="handleClick"
         class="block cursor-pointer p-4 bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-900 border-4 border-dashed hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600 rounded-lg"
@@ -39,7 +28,16 @@
             </DefaultButton>
           </p>
 
-          <p class="pointer-events-none text-center text-sm text-gray-500 dark:text-gray-400 font-semibold">
+          <p
+            v-if="files && files.length"
+            class="pointer-events-none text-center text-sm text-gray-500 dark:text-gray-400 font-semibold"
+          >
+            <template v-if="file.lenght > 1"
+              >{{ files.length }} {{ __('novaMediaHub.dropZone.filesToUpload') }}</template
+            >
+            <template>{{ files.length }} {{ __('novaMediaHub.dropZone.fileToUpload') }}</template>
+          </p>
+          <p v-else class="pointer-events-none text-center text-sm text-gray-500 dark:text-gray-400 font-semibold">
             {{ multiple ? __('novaMediaHub.dropZone.dropFiles') : __('novaMediaHub.dropZone.dropFile') }}
           </p>
         </div>
