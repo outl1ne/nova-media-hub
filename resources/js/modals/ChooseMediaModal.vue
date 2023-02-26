@@ -15,7 +15,7 @@
         <ModalContent class="o1-min-h-[90%] o1-grow o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
           <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-1 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
-            <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-pb-4">
+            <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
             <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-if="!!selectedCount">
@@ -35,11 +35,13 @@
                 </template>
               </Draggable>
             </div>
-            <div v-else-if="!selectedCount" class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
+            <div v-else-if="!selectedCount" class="o1-text-slate-400 o1-mb-4">
+              {{ __('novaMediaHub.noMediaSelectedText') }}
+            </div>
           </div>
 
-          <div class="o1-flex o1-pt-4 o1-min-h-[30%] o1-h-full">
-            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8 overflow-y-auto">
+          <div class="o1-flex lg:o1-flex-col overflow-y-auto o1-pt-4 o1-min-h-[30%] o1-h-full o1-gap-8">
+            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs overflow-y-auto">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
                 <SelectControl v-model:selected="collection" @change="c => (collection = c)">
@@ -80,7 +82,7 @@
 
             <!-- Collection media -->
             <div class="o1-flex o1-flex-col o1-w-full">
-              <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-pb-4">
+              <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
               <div class="o1-w-full overflow-y-auto">
