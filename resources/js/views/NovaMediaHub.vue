@@ -62,7 +62,7 @@
           class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90"
         >
           <div class="o1-dropzone-wrapper o1-py-32 o1-px-8 flex o1-items-center o1-justify-center o1-h-full">
-            <NMHDropZone v-if="!quickUploadLoading" :multiple="true" @fileChanged="uploadFiles" />
+            <NMHDropZone v-if="!quickUploadLoading" @fileChanged="uploadFiles" multiple />
 
             <Loader v-else class="text-gray-300" width="60" />
           </div>

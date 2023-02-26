@@ -1,6 +1,6 @@
 <template>
   <div class="o1-flex o1-flex-col o1-mb-5">
-    <label class="o1-leading-tight">{{ label }}</label>
+    <label>{{ label }}</label>
     <input type="text" class="w-full form-control form-input form-input-bordered" :value="value" :disabled="true" />
   </div>
 </template>

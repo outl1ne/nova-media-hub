@@ -31,14 +31,7 @@
             />
           </template>
 
-          <input
-            class="form-control form-input form-input-bordered mt-6"
-            type="file"
-            name="selected_media"
-            ref="filesInput"
-            @change="onFilesChange"
-            multiple
-          />
+          <NMHDropZone name="selected_media" ref="filesInput" @fileChanged="onFilesChange" multiple />
         </ModalContent>
       </slot>
 
