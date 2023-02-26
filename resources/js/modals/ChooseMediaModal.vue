@@ -40,8 +40,8 @@
             </div>
           </div>
 
-          <div class="o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-pt-4 o1-min-h-[30%] o1-h-full o1-gap-8">
-            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto">
+          <div class="o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-min-h-[30%] o1-h-full o1-gap-8">
+            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto o1-py-4">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
                 <SelectControl v-model:selected="collection" @change="c => (collection = c)">
@@ -81,7 +81,7 @@
             </div>
 
             <!-- Collection media -->
-            <div class="o1-flex o1-flex-col o1-w-full">
+            <div class="o1-flex o1-flex-col o1-w-full o1-py-4">
               <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
