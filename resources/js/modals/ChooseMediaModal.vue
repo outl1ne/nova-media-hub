@@ -183,6 +183,7 @@ export default {
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
 
   data: () => ({
+    collection: '',
     selectedMediaItems: [],
 
     loading: false,
@@ -339,6 +340,10 @@ export default {
 </script>
 
 <style lang="scss">
+#media-items-list {
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+}
+
 .full-modal {
   height: calc(100vh - 3rem);
 }
