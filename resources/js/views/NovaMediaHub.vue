@@ -287,61 +287,13 @@ export default {
   }
 }
 .vue-simple-context-menu {
-  // background-color: #fff;
-  // border-bottom-width: 0px;
-  // border-radius: 2px;
-  // box-shadow: 0 3px 6px 0 rgba(#000, 0.2);
   display: none;
-  // list-style: none;
-  // margin: 0;
-  // padding: 0;
-
   position: absolute;
   top: 0;
   left: 0;
-
   z-index: 1000000;
-
   &--active {
     display: block;
   }
-
-  // &__item {
-  //   display: flex;
-  //   align-items: center;
-  //   cursor: pointer;
-  //   padding: 5px 15px;
-  //   font-weight: 700;
-  //   color: #64748b;
-
-  //   &.warning {
-  //     color: #f43f5e;
-  //   }
-
-  //   &:hover {
-  //     background-color: rgba(var(--colors-primary-500), 1);
-  //     color: #fff;
-  //   }
-  // }
-
-  // &__divider {
-  //   background-clip: content-box;
-  //   background-color: #e2e8f0;
-  //   box-sizing: content-box;
-  //   height: 1px;
-  //   padding: 2px 0;
-  //   pointer-events: none;
-  // }
-
-  // Have to use the element so we can make use of `first-of-type` and `last-of-type`
-  // li {
-  //   &:first-of-type {
-  //     margin-top: 2px;
-  //   }
-
-  //   &:last-of-type {
-  //     margin-bottom: 2px;
-  //   }
-  // }
 }
 </style>
