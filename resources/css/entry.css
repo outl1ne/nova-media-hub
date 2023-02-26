@@ -1,14 +1,14 @@
 @tailwind utilities;
 
-#media-hub-ctx-menu.vue-simple-context-menu {
+.vue-simple-context-menu {
   @apply o1-select-none o1-overflow-hidden o1-bg-white dark:o1-bg-gray-900 o1-shadow-lg o1-rounded-lg o1-border o1-border-gray-200 dark:o1-border-gray-700 o1-max-w-sm lg:o1-max-w-lg o1-px-1 o1-overflow-x-hidden o1-overflow-y-auto o1-py-1;
 }
-#media-hub-ctx-menu.vue-simple-context-menu .vue-simple-context-menu__item {
+.vue-simple-context-menu .vue-simple-context-menu__item {
   @apply hover:o1-bg-gray-50 dark:hover:o1-bg-gray-800 o1-block o1-w-full o1-text-left o1-cursor-pointer o1-py-2 o1-px-3 focus:o1-outline-none focus:o1-ring o1-rounded o1-truncate o1-whitespace-nowrap o1-text-gray-500 active:o1-text-gray-600 dark:o1-text-gray-500 dark:hover:o1-text-gray-400 dark:active:o1-text-gray-600 o1-font-normal;
 }
-#media-hub-ctx-menu.vue-simple-context-menu .vue-simple-context-menu__item.vue-simple-context-menu__divider {
+.vue-simple-context-menu .vue-simple-context-menu__item.vue-simple-context-menu__divider {
   @apply o1-hidden;
 }
-#media-hub-ctx-menu.vue-simple-context-menu .vue-simple-context-menu__item.warning {
+.vue-simple-context-menu .vue-simple-context-menu__item.warning {
   @apply o1-text-red-500 hover:o1-text-red-400 active:o1-text-red-600 focus:o1-ring-red-300;
 }
