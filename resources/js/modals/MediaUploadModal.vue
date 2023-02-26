@@ -60,7 +60,7 @@ export default {
   data: () => ({
     loading: false,
     collectionName: '',
-    selectedFiles: '',
+    selectedFiles: [],
     selectedCollection: void 0,
     collections: [],
   }),
@@ -103,7 +103,7 @@ export default {
     },
 
     onFilesChange(selectedFiles) {
-      this.selectedFiles = selectedFiles;
+      this.selectedFiles = Array.from(selectedFiles);
     },
 
     async getCollections() {
