@@ -40,7 +40,7 @@
             </div>
           </div>
 
-          <div class="o1-flex lg:o1-flex-col overflow-y-auto o1-pt-4 o1-min-h-[30%] o1-h-full o1-gap-8">
+          <div class="o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-pt-4 o1-min-h-[30%] o1-h-full o1-gap-8">
             <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs overflow-y-auto">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
