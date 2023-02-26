@@ -86,7 +86,7 @@
               <div class="o1-w-full overflow-y-auto">
                 <div
                   id="media-items-list"
-                  class="o1-w-full o1-grid o1-gap-4 o1-justify-items-center o1-p-1"
+                  class="o1-w-full flex flex-wrap o1-gap-4 o1-justify-items-center o1-p-1"
                   v-show="!!mediaItems.length"
                 >
                   <MediaItem
@@ -340,10 +340,6 @@ export default {
 </script>
 
 <style lang="scss">
-#media-items-list {
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-}
-
 .full-modal {
   height: calc(100vh - 3rem);
 }

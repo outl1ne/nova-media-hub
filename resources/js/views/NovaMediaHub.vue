@@ -70,7 +70,7 @@
 
         <div
           id="media-items-list"
-          class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
+          class="o1-w-full flex flex-wrap o1-gap-6 o1-p-4"
           :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
           <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
@@ -274,10 +274,6 @@ export default {
 </script>
 
 <style lang="scss">
-#media-items-list {
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-}
-
 .o1-dropzone-wrapper {
   > div {
     width: 100%;
