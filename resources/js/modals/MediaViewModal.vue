@@ -69,7 +69,9 @@
             {{ __('novaMediaHub.close') }}
           </CancelButton>
 
-          <LoadingButton v-if="!readonly" @click.prevent="saveAndExit">{{ __('novaMediaHub.saveAndClose') }}</LoadingButton>
+          <LoadingButton v-if="!readonly" @click.prevent="saveAndExit">{{
+            __('novaMediaHub.saveAndClose')
+          }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -206,7 +208,7 @@ export default {
   }
 
   .nova-media-hub-media-modal-translatable-field {
-    margin-bottom: 15px;
+    // margin-bottom: 15px;
 
     .nova-translatable-locale-tabs {
       padding-left: 0;
