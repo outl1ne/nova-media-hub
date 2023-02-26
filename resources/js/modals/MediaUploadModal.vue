@@ -31,7 +31,7 @@
             />
           </template>
 
-          <NMHDropZone name="selected_media" ref="filesInput" @fileChanged="onFilesChange" multiple />
+          <NMHDropZone class="mt-6" ref="filesInput" @fileChanged="onFilesChange" :files="filesInput" multiple />
         </ModalContent>
       </slot>
 
