@@ -302,9 +302,9 @@ export default {
 
   z-index: 1000000;
 
-  // &--active {
-  //   display: block;
-  // }
+  &--active {
+    display: block;
+  }
 
   // &__item {
   //   display: flex;
