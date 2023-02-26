@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-bind="$attrs">
     <input
       class="visually-hidden"
       :dusk="$attrs['input-dusk']"
