@@ -16,7 +16,7 @@
             <div
               class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full dark:o1-border-slate-700"
             >
-              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 pb-2 mb-2">
+              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5">
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
