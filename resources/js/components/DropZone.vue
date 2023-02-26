@@ -32,7 +32,7 @@
             v-if="files && files.length"
             class="pointer-events-none text-center text-sm text-gray-500 dark:text-gray-400 font-semibold"
           >
-            <template v-if="file.length > 1"
+            <template v-if="files.length > 1"
               >{{ files.length }} {{ __('novaMediaHub.dropZone.filesToUpload') }}</template
             >
             <template>{{ files.length }} {{ __('novaMediaHub.dropZone.fileToUpload') }}</template>
