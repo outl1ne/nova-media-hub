@@ -41,7 +41,7 @@
           </div>
 
           <div class="o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-pt-4 o1-min-h-[30%] o1-h-full o1-gap-8">
-            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs overflow-y-auto">
+            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
                 <SelectControl v-model:selected="collection" @change="c => (collection = c)">
@@ -185,7 +185,6 @@ export default {
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
 
   data: () => ({
-    collection: '',
     selectedMediaItems: [],
 
     loading: false,

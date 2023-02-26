@@ -2,9 +2,9 @@ import API from '../api';
 
 export default {
   data: () => ({
-    collection: undefined,
-    search: undefined,
-    orderBy: undefined,
+    collection: '',
+    search: '',
+    orderBy: '',
 
     collections: [],
     mediaItems: [],
