@@ -44,7 +44,7 @@ export default {
       this.collections = data || [];
 
       if (!this.collection) {
-        this.collection = this.collections.length ? this.collections[0] : void 0;
+        this.collection = this.collections.length ? this.collections[0] : '';
       }
       this.loadingCollections = false;
     },
