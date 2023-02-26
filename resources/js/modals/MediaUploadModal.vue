@@ -31,7 +31,7 @@
             />
           </template>
 
-          <NMHDropZone class="mt-6" ref="filesInput" @fileChanged="onFilesChange" :files="filesInput" multiple />
+          <NMHDropZone class="mt-6" @fileChanged="onFilesChange" :files="filesInput" multiple />
         </ModalContent>
       </slot>
 
@@ -102,10 +102,8 @@ export default {
       this.loading = false;
     },
 
-    onFilesChange(e) {
-      if (this.$refs.filesInput) {
-        this.selectedFiles = Array.from(this.$refs.filesInput.files);
-      }
+    onFilesChange(selectedFiles) {
+      this.selectedFiles = selectedFiles;
     },
 
     async getCollections() {
