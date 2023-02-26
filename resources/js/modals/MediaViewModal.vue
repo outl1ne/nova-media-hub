@@ -66,7 +66,7 @@
       <ModalFooter>
         <div class="ml-auto">
           <CancelButton @click.prevent="$emit('close')" class="o1-mr-4">
-            {{ __('Close') }}
+            {{ __('novaMediaHub.close') }}
           </CancelButton>
 
           <LoadingButton v-if="!readonly" @click.prevent="saveAndExit">{{ __('novaMediaHub.saveAndClose') }}</LoadingButton>

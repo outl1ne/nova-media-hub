@@ -35,12 +35,12 @@
         <div class="flex items-center space-x-4 pointer-events-none">
           <p class="text-center pointer-events-none">
             <DefaultButton component="div">
-              {{ multiple ? __('Choose Files') : __('Choose File') }}
+              {{ multiple ? __('novaMediaHub.dropZone.uploadFiles') : __('novaMediaHub.dropZone.uploadFile') }}
             </DefaultButton>
           </p>
 
           <p class="pointer-events-none text-center text-sm text-gray-500 dark:text-gray-400 font-semibold">
-            {{ multiple ? __('Drop files or click to choose') : __('Drop file or click to choose') }}
+            {{ multiple ? __('novaMediaHub.dropZone.dropFiles') : __('novaMediaHub.dropZone.dropFile') }}
           </p>
         </div>
       </label>

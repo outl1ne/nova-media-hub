@@ -7,6 +7,7 @@
   "novaMediaHub.noMediaItemsFoundText": "No media items found",
   "novaMediaHub.selectedMediaTitle": "Selected media",
   "novaMediaHub.noMediaSelectedText": "No media items selected",
+  "novaMediaHub.showAll": "Show All",
   "novaMediaHub.chooseCollectionTitle": "Choose collection",
   "novaMediaHub.chooseMediaTitle": "Choose media",
   "novaMediaHub.chooseMediaOrder": "Sort by",
@@ -27,6 +28,7 @@
   "novaMediaHub.collectionTitle": "Collection",
   "novaMediaHub.altTextTitle": "Alt text",
   "novaMediaHub.titleTextTitle": "Title text",
+  "novaMediaHub.close": "Close",
   "novaMediaHub.saveAndClose": "Save and close",
   "novaMediaHub.movaCollectionTitle": "Move to collection",
   "novaMediaHub.moveCollectionText": "Choose collection to move the media item to",
@@ -41,9 +43,14 @@
   "novaMediaHub.contextOpenCollection": "Open collection",
   "novaMediaHub.existingMediaDetected": "Some media items were already found on the server and were not (re)uploaded. However, they were moved to the start of the collection to make them easier to find.",
   "novaMediaHub.searchMediaTitle": "Search",
+  "novaMediaHub.orderBy.default": "Default order",
   "novaMediaHub.orderBy.updated_at": "Updated at",
   "novaMediaHub.orderBy.created_at": "Created at",
   "novaMediaHub.mediaItemUpdated": "Media item successfully updated",
   "novaMediaHub.successfullyMovedToCollection": "Media item successfully moved to collection \":collection\"",
-  "novaMediaHub.successfullyUploadedNMedia": "Successfully uploaded :count media item(s)"
+  "novaMediaHub.successfullyUploadedNMedia": "Successfully uploaded :count media item(s)",
+  "novaMediaHub.dropZone.uploadFile": "Choose File",
+  "novaMediaHub.dropZone.uploadFiles": "Choose Files",
+  "novaMediaHub.dropZone.dropFile": "Drop file or click to choose",
+  "novaMediaHub.dropZone.dropFiles": "Drop files or click to choose"
 }

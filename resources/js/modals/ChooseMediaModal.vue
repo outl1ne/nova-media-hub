@@ -43,7 +43,7 @@
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
                 <SelectControl v-model:selected="collection" @change="c => (collection = c)">
-                  <option value="">{{ '> Show all' }}</option>
+                  <option value="">{{ __('novaMediaHub.showAll') }}</option>
                   <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
                 </SelectControl>
               </ModalFilterItem>
@@ -56,7 +56,7 @@
                   class="w-full form-control form-input form-input-bordered"
                   tabindex="-1"
                   type="search"
-                  :placeholder="__('Search')"
+                  :placeholder="__('novaMediaHub.searchMediaTitle')"
                   spellcheck="false"
                 />
               </ModalFilterItem>
