@@ -32,7 +32,7 @@
         @dragover.prevent
         @drop.prevent="handleOnDrop"
       >
-        <div class="flex items-center space-x-4 pointer-events-none">
+        <div class="flex items-center pointer-events-none" :class="[vertical ? 'flex-col space-y-2' : 'space-x-4']">
           <p class="text-center pointer-events-none">
             <DefaultButton component="div">
               {{ multiple ? __('novaMediaHub.dropZone.uploadFiles') : __('novaMediaHub.dropZone.uploadFile') }}
@@ -60,6 +60,7 @@ const props = defineProps({
   rounded: { type: Boolean, default: false },
   acceptedTypes: { type: String, default: null },
   disabled: { type: Boolean, default: false },
+  vertical: { type: Boolean, default: false },
 });
 
 const { startedDrag, handleOnDragEnter, handleOnDragLeave } = useDragAndDrop(emit);

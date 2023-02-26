@@ -74,7 +74,7 @@
                 <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                   {{ __('novaMediaHub.quickUpload') }}
                 </div>
-                <NMHDropZone @fileChanged="uploadFiles" :multiple="true" />
+                <NMHDropZone @fileChanged="uploadFiles" :multiple="true" vertical="true" />
               </div>
             </div>
 
