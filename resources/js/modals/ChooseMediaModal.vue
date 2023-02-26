@@ -15,7 +15,7 @@
         <ModalContent class="o1-min-h-[90%] o1-grow o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
           <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-1 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
-            <div class="o1-leading-tight o1-text-primary-500 o1-font-bold o1-text-md o1-pb-4">
+            <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-pb-4">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
             <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-if="!!selectedCount">
@@ -71,7 +71,7 @@
               </ModalFilterItem>
 
               <div class="o1-flex o1-flex-col o1-w-full media-hub-dropzone">
-                <div class="o1-leading-tight o1-text-primary-500 o1-font-bold o1-text-md o1-mb-2">
+                <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                   {{ __('novaMediaHub.quickUpload') }}
                 </div>
                 <NMHDropZone @fileChanged="uploadFiles" :multiple="true" />
@@ -80,7 +80,7 @@
 
             <!-- Collection media -->
             <div class="o1-flex o1-flex-col o1-w-full">
-              <div class="o1-leading-tight o1-text-primary-500 o1-font-bold o1-text-md o1-pb-4">
+              <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-pb-4">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
               <div class="o1-w-full overflow-y-auto">
@@ -133,7 +133,12 @@
     </LoadingCard>
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
-    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal" :readonly="field.readonly" />
+    <MediaViewModal
+      :mediaItem="ctxMediaItem"
+      @close="closeViewModal"
+      :show="showMediaViewModal"
+      :readonly="field.readonly"
+    />
 
     <MediaItemContextMenu
       id="media-choose-modal-ctx-menu"
