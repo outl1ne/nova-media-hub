@@ -35,7 +35,7 @@
             <template v-if="files.length > 1"
               >{{ files.length }} {{ __('novaMediaHub.dropZone.filesToUpload') }}</template
             >
-            <template>{{ files.length }} {{ __('novaMediaHub.dropZone.fileToUpload') }}</template>
+            <template v-else>{{ files.length }} {{ __('novaMediaHub.dropZone.fileToUpload') }}</template>
           </p>
           <p v-else class="pointer-events-none text-center text-sm text-gray-500 dark:text-gray-400 font-semibold">
             {{ multiple ? __('novaMediaHub.dropZone.dropFiles') : __('novaMediaHub.dropZone.dropFile') }}
