@@ -15,7 +15,7 @@
         <ModalContent class="o1-min-h-[90%] o1-grow o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
           <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-1 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
-            <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
+            <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
             <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-if="!!selectedCount">
@@ -35,15 +35,17 @@
                 </template>
               </Draggable>
             </div>
-            <div v-else-if="!selectedCount" class="o1-text-slate-400">{{ __('novaMediaHub.noMediaSelectedText') }}</div>
+            <div v-else-if="!selectedCount" class="o1-text-slate-400 o1-mb-4">
+              {{ __('novaMediaHub.noMediaSelectedText') }}
+            </div>
           </div>
 
-          <div class="o1-flex o1-pt-4 o1-min-h-[30%] o1-h-full">
-            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8 overflow-y-auto">
+          <div class="o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-min-h-[30%] o1-h-full o1-gap-8">
+            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto o1-py-4">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
                 <SelectControl v-model:selected="collection" @change="c => (collection = c)">
-                  <option value="">{{ '> Show all' }}</option>
+                  <option value="">{{ __('novaMediaHub.showAll') }}</option>
                   <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
                 </SelectControl>
               </ModalFilterItem>
@@ -56,7 +58,7 @@
                   class="w-full form-control form-input form-input-bordered"
                   tabindex="-1"
                   type="search"
-                  :placeholder="__('Search')"
+                  :placeholder="__('novaMediaHub.searchMediaTitle')"
                   spellcheck="false"
                 />
               </ModalFilterItem>
@@ -71,22 +73,22 @@
               </ModalFilterItem>
 
               <div class="o1-flex o1-flex-col o1-w-full media-hub-dropzone">
-                <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-mb-2">
+                <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                   {{ __('novaMediaHub.quickUpload') }}
                 </div>
-                <NMHDropZone @fileChanged="uploadFiles" :multiple="true" />
+                <NMHDropZone @fileChanged="uploadFiles" multiple vertical />
               </div>
             </div>
 
             <!-- Collection media -->
-            <div class="o1-flex o1-flex-col o1-w-full">
-              <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-pb-4">
+            <div class="o1-flex o1-flex-col o1-w-full o1-py-4">
+              <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
               <div class="o1-w-full overflow-y-auto">
                 <div
                   id="media-items-list"
-                  class="o1-w-full o1-grid o1-gap-4 o1-justify-items-center o1-p-1"
+                  class="o1-w-full flex flex-wrap o1-gap-4 o1-justify-items-center o1-p-1"
                   v-show="!!mediaItems.length"
                 >
                   <MediaItem
@@ -133,7 +135,12 @@
     </LoadingCard>
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
-    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal" :readonly="field.readonly" />
+    <MediaViewModal
+      :mediaItem="ctxMediaItem"
+      @close="closeViewModal"
+      :show="showMediaViewModal"
+      :readonly="field.readonly"
+    />
 
     <MediaItemContextMenu
       id="media-choose-modal-ctx-menu"

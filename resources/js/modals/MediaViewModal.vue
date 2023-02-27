@@ -16,14 +16,16 @@
             <div
               class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full dark:o1-border-slate-700"
             >
-              <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
-              <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
-              <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
-              <MediaViewModalInfoListItem :label="__('novaMediaHub.mimeTypeTitle')" :value="mediaItem.mime_type" />
-              <MediaViewModalInfoListItem
-                :label="__('novaMediaHub.collectionTitle')"
-                :value="mediaItem.collection_name"
-              />
+              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5">
+                <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
+                <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
+                <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
+                <MediaViewModalInfoListItem :label="__('novaMediaHub.mimeTypeTitle')" :value="mediaItem.mime_type" />
+                <MediaViewModalInfoListItem
+                  :label="__('novaMediaHub.collectionTitle')"
+                  :value="mediaItem.collection_name"
+                />
+              </div>
 
               <div class="o1-flex o1-flex-col" v-if="show">
                 <form-translatable-field
@@ -66,10 +68,12 @@
       <ModalFooter>
         <div class="ml-auto">
           <CancelButton @click.prevent="$emit('close')" class="o1-mr-4">
-            {{ __('Close') }}
+            {{ __('novaMediaHub.close') }}
           </CancelButton>
 
-          <LoadingButton v-if="!readonly" @click.prevent="saveAndExit">{{ __('novaMediaHub.saveAndClose') }}</LoadingButton>
+          <LoadingButton v-if="!readonly" @click.prevent="saveAndExit">{{
+            __('novaMediaHub.saveAndClose')
+          }}</LoadingButton>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -206,7 +210,7 @@ export default {
   }
 
   .nova-media-hub-media-modal-translatable-field {
-    margin-bottom: 15px;
+    // margin-bottom: 15px;
 
     .nova-translatable-locale-tabs {
       padding-left: 0;

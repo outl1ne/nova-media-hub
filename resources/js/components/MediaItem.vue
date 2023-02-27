@@ -2,8 +2,8 @@
   <button
     class="o1-relative o1-bg-slate-100 o1-rounded-sm dark:o1-bg-slate-900 o1-overflow-hidden o1-whitespace-no-wrap"
     :class="[
-      { 'o1-ring-2 o1-ring-teal-200 hover:o1-ring-rose-300 dark:o1-ring-teal-800': selected },
-      { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:o1-ring-teal-200 dark:o1-ring-slate-700': !selected },
+      { 'o1-ring-2 ring-primary-200 hover:o1-ring-rose-300 dark:ring-primary-800': selected },
+      { 'o1-ring-1 o1-ring-slate-200 hover:o1-ring-2 hover:ring-primary-200 dark:o1-ring-slate-700': !selected },
       sizeClasses,
     ]"
     type="button"
@@ -29,20 +29,20 @@
 
     <div
       v-if="selected"
-      class="o1-absolute o1-top-2 o1-left-2 o1-bg-teal-100 o1-rounded o1-w-6 o1-h-6 o1-flex o1-items-center o1-justify-center o1-shadow o1-p-1"
+      class="o1-absolute o1-top-2 o1-left-2 bg-primary-100 o1-rounded o1-w-6 o1-h-6 o1-flex o1-items-center o1-justify-center o1-shadow o1-p-1"
     >
       <CheckMarkIcon />
     </div>
 
     <div
-      class="o1-absolute o1-top-0 o1-right-0 o1-bg-teal-100 o1-text-xs o1-py-0.5 o1-px-1 o1-rounded-bl o1-text-slate-700"
+      class="o1-absolute o1-top-0 o1-right-0 bg-primary-100 o1-text-xs o1-py-0.5 o1-px-1 o1-rounded-bl o1-text-slate-700"
     >
       #{{ mediaItem.id }}
     </div>
 
     <div
       v-if="showFileName"
-      class="o1-absolute o1-bottom-2 o1-left-2 o1-right-2 o1-bg-teal-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700 o1-whitespace-nowrap o1-overflow-hidden o1-text-ellipsis"
+      class="o1-absolute o1-bottom-2 o1-left-2 o1-right-2 bg-primary-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700 o1-whitespace-nowrap o1-overflow-hidden o1-text-ellipsis"
       @click.stop.prevent="$emit('nameClick')"
     >
       {{ mediaItem.file_name }}
@@ -50,7 +50,7 @@
 
     <div
       v-if="showCollectionName"
-      class="o1-absolute o1-bottom-2 o1-left-2 o1-bg-teal-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700"
+      class="o1-absolute o1-bottom-2 o1-left-2 bg-primary-100 o1-rounded o1-px-2 o1-py-1 o1-shadow o1-text-xs o1-text-slate-700"
     >
       {{ mediaItem.collection_name }}
     </div>

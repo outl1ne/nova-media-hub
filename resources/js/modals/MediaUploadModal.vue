@@ -31,14 +31,7 @@
             />
           </template>
 
-          <input
-            class="form-control form-input form-input-bordered mt-6"
-            type="file"
-            name="selected_media"
-            ref="filesInput"
-            @change="onFilesChange"
-            multiple
-          />
+          <NMHDropZone class="mt-6" @fileChanged="onFilesChange" :files="selectedFiles" multiple />
         </ModalContent>
       </slot>
 
@@ -67,7 +60,7 @@ export default {
   data: () => ({
     loading: false,
     collectionName: '',
-    selectedFiles: '',
+    selectedFiles: [],
     selectedCollection: void 0,
     collections: [],
   }),
@@ -109,10 +102,8 @@ export default {
       this.loading = false;
     },
 
-    onFilesChange(e) {
-      if (this.$refs.filesInput) {
-        this.selectedFiles = Array.from(this.$refs.filesInput.files);
-      }
+    onFilesChange(selectedFiles) {
+      this.selectedFiles = Array.from(selectedFiles);
     },
 
     async getCollections() {

@@ -6,7 +6,7 @@
         :disabled="!hasPreviousPages || linksDisabled"
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 rounded-bl-lg focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
-          'o1-text-teal-500': hasPreviousPages,
+          'text-gray-500': hasPreviousPages,
           'o1-text-slate-200': !hasPreviousPages || linksDisabled,
         }"
         rel="first"
@@ -21,7 +21,7 @@
         :disabled="!hasPreviousPages || linksDisabled"
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
-          'o1-text-teal-500': hasPreviousPages,
+          'text-gray-500': hasPreviousPages,
           'o1-text-slate-200': !hasPreviousPages || linksDisabled,
         }"
         rel="prev"
@@ -36,10 +36,10 @@
         :disabled="linksDisabled"
         v-for="n in printPages"
         :key="n"
-        class="border-r border-gray-200 dark:border-gray-700 h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
+        class="border-r border-gray-200 dark:border-gray-700 h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700"
         :class="{
-          'o1-text-teal-500': page !== n,
-          'o1-text-teal-500 o1-bg-teal-50 dark:o1-bg-teal-900': page === n,
+          'text-gray-500': page !== n,
+          'text-gray-500 bg-gray-50 dark:bg-gray-700': page === n,
         }"
         @click.prevent="selectPage(n)"
         :dusk="`page:${n}`"
@@ -52,7 +52,7 @@
         :disabled="!hasMorePages || linksDisabled"
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
-          'o1-text-teal-500': hasMorePages,
+          'text-gray-500': hasMorePages,
           'o1-text-slate-200': !hasMorePages || linksDisabled,
         }"
         rel="next"
@@ -67,7 +67,7 @@
         :disabled="!hasMorePages || linksDisabled"
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
-          'o1-text-teal-500': hasMorePages,
+          'text-gray-500': hasMorePages,
           'o1-text-slate-200': !hasMorePages || linksDisabled,
         }"
         rel="last"

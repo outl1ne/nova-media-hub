@@ -62,7 +62,7 @@
           class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90"
         >
           <div class="o1-dropzone-wrapper o1-py-32 o1-px-8 flex o1-items-center o1-justify-center o1-h-full">
-            <NMHDropZone v-if="!quickUploadLoading" :multiple="true" @fileChanged="uploadFiles" />
+            <NMHDropZone v-if="!quickUploadLoading" @fileChanged="uploadFiles" multiple />
 
             <Loader v-else class="text-gray-300" width="60" />
           </div>
@@ -70,7 +70,7 @@
 
         <div
           id="media-items-list"
-          class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
+          class="o1-w-full flex flex-wrap o1-gap-6 o1-p-4"
           :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
           <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
@@ -274,10 +274,6 @@ export default {
 </script>
 
 <style lang="scss">
-#media-items-list {
-  grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
-}
-
 .o1-dropzone-wrapper {
   > div {
     width: 100%;
@@ -290,63 +286,14 @@ export default {
     align-items: center;
   }
 }
-
 .vue-simple-context-menu {
-  background-color: #fff;
-  border-bottom-width: 0px;
-  border-radius: 2px;
-  box-shadow: 0 3px 6px 0 rgba(#000, 0.2);
   display: none;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
   position: absolute;
   top: 0;
   left: 0;
-
   z-index: 1000000;
-
   &--active {
     display: block;
-  }
-
-  &__item {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 5px 15px;
-    font-weight: 700;
-    color: #64748b;
-
-    &.warning {
-      color: #f43f5e;
-    }
-
-    &:hover {
-      background-color: rgba(var(--colors-primary-500), 1);
-      color: #fff;
-    }
-  }
-
-  &__divider {
-    background-clip: content-box;
-    background-color: #e2e8f0;
-    box-sizing: content-box;
-    height: 1px;
-    padding: 2px 0;
-    pointer-events: none;
-  }
-
-  // Have to use the element so we can make use of `first-of-type` and `last-of-type`
-  li {
-    &:first-of-type {
-      margin-top: 2px;
-    }
-
-    &:last-of-type {
-      margin-bottom: 2px;
-    }
   }
 }
 </style>
