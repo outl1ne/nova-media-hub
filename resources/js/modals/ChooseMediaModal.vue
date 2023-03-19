@@ -50,6 +50,9 @@
                 </SelectControl>
               </ModalFilterItem>
 
+              <LoadingButton v-if="someMediaItemsNotInCurrentCollection"
+                @click.prevent="moveToCollection">{{ __('novaMediaHub.moveToCollectionTitle') }}</LoadingButton>
+
               <!-- Search -->
               <ModalFilterItem :title="__('novaMediaHub.searchMediaTitle')">
                 <input
@@ -242,6 +245,14 @@ export default {
       this.loading = false;
     },
 
+    async moveToCollection() {
+      await API.moveMediaToCollection(this.selectedMediaItems.map(mi => mi.id), this.collection);
+      this.selectedMediaItems.forEach(mi => mi.collection_name = this.collection);
+
+      Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', { collection: this.collection }));
+      await this.getMedia({ collection: this.collection });
+    },
+
     toggleMediaSelection(mediaItem) {
       if (this.selectedMediaItems.find(mi => mi.id === mediaItem.id)) {
         this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id !== mediaItem.id);
@@ -335,6 +346,9 @@ export default {
   computed: {
     selectedCount() {
       return this.selectedMediaItems.length;
+    },
+    someMediaItemsNotInCurrentCollection() {
+      return this.collection?.length > 0 && this.selectedMediaItems.some(mi => mi.collection_name !== this.collection);
     },
   },
 };

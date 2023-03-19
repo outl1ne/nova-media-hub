@@ -94,7 +94,23 @@ class MediaHubController extends Controller
         return response()->json('', 204);
     }
 
-    public function moveMediaToCollection(Request $request, $mediaId)
+    public function moveMediaToCollection(Request $request)
+    {
+        $collectionName = $request->get('collection');
+        $mediaIds = $request->get('mediaIds');
+        if (!$collectionName) return response()->json(['error' => 'Collection name required.'], 400);
+        if (count($mediaIds) === 0) return response()->json(['error' => 'Media IDs required.'], 400);
+
+        $updatedCount = MediaHub::getQuery()
+            ->whereIn('id', $mediaIds)
+            ->update(['collection_name' => $collectionName]);
+
+        return response()->json([
+            'success_count' => $updatedCount,
+        ], 200);
+    }
+
+    public function moveMediaItemToCollection(Request $request, $mediaId)
     {
         $collectionName = $request->get('collection');
         if (!$collectionName) return response()->json(['error' => 'Collection name required.'], 400);

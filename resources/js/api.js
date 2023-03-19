@@ -17,8 +17,12 @@ export default {
     return Nova.request().delete(`${PREFIX}/media/${mediaId}`);
   },
 
-  async moveMediaToCollection(mediaId, collection) {
+  async moveMediaItemToCollection(mediaId, collection) {
     return Nova.request().post(`${PREFIX}/media/${mediaId}/move`, { collection });
+  },
+
+  async moveMediaToCollection(mediaIds, collection) {
+    return Nova.request().post(`${PREFIX}/media/move`, { collection, mediaIds });
   },
 
   async updateMediaData(mediaId, formData) {
