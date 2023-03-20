@@ -19,7 +19,8 @@ Route::prefix('/nova-vendor/media-hub')->group(function () {
     Route::get('/collections', [MediaHubController::class, 'getCollections']);
 
     Route::post('/media/{mediaId}/data', [MediaHubController::class, 'updateMediaData']);
-    Route::post('/media/{mediaId}/move', [MediaHubController::class, 'moveMediaToCollection']);
+    Route::post('/media/{mediaId}/move', [MediaHubController::class, 'moveMediaItemToCollection']);
+    Route::post('/media/move', [MediaHubController::class, 'moveMediaToCollection']);
     Route::post('/media/save', [MediaHubController::class, 'uploadMediaToCollection']);
     Route::delete('media/{mediaId}', [MediaHubController::class, 'deleteMedia']);
 });

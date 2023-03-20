@@ -53,7 +53,7 @@ export default {
     async handleMove() {
       this.loading = true;
 
-      await API.moveMediaToCollection(this.mediaItem.id, this.collection);
+      await API.moveMediaItemToCollection(this.mediaItem.id, this.collection);
 
       Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', { collection: this.collection }));
 
