@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 20-03-2023
+
+### Added
+
+- Allow moving media items between collections in bulk (thanks to [@ndrez-outl1ne](https://github.com/ndrez-outl1ne))
+
+### Changed
+
+- Updated packages
+
 ## [1.6.0] - 27-02-2023
 
 ### Added
