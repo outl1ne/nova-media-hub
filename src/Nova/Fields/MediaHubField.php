@@ -5,6 +5,7 @@ namespace Outl1ne\NovaMediaHub\Nova\Fields;
 use Exception;
 use Illuminate\Support\Arr;
 use Laravel\Nova\Fields\Field;
+use Illuminate\Support\Collection;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -40,6 +41,8 @@ class MediaHubField extends Field
 
     public function jsonSerialize(): array
     {
+        $mediaModel = MediaHub::getMediaModel();
+
         $jsonSerialized = parent::jsonSerialize();
         $jsonSerialized['media'] = [];
 
@@ -47,7 +50,7 @@ class MediaHubField extends Field
 
         // Maybe user hasn't set the cast to array, try to JSON parse it manually
         try {
-            if (!is_array($value)) {
+            if (is_string($value)) {
                 $value = json_decode($value, true);
                 if (is_array($value)) $jsonSerialized['value'] = $value;
             }
@@ -59,10 +62,17 @@ class MediaHubField extends Field
             $value = Arr::flatten(array_values($jsonSerialized['translatable']['value'] ?? []), 1);
         }
 
-        if (is_array($value)) {
-            $jsonSerialized['media'] = MediaHub::getMediaModel()::findMany($value)->keyBy('id')->map->formatForNova()->toArray();
+        $keyName = (new $mediaModel)->getKeyName();
+        if ($value instanceof Collection) {
+            $jsonSerialized['value'] = $value->pluck($keyName)->toArray();
+            $jsonSerialized['media'] = $value->keyBy($keyName)->map->formatForNova()->toArray();
+        } else if ($value instanceof $mediaModel) {
+            $jsonSerialized['value'] = $value->{$keyName};
+            $jsonSerialized['media'] = $value->formatForNova();
+        } else if (is_array($value)) {
+            $jsonSerialized['media'] = $mediaModel::findMany($value)->keyBy($keyName)->map->formatForNova()->toArray();
         } else if (!empty($value)) {
-            $jsonSerialized['media'][$value] = MediaHub::getMediaModel()::find($value)?->formatForNova();
+            $jsonSerialized['media'][$value] = $mediaModel::find($value)?->formatForNova();
         }
 
         return $jsonSerialized;

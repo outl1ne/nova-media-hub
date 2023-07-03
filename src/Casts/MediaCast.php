@@ -18,10 +18,8 @@ class MediaCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        if (is_null($value)) {
-            return;
-        }
-
+        if (is_null($value)) return;
+        if (is_numeric($value)) return Media::find($value);
         return Media::whereIn('id', json_decode($value, true))->get();
     }
 
@@ -36,6 +34,6 @@ class MediaCast implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
-        return $value;
+        return json_encode($value);
     }
 }
