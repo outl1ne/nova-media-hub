@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Fixed MediaCast not working with Nova
+- Fixed styling issues with latest Nova versions
+- Fixed MediaCast not working in Nova views
 - Fixed missing translations (thanks to [@RibesAlexandre](https://github.com/RibesAlexandre))
 
 ## [1.6.1] - 20-03-2023
