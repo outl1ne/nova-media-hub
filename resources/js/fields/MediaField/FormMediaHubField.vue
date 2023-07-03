@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <LoadingButton v-if="!field.readonly" type="button" @click.prevent.stop="openChooseModal">Choose media</LoadingButton>
+      <LoadingButton v-if="!field.readonly" type="button" @click.prevent.stop="openChooseModal">{{ __('novaMediaHub.chooseMediaTitle') }}</LoadingButton>
 
       <MediaItemContextMenu
         :id="`form-media-hub-field-ctx-menu-${field.attribute}`"
