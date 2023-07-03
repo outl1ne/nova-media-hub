@@ -157,11 +157,15 @@ export default {
         value = this.mediaItem.data?.[attribute] || {};
       }
 
+      console.info({ name });
+
       return {
         name,
         attribute,
+        withLabel: true,
         visible: true,
         stacked: true,
+        compact: false,
         extraClass: 'field-wrapper',
         translatable: { locales: this.locales, original_component: 'text-field', value },
       };
@@ -220,17 +224,14 @@ export default {
     > div:not(.nova-translatable-locale-tabs) {
       > div {
         margin-top: -25px;
-      }
 
-      > div > div {
-        padding-left: 0;
-        padding-right: 0;
+        > div {
+          width: 100%;
+          padding-left: 0;
+          padding-right: 0;
+        }
       }
     }
-
-    /* > * {
-
-    } */
   }
 }
 </style>
