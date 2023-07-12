@@ -18,7 +18,7 @@
             <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
-            <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-if="!!selectedCount">
+            <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-show="!!selectedCount">
               <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-shrink-0">
                 <template #item="{ element: mediaItem }">
                   <MediaItem
@@ -35,7 +35,7 @@
                 </template>
               </Draggable>
             </div>
-            <div v-else-if="!selectedCount" class="o1-text-slate-400 o1-mb-4">
+            <div v-show="!selectedCount" class="o1-text-slate-400 o1-mb-4">
               {{ __('novaMediaHub.noMediaSelectedText') }}
             </div>
           </div>
@@ -50,7 +50,7 @@
                 </SelectControl>
               </ModalFilterItem>
 
-              <LoadingButton v-if="someMediaItemsNotInCurrentCollection"
+              <LoadingButton v-show="someMediaItemsNotInCurrentCollection"
                 @click.prevent="moveToCollection">{{ __('novaMediaHub.moveToCollectionTitle') }}</LoadingButton>
 
               <!-- Search -->
