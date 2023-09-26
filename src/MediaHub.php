@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 use Outl1ne\NovaMediaHub\Models\Media;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator;
+use Outl1ne\NovaMediaHub\MediaHandler\Support\MediaManipulator;
 
 class MediaHub extends Tool
 {
@@ -208,6 +209,12 @@ class MediaHub extends Tool
         return new $fileValidatorClass;
     }
 
+    public static function getMediaManipulator(): MediaManipulator
+    {
+        $mediaManipulatorClass = config('nova-media-hub.media_manipulator');
+        return new $mediaManipulatorClass;
+    }
+
     public static function fileHandler()
     {
         return new FileHandler();
@@ -217,20 +224,6 @@ class MediaHub extends Tool
     {
         $optimizableMimeTypes = config('nova-media-hub.optimizable_mime_types');
         return in_array($media->mime_type, $optimizableMimeTypes);
-    }
-
-    public static function shouldOptimizeOriginal(Media $media)
-    {
-        $ogRules = config('nova-media-hub.original_image_manipulations');
-        if (!$ogRules['optimize']) return false;
-
-        $allConversions = static::getConversions();
-
-        $allOgDisabled = $allConversions['*']['original'] ?? null;
-        $appliesToCollectionConv = $allConversions[$media->collection_name]['original'] ?? null;
-        if ($allOgDisabled === false || $appliesToCollectionConv === false) return false;
-
-        return $ogRules;
     }
 
     public static function getLocales()

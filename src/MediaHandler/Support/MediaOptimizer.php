@@ -15,17 +15,14 @@ class MediaOptimizer
         if (!empty($media->optimized_at)) return;
         if (!Str::startsWith($media->mime_type, 'image')) return;
         if (!MediaHub::isOptimizable($media)) return;
-        if (!$origOptimRules = MediaHub::shouldOptimizeOriginal($media)) return;
 
         $fileSystem = self::getFilesystem();
 
+        $manipulator = MediaHub::getMediaManipulator();
+
         $manipulations = (new Manipulations());
         $manipulations->optimize(config('nova-media-hub.image_optimizers'));
-
-        if ($maxDimens = $origOptimRules['max_dimensions']) {
-            $manipulations->fit(Manipulations::FIT_MAX, $maxDimens, $maxDimens);
-        }
-
+        if (!$manipulations = $manipulator->manipulateOriginal($media, $manipulations)) return;
         $manipulations->apply();
 
         // Copy media from whatever disk to local filesystem for manipulations
@@ -37,6 +34,7 @@ class MediaOptimizer
         // Load and save modified version
         static::manipulate($localFilePath, $manipulations);
 
+        $media->mime_type = FileHelpers::getMimeType($localFilePath);
         $media->size = filesize($localFilePath);
         $media->optimized_at = now();
 
@@ -54,19 +52,12 @@ class MediaOptimizer
         $pathMaker = MediaHub::getPathMaker();
         $fileSystem = self::getFilesystem();
 
-        // Check if has necessary data for resize
-        $cFormat = $conversionConfig['format'] ?? null;
-        $cFitMethod = $conversionConfig['fit'] ?? null;
-        $cWidth = $conversionConfig['width'] ?? null;
-        $cHeight = $conversionConfig['height'] ?? null;
+        $manipulator = MediaHub::getMediaManipulator();
 
-        $manipulations = (new Manipulations())
-            ->optimize(config('nova-media-hub.image_optimizers'))
-            ->fit($cFitMethod, $cWidth, $cHeight);
-
-        if ($cFormat) $manipulations->format($cFormat);
-
-        $manipulations = $manipulations->apply();
+        $manipulations = (new Manipulations());
+        $manipulations->optimize(config('nova-media-hub.image_optimizers'));
+        $manipulations = $manipulator->manipulateConversion($media, $manipulations, $conversionName, $conversionConfig);
+        $manipulations->apply();
 
         // Copy media from whatever disk to local filesystem for manipulations
         if (!$localFilePath || !is_file($localFilePath)) {
