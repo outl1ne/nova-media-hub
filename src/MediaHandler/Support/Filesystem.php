@@ -92,10 +92,14 @@ class Filesystem
     public function copyFromMediaLibrary(Media $media, string $targetFilePath): ?string
     {
         $filePath = $this->getMediaDirectory($media) . $media->file_name;
+
+        $exists = $this->filesystem->disk($media->disk)->exists($filePath);
+        if (!$exists) return null;
+
         $fileStream = $this->filesystem->disk($media->disk)->readStream($filePath);
         file_put_contents($targetFilePath, $fileStream);
         if (is_resource($fileStream)) fclose($fileStream);
-        return is_file($targetFilePath) ? $targetFilePath : null;
+        return $targetFilePath;
     }
 
     public function getMediaDirectory(Media $media, ?string $type = null): string
