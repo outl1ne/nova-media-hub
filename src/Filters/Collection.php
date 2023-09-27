@@ -3,6 +3,8 @@
 namespace Outl1ne\NovaMediaHub\Filters;
 
 use Closure;
+use Illuminate\Support\Facades\DB;
+use Outl1ne\NovaMediaHub\Models\Media;
 
 class Collection
 {
@@ -12,6 +14,13 @@ class Collection
             return $next($query);
         }
 
-        return $next($query)->where('collection_name', request()->get('collection'));
+        $collectionName = request()->get('collection');
+        $connectionName = Media::getConnectionResolver()->getDefaultConnection();
+        $isProperSql = in_array($connectionName, ['mysql', 'pgsql', 'sqlite']);
+
+        $queryWhere = $isProperSql ? 'LOWER(collection_name)' : 'collection_name';
+        $queryValue = $isProperSql ? mb_strtolower($collectionName) : $collectionName;
+
+        return $next($query)->where(DB::raw($queryWhere), '=', $queryValue);
     }
 }
