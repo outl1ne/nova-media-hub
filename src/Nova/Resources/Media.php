@@ -11,6 +11,7 @@ class Media extends Resource
     public static $title = 'key';
     public static $model = null;
     public static $displayInNavigation = false;
+    public static $globallySearchable = false;
 
     public function __construct($resource)
     {
