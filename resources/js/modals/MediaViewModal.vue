@@ -224,11 +224,12 @@ export default {
     > div:not(.nova-translatable-locale-tabs) {
       > div {
         margin-top: -25px;
+        padding-top: 8px;
 
         > div {
           width: 100%;
-          padding-left: 0;
-          padding-right: 0;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
         }
       }
     }

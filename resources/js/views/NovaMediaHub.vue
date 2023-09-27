@@ -70,14 +70,16 @@
 
         <div
           id="media-items-list"
-          class="o1-w-full flex flex-wrap o1-gap-6 o1-p-4"
+          class="o1-w-full o1-h-full flex flex-wrap o1-gap-6 o1-p-4 relative"
           :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
-          <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
+          <Loader v-if="loadingMedia" class="text-gray-300 o1-absolute o1-inset-0 o1-m-auto" width="60" />
+          <div v-else-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
             {{ __('novaMediaHub.noMediaItemsFoundText') }}
           </div>
 
           <MediaItem
+            v-show="!loadingMedia"
             v-for="mediaItem in mediaItems"
             :key="mediaItem.id"
             :mediaItem="mediaItem"
@@ -130,6 +132,7 @@ import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import MediaOrderSelect from '../components/MediaOrderSelect';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
+import debounce from 'lodash.debounce';
 
 export default {
   mixins: [HandlesMediaLists, HandlesMediaUpload],
@@ -173,7 +176,7 @@ export default {
 
     this.$watch(
       () => ({ search: this.search, orderBy: this.orderBy }),
-      data => this.getMedia({ ...data, page: 1 })
+      debounce(data => this.getMedia({ ...data, page: 1 }), 400)
     );
   },
 
