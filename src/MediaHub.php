@@ -211,7 +211,7 @@ class MediaHub extends Tool
 
     public static function getMediaManipulator(): MediaManipulator
     {
-        $mediaManipulatorClass = config('nova-media-hub.media_manipulator');
+        $mediaManipulatorClass = config('nova-media-hub.media_manipulator', \Outl1ne\NovaMediaHub\MediaHandler\Support\MediaManipulator::class);
         return new $mediaManipulatorClass;
     }
 
