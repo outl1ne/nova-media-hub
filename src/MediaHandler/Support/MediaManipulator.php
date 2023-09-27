@@ -8,6 +8,16 @@ use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaManipulator
 {
+    /**
+     * Add manipulations to $manipulations to define new constraits/formats etc.
+     * The rest (handling, mime type, saving etc) is handled by the MediaOptimizer.
+     *
+     * Return null if you don't want to modify the original image and store it as-is.
+     *
+     * @param Media $media
+     * @param Manipulations $manipulations
+     * @return ?Manipulations
+     **/
     public function manipulateOriginal(Media $media, Manipulations &$manipulations): ?Manipulations
     {
         if (!$origOptimRules = $this->shouldOptimizeOriginal($media)) return;
@@ -19,7 +29,7 @@ class MediaManipulator
         return $manipulations;
     }
 
-    public function manipulateConversion(Media $media, Manipulations &$manipulations, string $collectionName, array $conversionConfig)
+    public function manipulateConversion(Media $media, Manipulations &$manipulations, string $collectionName, array $conversionConfig): Manipulations
     {
         // Check if has necessary data for resize
         $cFormat = $conversionConfig['format'] ?? null;
