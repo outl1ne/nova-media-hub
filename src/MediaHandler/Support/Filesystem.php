@@ -94,7 +94,10 @@ class Filesystem
         $filePath = $this->getMediaDirectory($media) . $media->file_name;
 
         $exists = $this->filesystem->disk($media->disk)->exists($filePath);
-        if (!$exists) return null;
+        if (!$exists) {
+            report(new FileDoesNotExistException("Tried to copy file for media [$media->id] but it did not exist."));
+            return null;
+        }
 
         $fileStream = $this->filesystem->disk($media->disk)->readStream($filePath);
         file_put_contents($targetFilePath, $fileStream);
