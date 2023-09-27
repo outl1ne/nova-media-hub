@@ -5,11 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.7.0] - 26-09-2023
+## [1.7.0] - 27-09-2023
 
 ### Added
 
-- Added new MediaManipulator class
+- Added new MediaManipulator class that allows better customization of image optimization/conversions
+- Added debounce to search field to reduce queries
+- Added loader to search
+
+### Changed
+
+- Made collections case-insensitive
+- Fixed some UI problems with latest Nova
+- Removed Media from global search
 
 ## [1.6.2] - 03-07-2023
 
