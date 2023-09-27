@@ -28,6 +28,7 @@
     "vuex": "^4.1.0"
   },
   "dependencies": {
+    "lodash.debounce": "^4.0.8",
     "vue": "^3.2.41",
     "vue-simple-context-menu": "^4.0.4",
     "vuedraggable": "^4.1.0"
