@@ -20,7 +20,7 @@ class MediaManipulator
      **/
     public function manipulateOriginal(Media $media, Manipulations &$manipulations): ?Manipulations
     {
-        if (!$origOptimRules = $this->shouldOptimizeOriginal($media)) return;
+        if (!$origOptimRules = $this->shouldOptimizeOriginal($media)) return null;
 
         if ($maxDimens = $origOptimRules['max_dimensions']) {
             $manipulations->fit(Manipulations::FIT_MAX, $maxDimens, $maxDimens);
