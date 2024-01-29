@@ -9,10 +9,33 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table(MediaHub::getTableName(), function (Blueprint $table) {
-            $table->index('collection_name');
-            $table->index('original_file_hash');
-        });
+        try {
+            Schema::table(MediaHub::getTableName(), function (Blueprint $table) {
+                $table->index('collection_name');
+            });
+        } catch (\Throwable $e) {
+            $msg = $e->getMessage();
+
+            if (str_contains($msg, 'already exists') || str_contains($msg, 'Duplicate key name')) {
+                // Ignore as user has already added the same key
+            } else {
+                throw $e;
+            }
+        }
+
+        try {
+            Schema::table(MediaHub::getTableName(), function (Blueprint $table) {
+                $table->index('original_file_hash');
+            });
+        } catch (\Throwable $e) {
+            $msg = $e->getMessage();
+
+            if (str_contains($msg, 'already exists') || str_contains($msg, 'Duplicate key name')) {
+                // Ignore as user has already added the same key
+            } else {
+                throw $e;
+            }
+        }
     }
 
     public function down(): void
