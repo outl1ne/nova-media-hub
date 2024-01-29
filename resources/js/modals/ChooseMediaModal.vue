@@ -93,7 +93,7 @@
                 <div
                   id="media-items-list"
                   class="o1-w-full flex flex-wrap o1-gap-4 o1-justify-items-center o1-p-1"
-                  v-show="!!mediaItems.length"
+                  v-show="!!mediaItems.length && !mediaLoading"
                 >
                   <MediaItem
                     v-for="mediaItem in mediaItems"
@@ -110,8 +110,12 @@
                 </div>
               </div>
 
-              <div v-show="!mediaItems.length" class="o1-text-slate-400">
+              <div v-show="!mediaItems.length && !mediaLoading" class="o1-text-slate-400">
                 {{ __('novaMediaHub.noMediaItemsFoundText') }}
+              </div>
+
+              <div v-if="mediaLoading">
+                <Loader class="text-gray-300 o1-mt-5" width="30" />
               </div>
 
               <PaginationLinks
@@ -194,6 +198,7 @@ export default {
     selectedMediaItems: [],
 
     loading: false,
+    mediaLoading: false,
     showConfirmDeleteModal: false,
     showMediaViewModal: false,
 
@@ -205,21 +210,29 @@ export default {
 
   created() {
     this.$watch(
-      () => ({ collection: this.collection, search: this.search, orderBy: this.orderBy }),
-      data => this.getMedia({ ...data, page: 1 })
+      () => ({ collection: this.collection, search: this.search, orderBy: this.orderBy, show: this.show }),
+      async data => {
+        if (!data.show) return;
+
+        this.mediaLoading = true;
+        await this.getMedia({ collection: data.collection, search: data.search, orderBy: data.orderBy, page: 1 });
+        this.mediaLoading = false;
+      }
     );
   },
 
-  async mounted() {
-    if (this.field.defaultCollectionName) this.collection = this.field.defaultCollectionName;
-    await this.getCollections();
-    this.$nextTick(() => (this.loading = false));
-  },
+  // async mounted() {
+  //   if (this.field.defaultCollectionName) this.collection = this.field.defaultCollectionName;
+  //   await this.getCollections();
+  //   this.$nextTick(() => (this.loading = false));
+  // },
 
   watch: {
     async show(newValue) {
       if (newValue) {
-        await this.getCollections();
+        // Let it be async
+        this.getCollections();
+
         this.selectedCollection = this.activeCollection;
 
         const iniVal = this.initialSelectedMediaItems;
