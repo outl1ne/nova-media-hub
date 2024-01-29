@@ -27,7 +27,9 @@
         </div>
       </div>
 
-      <LoadingButton v-if="!field.readonly" type="button" @click.prevent.stop="openChooseModal">{{ __('novaMediaHub.chooseMediaTitle') }}</LoadingButton>
+      <Button v-if="!field.readonly" type="button" @click.prevent.stop="openChooseModal">
+        {{ __('novaMediaHub.chooseMediaTitle') }}
+      </Button>
 
       <MediaItemContextMenu
         :id="`form-media-hub-field-ctx-menu-${field.attribute}`"
@@ -56,9 +58,10 @@ import ChooseMediaModal from '../../modals/ChooseMediaModal';
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
 import MediaItemContextMenu from '../../components/MediaItemContextMenu';
 import HandlesMediaHubFieldValue from '../../mixins/HandlesMediaHubFieldValue';
+import { Button } from 'laravel-nova-ui';
 
 export default {
-  components: { Draggable, MediaItem, ChooseMediaModal, MediaItemContextMenu },
+  components: { Draggable, MediaItem, ChooseMediaModal, MediaItemContextMenu, Button },
   mixins: [FormField, HandlesValidationErrors, HandlesMediaHubFieldValue],
   props: ['resourceName', 'resourceId', 'field'],
 

@@ -23,9 +23,9 @@
       >
         <div class="flex items-center pointer-events-none" :class="[vertical ? 'flex-col space-y-2' : 'space-x-4']">
           <p class="text-center pointer-events-none">
-            <DefaultButton component="div">
+            <Button component="div" @click.prevent.stop="true">
               {{ multiple ? __('novaMediaHub.dropZone.uploadFiles') : __('novaMediaHub.dropZone.uploadFile') }}
-            </DefaultButton>
+            </Button>
           </p>
 
           <p
@@ -47,10 +47,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useDragAndDrop } from '../composables/useDragAndDrop';
+import { Button } from 'laravel-nova-ui';
 
 const emit = defineEmits(['fileChanged', 'fileRemoved']);
+
+const components = defineComponent({ Button });
 
 const props = defineProps({
   files: { type: Array, default: [] },

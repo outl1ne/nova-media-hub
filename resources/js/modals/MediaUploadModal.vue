@@ -37,11 +37,13 @@
 
       <ModalFooter>
         <div class="ml-auto">
-          <LoadingButton @click.prevent="$emit('close')" class="o1-mr-4">
+          <Button @click.prevent="$emit('close')" class="o1-mr-4">
             {{ __('novaMediaHub.closeButton') }}
-          </LoadingButton>
+          </Button>
 
-          <LoadingButton @click.prevent="uploadFiles">{{ __('novaMediaHub.uploadFilesButton') }}</LoadingButton>
+          <Button @click.prevent="uploadFiles">
+            {{ __('novaMediaHub.uploadFilesButton') }}
+          </Button>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -51,8 +53,10 @@
 <script>
 import API from '../api';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
+import { Button } from 'laravel-nova-ui';
 
 export default {
+  components: { Button },
   mixins: [HandlesMediaUpload],
   emits: ['close'],
   props: ['show', 'activeCollection'],

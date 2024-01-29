@@ -50,8 +50,9 @@
                 </SelectControl>
               </ModalFilterItem>
 
-              <LoadingButton v-show="someMediaItemsNotInCurrentCollection"
-                @click.prevent="moveToCollection">{{ __('novaMediaHub.moveToCollectionTitle') }}</LoadingButton>
+              <Button v-show="someMediaItemsNotInCurrentCollection" @click.prevent="moveToCollection">
+                {{ __('novaMediaHub.moveToCollectionTitle') }}
+              </Button>
 
               <!-- Search -->
               <ModalFilterItem :title="__('novaMediaHub.searchMediaTitle')">
@@ -115,7 +116,7 @@
 
               <PaginationLinks
                 v-show="mediaResponse.last_page > 1"
-                class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 o1-border-l dark:o1-border-gray-700"
+                class="o1-mt-auto o1-w-full o1-border o1-border-slate-200 o1-border-l dark:o1-border-gray-700 o1-rounded-b-lg"
                 style="border-radius: 0px"
                 :page="mediaResponse.current_page"
                 :pages="mediaResponse.last_page"
@@ -128,11 +129,11 @@
 
       <ModalFooter>
         <div class="ml-auto">
-          <CancelButton @click.prevent="$emit('close')" class="o1-mr-4">
+          <Button variant="link" state="mellow" @click.prevent="$emit('close')" class="o1-mr-4">
             {{ __('novaMediaHub.closeButton') }}
-          </CancelButton>
+          </Button>
 
-          <LoadingButton @click.prevent="confirm">{{ __('novaMediaHub.confirmButton') }}</LoadingButton>
+          <Button @click.prevent="confirm">{{ __('novaMediaHub.confirmButton') }}</Button>
         </div>
       </ModalFooter>
     </LoadingCard>
@@ -170,6 +171,7 @@ import ModalFilterItem from '../components/ModalFilterItem';
 import MediaOrderSelect from '../components/MediaOrderSelect';
 import MediaViewModal from '../modals/MediaViewModal';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
+import { Button } from 'laravel-nova-ui';
 
 export default {
   mixins: [HandlesMediaLists, HandlesMediaUpload],
@@ -182,6 +184,7 @@ export default {
     ModalFilterItem,
     MediaOrderSelect,
     MediaViewModal,
+    Button,
   },
 
   emits: ['close', 'confirm'],
@@ -246,8 +249,11 @@ export default {
     },
 
     async moveToCollection() {
-      await API.moveMediaToCollection(this.selectedMediaItems.map(mi => mi.id), this.collection);
-      this.selectedMediaItems.forEach(mi => mi.collection_name = this.collection);
+      await API.moveMediaToCollection(
+        this.selectedMediaItems.map(mi => mi.id),
+        this.collection
+      );
+      this.selectedMediaItems.forEach(mi => (mi.collection_name = this.collection));
 
       Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', { collection: this.collection }));
       await this.getMedia({ collection: this.collection });

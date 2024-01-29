@@ -12,7 +12,9 @@
           v-model:selected="orderBy"
           @change="selected => (orderBy = selected)"
         />
-        <LoadingButton @click="showMediaUploadModal = true">{{ __('novaMediaHub.uploadMediaButton') }}</LoadingButton>
+        <Button @click="showMediaUploadModal = true">
+          {{ __('novaMediaHub.uploadMediaButton') }}
+        </Button>
       </div>
     </div>
 
@@ -133,6 +135,7 @@ import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import MediaOrderSelect from '../components/MediaOrderSelect';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
 import debounce from 'lodash.debounce';
+import { Button } from 'laravel-nova-ui';
 
 export default {
   mixins: [HandlesMediaLists, HandlesMediaUpload],
@@ -146,6 +149,7 @@ export default {
     MediaItemContextMenu,
     MoveToCollectionModal,
     MediaOrderSelect,
+    Button,
   },
 
   data: () => ({

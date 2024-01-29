@@ -13,13 +13,13 @@
 
       <ModalFooter>
         <div class="o1-ml-auto">
-          <LinkButton type="button" @click.prevent="$emit('close')" class="o1-mr-3">
+          <Button variant="link" state="mellow" type="button" @click.prevent="$emit('close')" class="o1-mr-3">
             {{ __('novaMediaHub.closeButton') }}
-          </LinkButton>
+          </Button>
 
-          <LoadingButton @click.prevent="handleMove" :disabled="loading" :processing="loading">{{
-            __('novaMediaHub.moveButton')
-          }}</LoadingButton>
+          <Button @click.prevent="handleMove" :disabled="loading">
+            {{ __('novaMediaHub.moveButton') }}
+          </Button>
         </div>
       </ModalFooter>
     </div>
@@ -29,14 +29,13 @@
 <script>
 import API from '../api';
 import HandlesMediaLists from '../mixins/HandlesMediaLists';
+import { Button } from 'laravel-nova-ui';
 
 export default {
+  components: { Button },
   mixins: [HandlesMediaLists],
-
   emits: ['confirm', 'close'],
-
   props: ['show', 'mediaItem'],
-
   data: () => ({ loading: false }),
 
   async mounted() {
