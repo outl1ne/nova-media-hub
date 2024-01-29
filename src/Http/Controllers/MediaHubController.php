@@ -16,7 +16,9 @@ class MediaHubController extends Controller
     {
         $defaultCollections = MediaHub::getDefaultCollections();
 
-        $collections = MediaHub::getMediaModel()::pluck('collection_name')
+        $collections = MediaHub::getMediaModel()
+            ::distinct()
+            ->pluck('collection_name')
             ->merge($defaultCollections)
             ->map(fn ($name) => str($name)->ucfirst())
             ->unique()
