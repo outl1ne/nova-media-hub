@@ -149,6 +149,10 @@ class FileHandler
                 unlink($this->pathToFile);
             }
 
+            if (!$existingMedia->optimized_at) {
+                MediaHubOptimizeAndConvertJob::dispatch($existingMedia);
+            }
+
             return $existingMedia;
         }
 
