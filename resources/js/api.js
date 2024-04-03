@@ -28,4 +28,8 @@ export default {
   async updateMediaData(mediaId, formData) {
     return Nova.request().post(`${PREFIX}/media/${mediaId}/data`, formData);
   },
+
+  async replaceMediaItem(mediaId, formData) {
+    return Nova.request().post(`${PREFIX}/media/${mediaId}/replace`, formData);
+  },
 };

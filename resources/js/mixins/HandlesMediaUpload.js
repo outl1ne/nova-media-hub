@@ -41,5 +41,26 @@ export default {
 
       return { success: false, media: [] };
     },
+    async replaceFileInPlace(existingMedia, newFile) {
+      try {
+        const formData = new FormData();
+        formData.append('file', newFile);
+
+        const { data } = await API.replaceMediaItem(existingMedia.id, formData);
+
+        return { success: true, media: data.media };
+      } catch (e) {
+        if (e && e.response && e.response.data) {
+          const data = e.response.data;
+
+          if (data.error) {
+            Nova.$toasted.error(data.error);
+          }
+        } else {
+          Nova.$toasted.error(e.message || 'Unknown error');
+        }
+        return { success: false, media: null };
+      }
+    },
   },
 };

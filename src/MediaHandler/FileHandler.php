@@ -33,6 +33,7 @@ class FileHandler
     protected string $collectionName = '';
     protected array $modelData = [];
     protected bool $deleteOriginal = false;
+    protected bool $allowDuplicates = false;
 
     public function __construct()
     {
@@ -134,12 +135,19 @@ class FileHandler
         }
     }
 
+    public function allowDuplicates($allowDuplicates = true)
+    {
+        $this->allowDuplicates = $allowDuplicates;
+        return $this;
+    }
+
     private function saveFile(): ?Media
     {
         // Check if file already exists
         $fileHash = FileHelpers::getFileHash($this->pathToFile);
         $existingMedia = MediaHub::getQuery()->where('original_file_hash', $fileHash)->first();
-        if ($existingMedia) {
+
+        if (!$this->allowDuplicates && $existingMedia) {
             $existingMedia->updated_at = now();
             $existingMedia->save();
             $existingMedia->wasExisting = true;
@@ -169,10 +177,14 @@ class FileHandler
         $fileValidator->validateFile($this->collectionName, $this->pathToFile, $this->fileName, $extension, $mimeType, $fileSize);
 
         $mediaClass = MediaHub::getMediaModel();
-        $media = new $mediaClass($this->modelData ?? []);
+
+        /** @var \Outl1ne\NovaMediaHub\Models\Media */
+        $media = new $mediaClass();
+        $media->forceFill($this->modelData ?? []);
+        if ($media->id) $media->exists = true;
 
         $media->file_name = $this->fileName;
-        $media->collection_name = $this->collectionName;
+        $media->collection_name ??= $this->collectionName;
         $media->size = $fileSize;
         $media->mime_type = $mimeType;
         $media->original_file_hash = $fileHash;

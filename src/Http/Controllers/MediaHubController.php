@@ -151,4 +151,43 @@ class MediaHubController extends Controller
 
         return response()->json($media, 200);
     }
+
+    public function replaceMediaInPlace(Request $request, $mediaId)
+    {
+        $file = $request->allFiles()['file'] ?? null;
+        if (!$file) return response()->json(['error' => 'File required.'], 400);
+
+        /** @var \Outl1ne\NovaMediaHub\Models\Media */
+        $media = MediaHub::getQuery()->findOrFail($mediaId);
+
+        $newMediaItem = null;
+        try {
+            $newMediaItem = MediaHub::fileHandler()
+                ->withModelData([
+                    'id' => $media->id,
+                    'created_at' => $media->created_at,
+                    'collection_name' => $media->collection_name,
+                ])
+                ->allowDuplicates()
+                ->withFile($file)
+                ->deleteOriginal()
+                ->save();
+
+            /** @var Filesystem */
+            $fileSystem = app()->make(Filesystem::class);
+            $fileSystem->deleteFromMediaLibrary($media);
+        } catch (Exception $e) {
+            report($e);
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'success' => false,
+            ], 400);
+        }
+
+        return response()->json([
+            'media' => $newMediaItem->formatForNova(),
+            'success' => true,
+        ], 200);
+    }
 }

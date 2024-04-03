@@ -9,6 +9,8 @@
 
     <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal" :readonly="readonly" />
 
+    <MediaReplaceModal :existingMediaItem="mediaItem" @close="closeReplaceModal" :show="showMediaReplaceModal" />
+
     <a
       v-if="mediaItem"
       :href="mediaItem.url"
@@ -23,17 +25,19 @@
 
 <script>
 import MediaViewModal from '../modals/MediaViewModal';
+import MediaReplaceModal from '../modals/MediaReplaceModal';
 import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
 export default {
-  components: { VueSimpleContextMenu, MediaViewModal },
+  components: { VueSimpleContextMenu, MediaViewModal, MediaReplaceModal },
 
   props: ['id', 'showEvent', 'options', 'mediaItem', 'readonly'],
 
-  emits: ['openModal', 'hideModal', 'optionClick'],
+  emits: ['openModal', 'hideModal', 'optionClick', 'dataUpdated'],
 
   data: () => ({
     showMediaViewModal: false,
+    showMediaReplaceModal: false,
   }),
 
   watch: {
@@ -57,6 +61,8 @@ export default {
         return;
       }
 
+      if (action === 'replace') return this.openReplaceModal();
+
       this.$emit('optionClick', event);
     },
 
@@ -68,6 +74,17 @@ export default {
     closeViewModal() {
       this.$emit('hideModal');
       this.showMediaViewModal = false;
+    },
+
+    openReplaceModal() {
+      this.$emit('showModal');
+      this.showMediaReplaceModal = true;
+    },
+
+    closeReplaceModal(dataUpdated) {
+      this.$emit('hideModal');
+      this.showMediaReplaceModal = false;
+      if (dataUpdated) this.$emit('dataUpdated');
     },
   },
 };

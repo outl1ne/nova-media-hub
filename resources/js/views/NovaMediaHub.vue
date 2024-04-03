@@ -111,6 +111,7 @@
       @close="ctxShowEvent = void 0"
       :mediaItem="ctxMediaItem"
       @optionClick="contextOptionClick"
+      @dataUpdated="getMedia"
     />
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
@@ -168,13 +169,14 @@ export default {
   }),
 
   async created() {
-    this.collection = this.$page.props.collectionId || 'default';
+    this.collection = this.$page.props.collectionId || void 0;
 
     this.ctxOptions = [
       { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
       { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
       { name: this.__('novaMediaHub.contextMoveCollection'), action: 'move-collection' },
       { type: 'divider' },
+      { name: this.__('novaMediaHub.contextReplace'), action: 'replace', class: 'warning' },
       { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
     ];
 
