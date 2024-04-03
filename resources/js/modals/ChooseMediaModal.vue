@@ -44,7 +44,7 @@
             <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto o1-py-4">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
-                <SelectControl v-model:selected="collection" @change="c => (collection = c)">
+                <SelectControl class="o1-capitalize" v-model:selected="collection" @change="c => (collection = c)">
                   <option value="">{{ __('novaMediaHub.showAll') }}</option>
                   <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
                 </SelectControl>
@@ -201,7 +201,7 @@ export default {
     mediaLoading: false,
     showConfirmDeleteModal: false,
     showMediaViewModal: false,
-    collection: self.$props.field?.defaultCollectionName || null,
+    collection: self.$props.field?.defaultCollectionName || void 0,
 
     ctxOptions: [],
     ctxMediaItem: void 0,

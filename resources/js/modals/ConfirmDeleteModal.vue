@@ -4,7 +4,7 @@
       <ModalHeader v-text="__('novaMediaHub.deleteModalTitle')" />
 
       <ModalContent>
-        <p class="o1-leading-tight">
+        <p class="o1-leading-tight o1-mb-2">
           {{ __('novaMediaHub.deleteModalText') }}
         </p>
 

@@ -158,8 +158,6 @@ export default {
         value = this.mediaItem.data?.[attribute] || {};
       }
 
-      console.info({ name });
-
       return {
         name,
         attribute,

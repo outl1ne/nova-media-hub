@@ -20,7 +20,7 @@ class MediaHubField extends Field
         $this->withMeta([
             'multiple' => false,
             'user_can_create_collections' => MediaHub::userCanCreateCollections(),
-            'defaultCollectionName' => str($defaultCollectionName)->ucfirst(),
+            'defaultCollectionName' => $defaultCollectionName,
         ]);
 
         // TODO Add index field
@@ -29,7 +29,7 @@ class MediaHubField extends Field
 
     public function defaultCollection($defaultCollectionName = null)
     {
-        return $this->withMeta(['defaultCollectionName' => str($defaultCollectionName)->ucfirst()]);
+        return $this->withMeta(['defaultCollectionName' => $defaultCollectionName]);
     }
 
     public function multiple($multiple = true)

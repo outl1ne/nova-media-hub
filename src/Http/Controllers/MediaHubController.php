@@ -20,7 +20,7 @@ class MediaHubController extends Controller
             ::distinct()
             ->pluck('collection_name')
             ->merge($defaultCollections)
-            ->map(fn ($name) => str($name)->ucfirst())
+            ->map(fn ($name) => str($name)->lower())
             ->unique()
             ->values()
             ->toArray();
