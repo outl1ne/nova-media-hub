@@ -194,13 +194,14 @@ export default {
   emits: ['close', 'confirm'],
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
 
-  data: () => ({
+  data: self => ({
     selectedMediaItems: [],
 
     loading: false,
     mediaLoading: false,
     showConfirmDeleteModal: false,
     showMediaViewModal: false,
+    collection: self.$props.field?.defaultCollectionName || null,
 
     ctxOptions: [],
     ctxMediaItem: void 0,
@@ -220,12 +221,6 @@ export default {
       }
     );
   },
-
-  // async mounted() {
-  //   if (this.field.defaultCollectionName) this.collection = this.field.defaultCollectionName;
-  //   await this.getCollections();
-  //   this.$nextTick(() => (this.loading = false));
-  // },
 
   watch: {
     async show(newValue) {
