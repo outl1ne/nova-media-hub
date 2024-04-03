@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.8.0] - 03-04-2024
 
-Long overdue updates.
+### Added
+
+- Added new "Replace in-place" functionality
 
 ### Changed
 
