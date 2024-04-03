@@ -81,10 +81,10 @@ export default {
       this.showMediaReplaceModal = true;
     },
 
-    closeReplaceModal(dataUpdated) {
+    closeReplaceModal(dataUpdated, media) {
       this.$emit('hideModal');
       this.showMediaReplaceModal = false;
-      if (dataUpdated) this.$emit('dataUpdated');
+      if (dataUpdated) this.$emit('dataUpdated', media);
     },
   },
 };

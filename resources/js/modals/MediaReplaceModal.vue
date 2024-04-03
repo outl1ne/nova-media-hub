@@ -59,7 +59,7 @@ export default {
 
       if (success) {
         Nova.$toasted.success(this.__('novaMediaHub.mediaSuccessfullyReplaced', { id: media.id }));
-        this.$emit('close', true);
+        this.$emit('close', true, media);
       }
 
       this.loading = false;

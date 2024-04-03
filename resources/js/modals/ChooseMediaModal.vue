@@ -159,6 +159,7 @@
       :mediaItem="ctxMediaItem"
       @optionClick="contextOptionClick"
       :readonly="field.readonly"
+      @dataUpdated="dataUpdated"
     />
   </Modal>
 </template>
@@ -214,10 +215,7 @@ export default {
       () => ({ collection: this.collection, search: this.search, orderBy: this.orderBy, show: this.show }),
       async data => {
         if (!data.show) return;
-
-        this.mediaLoading = true;
-        await this.getMedia({ collection: data.collection, search: data.search, orderBy: data.orderBy, page: 1 });
-        this.mediaLoading = false;
+        await this.refresh(1);
       }
     );
   },
@@ -243,6 +241,17 @@ export default {
   },
 
   methods: {
+    async refresh(page = null) {
+      this.mediaLoading = true;
+      await this.getMedia({
+        collection: this.collection,
+        search: this.search,
+        orderBy: this.orderBy,
+        page: page || this.currentPage,
+      });
+      this.mediaLoading = false;
+    },
+
     async uploadFiles(selectedFiles) {
       this.loading = true;
 
@@ -292,6 +301,7 @@ export default {
         { type: 'divider' },
         { name: this.__('novaMediaHub.contextDeselect'), action: 'deselect', class: 'warning' },
         { name: this.__('novaMediaHub.contextDeselectOthers'), action: 'deselect-others', class: 'warning' },
+        { name: this.__('novaMediaHub.contextReplace'), action: 'replace', class: 'warning' },
       ];
 
       this.$nextTick(() => (this.ctxShowEvent = event));
@@ -304,6 +314,7 @@ export default {
         { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
         { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
         { type: 'divider' },
+        { name: this.__('novaMediaHub.contextReplace'), action: 'replace', class: 'warning' },
         { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
       ];
 
@@ -353,6 +364,16 @@ export default {
       // Close only if context isn't showing anything
       if (!this.ctxShowingModal && !this.showConfirmDeleteModal && !this.showMediaViewModal) {
         this.$emit('close');
+      }
+    },
+
+    dataUpdated(media) {
+      if (media) {
+        const i1 = this.selectedMediaItems.findIndex(m => m.id === media.id);
+        this.selectedMediaItems[i1] = media;
+
+        const i2 = this.mediaItems.findIndex(m => m.id === media.id);
+        this.mediaItems[i2] = media;
       }
     },
   },
