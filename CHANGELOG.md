@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 03-04-2024
+
+Long overdue updates.
+
+### Changed
+
+- Fixed encode/decode bugs with MediaCast (thanks to [@nullthoughts](https://github.com/nullthoughts))
+- Bumped some minimum required versions (spatie/image: 2 => 3, laravel/nova: => 4.0 => 4.29)
+- Fixed defaultCollectionName not working
+- Updated packages
+
 ## [1.7.6] - 30-01-2024
 
 ### Changed
