@@ -22,7 +22,7 @@ class MediaOptimizer
 
         // Copy media from whatever disk to local filesystem for manipulations
         if (!$localFilePath || !is_file($localFilePath)) {
-            $localFilePath = FileHelpers::getTemporaryFilePath();
+            $localFilePath = FileHelpers::getTemporaryFilePath(extension: $media->getExtension());
             $localFilePath = $fileSystem->copyFromMediaLibrary($media, $localFilePath);
             if (!$localFilePath) return;
         }
@@ -55,7 +55,7 @@ class MediaOptimizer
 
         // Copy media from whatever disk to local filesystem for manipulations
         if (!$localFilePath || !is_file($localFilePath)) {
-            $localFilePath = FileHelpers::getTemporaryFilePath();
+            $localFilePath = FileHelpers::getTemporaryFilePath(extension: $media->getExtension());
             $localFilePath = $fileSystem->copyFromMediaLibrary($media, $localFilePath);
             if (!$localFilePath) return;
         }
@@ -63,7 +63,7 @@ class MediaOptimizer
         $image = Image::load($localFilePath);
         if ($driver = MediaHub::getImageDriver()) $image->useImageDriver($driver);
         $image->optimize(MediaHub::getOptimizerChain());
-        $image = $manipulator->manipulateConversion($media, $manipulations, $conversionName, $conversionConfig);
+        $image = $manipulator->manipulateConversion($media, $image, $conversionName, $conversionConfig);
         $image->save();
 
         $conversionFileName = $pathMaker->getConversionFileName($media, $conversionName);

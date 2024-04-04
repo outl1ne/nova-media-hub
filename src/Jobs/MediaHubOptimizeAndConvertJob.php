@@ -29,11 +29,13 @@ class MediaHubOptimizeAndConvertJob implements ShouldQueue
 
     public function handle()
     {
+        /** @var Media */
         $media = MediaHub::getQuery()->find($this->mediaId);
         if (!$media) return;
 
         $fileSystem = $this->getFileSystem();
-        $localFilePath = $fileSystem->copyFromMediaLibrary($media, FileHelpers::getTemporaryFilePath('job-tmp-media-'));
+        $tempPath = FileHelpers::getTemporaryFilePath('job-tmp-media-', extension: $media->getExtension());
+        $localFilePath = $fileSystem->copyFromMediaLibrary($media, $tempPath);
         if (!$localFilePath) return;
 
         // Optimize original - saving to localFilePath is fine

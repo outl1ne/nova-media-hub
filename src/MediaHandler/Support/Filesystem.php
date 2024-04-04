@@ -126,7 +126,7 @@ class Filesystem
     public function makeTemporaryCopy($localFilePath)
     {
         if (!is_file($localFilePath)) throw new FileDoesNotExistException($localFilePath);
-        $newFilePath = FileHelpers::getTemporaryFilePath('tmp-conversion-copy');
+        $newFilePath = FileHelpers::getTemporaryFilePath('tmp-conversion-copy', extension: str($localFilePath)->afterLast('.')->toString());
         if (!copy($localFilePath, $newFilePath)) {
             $err = error_get_last();
             throw new Exception($err['message'] ?? 'Copy failed due to unknown error.');

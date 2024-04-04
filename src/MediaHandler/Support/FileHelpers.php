@@ -97,10 +97,12 @@ class FileHelpers
         return [$name, $extension];
     }
 
-    public static function getTemporaryFilePath($prefix = 'media-')
+    public static function getTemporaryFilePath($prefix = 'media-', $extension = null)
     {
         if (!$prefix) $prefix = '';
         if (!str_ends_with($prefix, '-')) $prefix = "{$prefix}-";
-        return tempnam(sys_get_temp_dir(), "o1-nmh{$prefix}");
+        $path = tempnam(sys_get_temp_dir(), "o1-nmh{$prefix}");
+        if ($extension) return "{$path}.{$extension}";
+        return $path;
     }
 }

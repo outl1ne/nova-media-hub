@@ -173,9 +173,11 @@ class MediaHubController extends Controller
                 ->deleteOriginal()
                 ->save();
 
-            /** @var Filesystem */
-            $fileSystem = app()->make(Filesystem::class);
-            $fileSystem->deleteFromMediaLibrary($media);
+            if ($media->original_file_hash !== $newMediaItem->original_file_hash) {
+                /** @var Filesystem */
+                $fileSystem = app()->make(Filesystem::class);
+                $fileSystem->deleteFromMediaLibrary($media);
+            }
         } catch (Exception $e) {
             report($e);
 

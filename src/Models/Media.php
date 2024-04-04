@@ -56,6 +56,13 @@ class Media extends Model
         return $this->getUrl(MediaHub::getThumbnailConversionName());
     }
 
+    public function getExtension()
+    {
+        $extension = (new \Symfony\Component\Mime\MimeTypes)->getExtensions($this->mime_type)[0];
+        if (!$extension) $extension = str($this->file_name)->afterLast('.')->toString();
+        return $extension;
+    }
+
     public function formatForNova()
     {
         return [
