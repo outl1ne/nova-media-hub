@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 04-04-2024
+
+### Changed
+
+- Upgraded spatie/image from version 2 to 3
+- Removed Manipulations API's from `MediaManipulator` and replaced them with direct `\Spatie\Image\Image` manipulations
+- Removed `image_optimizers` config option and replaced it with MediaHub tool `->withOptimizerChain()`
+- `Manipulations::FIT_MAX` has been replaced with `\Spatie\Image\Enums\Fit::Max`
+
 ## [1.8.1] - 04-04-2024
 
 ### Changed
