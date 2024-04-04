@@ -11,7 +11,7 @@
     "laravel/nova": "^4.29.8",
     "outl1ne/nova-translations-loader": "^5.0",
     "outl1ne/nova-translatable": "^2.2",
-    "spatie/image": "^2.0",
+    "spatie/image": "^3.0",
     "spatie/image-optimizer": "^1.7"
   },
   "autoload": {
