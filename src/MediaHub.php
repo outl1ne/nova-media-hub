@@ -7,6 +7,7 @@ use Laravel\Nova\Tool;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 use Outl1ne\NovaMediaHub\Models\Media;
+use Spatie\ImageOptimizer\OptimizerChain;
 use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
@@ -19,6 +20,8 @@ class MediaHub extends Tool
 {
     public $hideFromMenu = false;
     public $customFields = [];
+
+    protected ?OptimizerChain $optimizerChain = null;
 
     public function __construct()
     {
@@ -67,6 +70,12 @@ class MediaHub extends Tool
         return $this;
     }
 
+    public function withOptimizerChain(?OptimizerChain $optimizerChain)
+    {
+        $this->optimizerChain = $optimizerChain;
+        return $this;
+    }
+
     public function menu(Request $request)
     {
         if ($this->hideFromMenu) return;
@@ -78,8 +87,12 @@ class MediaHub extends Tool
 
     public static function getDataFields(): array
     {
-        $mediaHubTool = static::getSelfTool();
-        return $mediaHubTool?->customFields ?? [];
+        return static::getSelfTool()?->customFields ?? [];
+    }
+
+    public static function getOptimizerChain(): ?OptimizerChain
+    {
+        return static::getSelfTool()?->optimizerChain;
     }
 
     public static function getSelfTool(): MediaHub|null

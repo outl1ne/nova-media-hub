@@ -56,6 +56,20 @@ public function tools()
             ['copyright' => __('Copyright')],
             overwrite: false
           )
+
+          // Advanced usage:
+          // Optionally define a custom optimizer chain
+          // https://github.com/spatie/image-optimizer#creating-your-own-optimization-chains
+          ->withOptimizerChain(
+            (new OptimizerChain)
+              ->addOptimizer(new Jpegoptim([
+                '--strip-all',
+                '--all-progressive',
+              ]))
+              ->addOptimizer(new Pngquant([
+                '--force',
+              ]))
+          )
     ];
 }
 ```
