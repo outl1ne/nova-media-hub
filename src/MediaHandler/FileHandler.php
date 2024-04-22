@@ -34,6 +34,7 @@ class FileHandler
     protected array $modelData = [];
     protected bool $deleteOriginal = false;
     protected bool $allowDuplicates = false;
+    protected ?\Closure $shouldSave = null;
 
     public function __construct()
     {
@@ -119,6 +120,12 @@ class FileHandler
         return $this;
     }
 
+    public function shouldSave(\Closure $shouldSave)
+    {
+        $this->shouldSave = $shouldSave;
+        return $this;
+    }
+
     public function save($file = null): ?Media
     {
         if (!empty($file)) $this->withFile($file);
@@ -196,6 +203,17 @@ class FileHandler
 
         $media->conversions_disk = $this->getConversionsDiskName();
         $this->ensureDiskExists($media->conversions_disk);
+
+        // Last pre-save check
+        if (is_callable($this->shouldSave)) {
+            $shouldSave = call_user_func($this->shouldSave, $media);
+            if (!$shouldSave) {
+                if ($this->deleteOriginal && $this->pathToFile) {
+                    unlink($this->pathToFile);
+                }
+                return null;
+            }
+        }
 
         $media->save();
 
