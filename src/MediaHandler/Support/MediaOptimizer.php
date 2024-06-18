@@ -33,6 +33,15 @@ class MediaOptimizer
         $image = $manipulator->manipulateOriginal($media, $image);
         $image->save();
 
+        // Rename file if mime type has changed
+        $newMimeType = FileHelpers::getMimeType($localFilePath);
+        if ($media->mime_type !== $newMimeType) {
+            $media->mime_type = $newMimeType;
+
+            $newExtension = FileHelpers::getExtensionFromMimeType($newMimeType);
+            $media->file_name = str($media->file_name)->beforeLast('.') . ".{$newExtension}";
+        }
+
         $media->mime_type = FileHelpers::getMimeType($localFilePath);
         $media->size = filesize($localFilePath);
         $media->optimized_at = now();
