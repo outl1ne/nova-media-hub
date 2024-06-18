@@ -114,6 +114,40 @@ return [
         'image/jpeg',
         // 'image/png',
         // 'image/gif',
+        // 'image/tiff',
     ],
 
+    'optimizer_chain' => (new \Spatie\ImageOptimizer\OptimizerChain)
+        ->addOptimizer(new Spatie\ImageOptimizer\Optimizers\Jpegoptim([
+            '-m85', // set maximum quality to 85%
+            '--force', // ensure that progressive generation is always done also if a little bigger
+            '--strip-all', // this strips out all text information such as comments and EXIF data
+            '--all-progressive', // this will make sure the resulting image is a progressive one
+        ]))
+
+        ->addOptimizer(new Spatie\ImageOptimizer\Optimizers\Pngquant([
+            '--force', // required parameter for this package
+        ]))
+
+        ->addOptimizer(new Spatie\ImageOptimizer\Optimizers\Optipng([
+            '-i0', // this will result in a non-interlaced, progressive scanned image
+            '-o2', // this set the optimization level to two (multiple IDAT compression trials)
+            '-quiet', // required parameter for this package
+        ]))
+
+        ->addOptimizer(new Spatie\ImageOptimizer\Optimizers\Svgo([
+            '--disable=cleanupIDs', // disabling because it is known to cause troubles
+        ]))
+
+        ->addOptimizer(new Spatie\ImageOptimizer\Optimizers\Gifsicle([
+            '-b', // required parameter for this package
+            '-O3', // this produces the slowest but best results
+        ]))
+
+        ->addOptimizer(new Spatie\ImageOptimizer\Optimizers\Cwebp([
+            '-m 6', // for the slowest compression method in order to get the best compression.
+            '-pass 10', // for maximizing the amount of analysis pass.
+            '-mt', // multithreading for some speed improvements.
+            '-q 90', //quality factor that brings the least noticeable changes.
+        ])),
 ];

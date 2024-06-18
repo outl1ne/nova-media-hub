@@ -60,6 +60,10 @@ class Media extends Model
     {
         $extension = (new \Symfony\Component\Mime\MimeTypes)->getExtensions($this->mime_type)[0];
         if (!$extension) $extension = str($this->file_name)->afterLast('.')->toString();
+
+        // Fix issue with Imagick not recognizing "tif" as a valid format
+        if ($extension === 'tif') $extension = 'tiff';
+
         return $extension;
     }
 

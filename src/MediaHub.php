@@ -92,7 +92,11 @@ class MediaHub extends Tool
 
     public static function getOptimizerChain(): ?OptimizerChain
     {
-        return static::getSelfTool()?->optimizerChain;
+        if ($optimizerChain = static::getSelfTool()?->optimizerChain) {
+            return $optimizerChain;
+        }
+
+        return config('nova-media-hub.optimizer_chain', null);
     }
 
     public static function getSelfTool(): MediaHub|null
