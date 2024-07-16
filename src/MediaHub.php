@@ -70,9 +70,11 @@ class MediaHub extends Tool
         return $this;
     }
 
-    public static function withOptimizerChain(?OptimizerChain $optimizerChain)
+    public function withOptimizerChain(?OptimizerChain $optimizerChain)
     {
         static::$optimizerChain = $optimizerChain;
+
+        return $this;
     }
 
     public function menu(Request $request)
