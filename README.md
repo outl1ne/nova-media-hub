@@ -56,20 +56,6 @@ public function tools()
             ['copyright' => __('Copyright')],
             overwrite: false
           )
-
-          // Advanced usage:
-          // Optionally define a custom optimizer chain
-          // https://github.com/spatie/image-optimizer#creating-your-own-optimization-chains
-          ->withOptimizerChain(
-            (new OptimizerChain)
-              ->addOptimizer(new Jpegoptim([
-                '--strip-all',
-                '--all-progressive',
-              ]))
-              ->addOptimizer(new Pngquant([
-                '--force',
-              ]))
-          )
     ];
 }
 ```
@@ -123,6 +109,31 @@ The config file can be published using the following command:
 
 ```bash
 php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="config"
+```
+
+### Custom optimizer chain
+
+You can define a custom optimizer chain or add items to it like so:
+
+```php
+// in app/Providers/AppServiceProvided.php
+
+public function register() {
+  // ...
+
+  // https://github.com/spatie/image-optimizer#creating-your-own-optimization-chains
+  \Outl1ne\NovaMediaHub\MediaHub::withOptimizerChain(
+    (new OptimizerChain)
+      ->addOptimizer(new Jpegoptim([
+        '--strip-all',
+        '--all-progressive',
+      ]))
+      ->addOptimizer(new Pngquant([
+        '--force',
+      ]))
+  );
+}
+
 ```
 
 ## Localization
