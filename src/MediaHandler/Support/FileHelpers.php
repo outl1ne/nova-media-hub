@@ -51,7 +51,8 @@ class FileHelpers
 
         try {
             $fileStream = ($disk) ? Storage::disk($disk)->readStream($path) : fopen($path, 'r');
-            $fileHash = md5(fread($fileStream, 1000000));
+            $fileSize = $disk ? Storage::disk($disk)->size($path) : filesize($path);
+            $fileHash = md5($fileSize.fread($fileStream, 1000000));
             fclose($fileStream);
         } catch (Exception $e) {
             return null;
