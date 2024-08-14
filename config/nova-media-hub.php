@@ -116,4 +116,7 @@ return [
         // 'image/gif',
         // 'image/tiff',
     ],
+
+    // Use legacy hashing algorithm for duplicate file detection, along with the new one, less prone to collisions
+    'check_legacy_hashes' => false,
 ];
