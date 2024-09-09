@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix hash collision detection for images where the first megabyte is the same (huge thanks to [@schniper](https://github.com/schniper))
 - Updated packages
 
-NB! Existing users should set config option 'check_legacy_hashes' to true if they want to keep collision detection.
+NB! Existing users should set config option 'check_legacy_hashes' to true if they want to keep checking for collisions with media uploaded prior to this update.
 
 ## [2.0.5] - 30-07-2024
 
