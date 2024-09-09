@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 09-09-2024
+
+### Changed
+
+- Fix hash collision detection for images where the first megabyte is the same (huge thanks to [@schniper](https://github.com/schniper))
+- Updated packages
+
+NB! Existing users should set config option 'check_legacy_hashes' to true if they want to keep collision detection.
+
 ## [2.0.5] - 30-07-2024
 
 ### Changed
