@@ -152,23 +152,32 @@ class FileHandler
     {
         // Check if file already exists
         $fileHash = FileHelpers::getFileHash($this->pathToFile);
-        $existingMedia = MediaHub::getQuery()->where('original_file_hash', $fileHash)->first();
 
-        if (!$this->allowDuplicates && $existingMedia) {
-            $existingMedia->updated_at = now();
-            $existingMedia->save();
-            $existingMedia->wasExisting = true;
+        if (!$this->allowDuplicates) {
+            if (config('nova-media-hub.check_legacy_hashes')) {
+                $legacyFileHash = FileHelpers::getLegacyFileHash($this->pathToFile);
 
-            // Delete original
-            if ($this->deleteOriginal && is_file($this->pathToFile)) {
-                unlink($this->pathToFile);
+                $existingMedia = MediaHub::getQuery()->whereIn('original_file_hash', [$fileHash, $legacyFileHash])->first();
+            } else {
+                $existingMedia = MediaHub::getQuery()->where('original_file_hash', $fileHash)->first();
             }
 
-            if (!$existingMedia->optimized_at) {
-                MediaHubOptimizeAndConvertJob::dispatch($existingMedia);
-            }
+            if ($existingMedia) {
+                $existingMedia->updated_at = now();
+                $existingMedia->save();
+                $existingMedia->wasExisting = true;
 
-            return $existingMedia;
+                // Delete original
+                if ($this->deleteOriginal && is_file($this->pathToFile)) {
+                    unlink($this->pathToFile);
+                }
+
+                if (! $existingMedia->optimized_at) {
+                    MediaHubOptimizeAndConvertJob::dispatch($existingMedia);
+                }
+
+                return $existingMedia;
+            }
         }
 
         $sanitizedFileName = FileHelpers::sanitizeFileName($this->fileName);
