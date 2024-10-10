@@ -18,12 +18,18 @@ class MediaCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        if (is_null($value)) return;
-        if (!str_contains($value, '[') && !str_contains($value, '{')) return Media::find($value);
+
+        if (is_null($value)) {
+            return;
+        }
 
         $ids = json_decode($value, true);
-        
-        return Media::whereIn('id', $ids)->get();
+
+        if (is_array($ids)) {
+            return Media::whereIn('id', $ids)->get();
+        } else {
+            return Media::where('id', $value)->get();
+        }
     }
 
     /**
