@@ -2,13 +2,18 @@
 
 namespace Outl1ne\NovaMediaHub\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
 {
+
+    use HasUuids;
+
     protected $casts = [
+        'id' => 'string',
         'data' => 'array',
         'conversions' => 'array',
         'created_at' => 'datetime',
@@ -16,7 +21,10 @@ class Media extends Model
         'optimized_at' => 'datetime',
     ];
 
-    protected $appends = ['url', 'thumbnail_url'];
+    protected $appends = [
+        'url',
+        'thumbnail_url'
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -38,22 +46,43 @@ class Media extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::disk($this->disk)->url($this->path . $this->file_name);
+        return $this->createUrl($this->disk, $this->path . $this->file_name);
     }
 
-    public function getUrl(?string $forConversion = null)
+    public function createUrl(string $disk_name, string $file_path): string
     {
-        if (!$forConversion) return $this->url;
 
-        $conversionName = $this->conversions[$forConversion] ?? null;
-        if (empty($conversionName)) return null;
+        // check if disk has temporary url method
+        $disk = Storage::disk($disk_name);
 
-        return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $conversionName);
+        if (method_exists($disk, 'temporaryUrl')) {
+                
+            try {
+                return $disk->temporaryUrl($file_path, now()->addMinutes((int) config('nova-media-hub.temporary_url_expiration', 60)));
+            } catch (\RuntimeException $e) {
+                return $disk->url($file_path);
+            }
+        }
+        
+        return $disk->url($file_path);
+        
     }
 
     public function getThumbnailUrlAttribute()
     {
-        return $this->getUrl(MediaHub::getThumbnailConversionName());
+        $forConversion = MediaHub::getThumbnailConversionName();
+
+        if (!$forConversion) {
+            return $this->url;
+        }
+
+        $conversionName = $this->conversions[$forConversion] ?? null;
+
+        if (empty($conversionName)) {
+            return null;
+        }
+
+        return $this->createUrl($this->conversions_disk, $this->conversionsPath . $conversionName);
     }
 
     public function getExtension()

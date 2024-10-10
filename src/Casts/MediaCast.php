@@ -23,9 +23,7 @@ class MediaCast implements CastsAttributes
 
         $ids = json_decode($value, true);
         $order = implode(',', $ids);
-        return Media::whereIn('id', $ids)
-            ->orderByRaw("FIELD(id, $order)")
-            ->get();
+        return Media::whereIn('id', $ids)->get();
     }
 
     /**

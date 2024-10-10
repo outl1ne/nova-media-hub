@@ -17,6 +17,7 @@ use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
 use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
+use Illuminate\Support\Facades\Event;
 
 class FileHandler
 {
@@ -197,7 +198,10 @@ class FileHandler
         /** @var \Outl1ne\NovaMediaHub\Models\Media */
         $media = new $mediaClass();
         $media->forceFill($this->modelData ?? []);
-        if ($media->id) $media->exists = true;
+
+        if ($media->id) {
+            $media->exists = true;
+        }
 
         $media->file_name = $this->fileName;
         $media->collection_name ??= $this->collectionName;
@@ -226,23 +230,39 @@ class FileHandler
 
         $media->save();
 
-        $this->filesystem->copyFileToMediaLibrary($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, $this->deleteOriginal);
+        if ($this->filesystem->copyFileToMediaLibrary($this->pathToFile, $media, $this->fileName, Filesystem::TYPE_ORIGINAL, $this->deleteOriginal)) {
 
-        MediaHubOptimizeAndConvertJob::dispatch($media);
+            Event::dispatch('nova-media-hub.upload.success', [
+                'media' => $media,
+                'filehandler' => $this
+            ]);
+            
+            MediaHubOptimizeAndConvertJob::dispatch($media);
+
+        } else {
+
+            // Emit an event
+            Event::dispatch('nova-media-hub.upload.failed', [
+                'media' => $media,
+                'filehandler' => $this
+            ]);
+
+            return null;
+        }
+
 
         return $media;
     }
 
-
     // Helpers
     protected function getDiskName(): string
     {
-        return $this->diskName ?: config('nova-media-hub.disk_name');
+        return $this->diskName ?:  config('nova-media-hub.disks.' . $this->collectionName . '.assets') ?: config('nova-media-hub.disk_name');
     }
 
     protected function getConversionsDiskName(): string
     {
-        return $this->conversionsDiskName ?: config('nova-media-hub.conversions_disk_name');
+        return $this->conversionsDiskName ?: config('nova-media-hub.disks.' . $this->collectionName . '.conversions') ?: config('nova-media-hub.conversions_disk_name');
     }
 
     protected function ensureDiskExists(string $diskName)
