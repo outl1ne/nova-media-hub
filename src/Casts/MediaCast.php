@@ -3,7 +3,6 @@
 namespace Outl1ne\NovaMediaHub\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Outl1ne\NovaMediaHub\Models\Media;
 
 class MediaCast implements CastsAttributes
 {
@@ -19,11 +18,14 @@ class MediaCast implements CastsAttributes
     public function get($model, string $key, $value, array $attributes)
     {
         if (is_null($value)) return;
-        if (is_numeric($value)) return Media::find($value);
+
+        $mediaModel = config('nova-media-hub.model');
+
+        if (is_numeric($value)) return $mediaModel::find($value);
 
         $ids = json_decode($value, true);
         $order = implode(',', $ids);
-        return Media::whereIn('id', $ids)
+        return $mediaModel::whereIn('id', $ids)
             ->orderByRaw("FIELD(id, $order)")
             ->get();
     }
