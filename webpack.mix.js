@@ -11,9 +11,15 @@ mix
   .webpackConfig({
     externals: {
       vue: 'Vue',
+      'laravel-nova': 'LaravelNova',
     },
     output: {
       uniqueName: 'outl1ne/nova-media-hub',
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve('resources/js'),
+      },
     },
   })
   .postCss('resources/css/entry.css', 'dist/css/', [postcss(), tailwindcss('tailwind.config.js'), postcssRtlcss()])
