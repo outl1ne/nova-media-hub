@@ -136,14 +136,6 @@ public function register() {
 
 ```
 
-## Localization
-
-The translation file(s) can be published by using the following command:
-
-```bash
-php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="translations"
-```
-
 ## Credits
 
 - [Tarvo Reinpalu](https://github.com/Tarpsvo)

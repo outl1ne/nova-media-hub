@@ -8,9 +8,7 @@
   "license": "MIT",
   "require": {
     "php": ">=8.0",
-    "laravel/nova": "^4.29.8",
-    "outl1ne/nova-translations-loader": "^5.0",
-    "outl1ne/nova-translatable": "^2.2",
+    "laravel/nova": "^4.0|^5.0",
     "spatie/image": "^3.0",
     "spatie/image-optimizer": "^1.7"
   },

@@ -149,14 +149,7 @@ export default {
     },
 
     createField(attribute, name) {
-      const hasLocales = !!this.locales && this.locales.en !== 'mediaHubHidden';
-
-      let value = '';
-      if (!hasLocales) {
-        value = { en: this.mediaItem.data?.[attribute] || '' };
-      } else {
-        value = this.mediaItem.data?.[attribute] || {};
-      }
+      let value = this.mediaItem.data?.[attribute] || '';
 
       return {
         name,
@@ -166,7 +159,7 @@ export default {
         stacked: true,
         compact: false,
         extraClass: 'field-wrapper',
-        translatable: { locales: this.locales, original_component: 'text-field', value },
+        value: value,
       };
     },
   },
@@ -190,10 +183,6 @@ export default {
       return 'other';
     },
 
-    locales() {
-      return Nova.appConfig.novaMediaHub.locales || { en: 'mediaHubHidden' };
-    },
-
     fileSize() {
       if (!this.mediaItem) return '';
 
@@ -210,28 +199,6 @@ export default {
 
   + .fixed {
     z-index: 129;
-  }
-
-  .nova-media-hub-media-modal-translatable-field {
-    // margin-bottom: 15px;
-
-    .nova-translatable-locale-tabs {
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    > div:not(.nova-translatable-locale-tabs) {
-      > div {
-        margin-top: -25px;
-        padding-top: 8px;
-
-        > div {
-          width: 100%;
-          padding-left: 0 !important;
-          padding-right: 0 !important;
-        }
-      }
-    }
   }
 }
 </style>

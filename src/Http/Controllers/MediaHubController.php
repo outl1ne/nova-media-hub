@@ -129,13 +129,12 @@ class MediaHubController extends Controller
     public function updateMediaData(Request $request, $mediaId)
     {
         $media = MediaHub::getQuery()->findOrFail($mediaId);
-        $locales = MediaHub::getLocales();
         $fieldKeys = array_keys(MediaHub::getDataFields());
         $mediaData = is_array($media->data) ? $media->data : json_decode($media->data ?? '[]', true);
 
-        // No translations, we hardcoded frontend to always send data as 'en'
+        // Simple field data storage without translations
         foreach ($fieldKeys as $key) {
-            $mediaData[$key] = $request->input(empty($locales) ? "{$key}.en" : $key) ?? null;
+            $mediaData[$key] = $request->input($key) ?? null;
         }
 
         $media->data = $mediaData;
