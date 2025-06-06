@@ -2912,7 +2912,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
     show: $props.show,
-    onCloseViaEscape: _cache[4] || (_cache[4] = function ($event) {
+    onCloseViaEscape: _cache[3] || (_cache[3] = function ($event) {
       return _ctx.$emit('close');
     }),
     role: "alertdialog",
@@ -2941,9 +2941,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   selected: _ctx.selectedCollection,
                   "onUpdate:selected": _cache[0] || (_cache[0] = function ($event) {
                     return _ctx.selectedCollection = $event;
-                  }),
-                  onChange: _cache[1] || (_cache[1] = function (c) {
-                    return _ctx.selectedCollection = c;
                   })
                 }, {
                   "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -2961,7 +2958,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   type: "text",
                   name: "collection_name",
                   placeholder: "Collection name",
-                  "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+                  "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
                     return _ctx.collectionName = $event;
                   }),
                   "class": "form-control form-input form-input-bordered"
@@ -2977,7 +2974,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalFooter, null, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
               return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-                onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+                onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
                   return _ctx.$emit('close');
                 }, ["prevent"])),
                 "class": "o1-mr-4"

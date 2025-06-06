@@ -13,7 +13,7 @@
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span class="o1-mb-2">{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
-          <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
+          <SelectControl v-model:selected="selectedCollection">
             <option value="media-hub-new-collection" v-if="canCreateCollections">
               {{ __('novaMediaHub.uploadModalCreateNewOption') }}
             </option>
