@@ -3660,30 +3660,6 @@ Nova.booting(function (Vue, router, store) {
     attributeOldValue: true,
     attributeFilter: ['class']
   });
-
-  // Add global translation mixin
-  Vue.mixin({
-    methods: {
-      /**
-       * Translate the given key.
-       * @param {string} key
-       * @param {object} replace
-       * @returns {string}
-       */
-      __: function __(key) {
-        var _Nova$config;
-        var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var translations = ((_Nova$config = Nova.config('novaMediaHub')) === null || _Nova$config === void 0 ? void 0 : _Nova$config.translations) || {};
-        var translation = translations[key] || key;
-
-        // Handle parameter replacement
-        Object.keys(replace).forEach(function (replaceKey) {
-          translation = translation.replace(":".concat(replaceKey), replace[replaceKey]);
-        });
-        return translation;
-      }
-    }
-  });
   Vue.component('NMHDropZone', _components_DropZone__WEBPACK_IMPORTED_MODULE_2__["default"]);
   Vue.component('detail-media-hub-field', _fields_MediaField_DetailMediaHubField__WEBPACK_IMPORTED_MODULE_0__["default"]);
   Vue.component('form-media-hub-field', _fields_MediaField_FormMediaHubField__WEBPACK_IMPORTED_MODULE_1__["default"]);

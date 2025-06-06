@@ -8,9 +8,11 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Outl1ne\NovaMediaHub\Http\Middleware\Authorize;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
+use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class MediaHubServiceProvider extends ServiceProvider
 {
+    use LoadsNovaTranslations;
 
     /**
      * Bootstrap any application services.
@@ -20,6 +22,9 @@ class MediaHubServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        // Load package translations
+        $this->loadTranslations(__DIR__ . '/../lang', 'nova-media-hub', true);
 
         if ($this->app->runningInConsole()) {
             // Publish migrations
