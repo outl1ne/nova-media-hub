@@ -6,7 +6,7 @@
     maxWidth="2xl"
     id="o1-nmh-media-upload-modal"
   >
-    <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <LoadingCard :loading="loading" class="mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800">
       <slot>
         <ModalHeader class="flex items-center">{{ __('novaMediaHub.uploadMediaTitle') }}</ModalHeader>
 

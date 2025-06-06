@@ -1231,6 +1231,11 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
   mounted: function mounted() {
     Nova.$emit('close-dropdowns');
   },
+  beforeUnmount: function beforeUnmount() {
+    // Clean up to prevent memory leaks
+    this.dataFields = [];
+    this.loading = false;
+  },
   watch: {
     show: function show(newValue) {
       var _this = this;
@@ -1239,7 +1244,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              if (!newValue) {
+              if (!(newValue && _this.mediaItem)) {
                 _context.next = 9;
                 break;
               }
@@ -1248,13 +1253,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _context.next = 5;
               return _this.getCollections();
             case 5:
-              _this.selectedCollection = _this.activeCollection;
+              _this.selectedCollection = _this.mediaItem.collection_name || (_this.collections.length ? _this.collections[0] : void 0);
               _this.dataFields = fieldKeys.map(function (key) {
                 return _this.createField(key, fields[key]);
               });
               _context.next = 10;
               break;
             case 9:
+              // Clear data fields properly to avoid component lifecycle issues
               _this.dataFields = [];
             case 10:
             case "end":
@@ -1309,8 +1315,18 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         }, _callee2, null, [[1, 14]]);
       }))();
     },
-    getCollections: function getCollections() {
+    closeModal: function closeModal() {
       var _this3 = this;
+      // Clean up before closing to prevent lifecycle issues
+      this.loading = false;
+      this.dataFields = [];
+      this.selectedCollection = void 0;
+      this.$nextTick(function () {
+        _this3.$emit('close');
+      });
+    },
+    getCollections: function getCollections() {
+      var _this4 = this;
       return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var _yield$API$getCollect, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -1321,9 +1337,9 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             case 2:
               _yield$API$getCollect = _context3.sent;
               data = _yield$API$getCollect.data;
-              _this3.collections = data || [];
-              if (!_this3.selectedCollection) {
-                _this3.selectedCollection = _this3.collections.length ? _this3.collections[0] : void 0;
+              _this4.collections = data || [];
+              if (!_this4.selectedCollection) {
+                _this4.selectedCollection = _this4.collections.length ? _this4.collections[0] : void 0;
               }
             case 6:
             case "end":
@@ -1333,8 +1349,10 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }))();
     },
     createField: function createField(attribute, name) {
-      var _this$mediaItem$data;
-      var value = ((_this$mediaItem$data = this.mediaItem.data) === null || _this$mediaItem$data === void 0 ? void 0 : _this$mediaItem$data[attribute]) || '';
+      var value = '';
+      if (this.mediaItem && this.mediaItem.data) {
+        value = this.mediaItem.data[attribute] || '';
+      }
       return {
         name: name,
         attribute: attribute,
@@ -2922,7 +2940,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LoadingCard, {
         loading: _ctx.loading,
-        "class": "mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+        "class": "mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, function () {
@@ -3025,13 +3043,15 @@ var _hoisted_2 = {
   "class": "o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full dark:o1-border-slate-700"
 };
 var _hoisted_3 = {
+  key: 0,
   "class": "border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5"
 };
 var _hoisted_4 = {
-  key: 0,
+  key: 1,
   "class": "o1-flex o1-flex-col"
 };
 var _hoisted_5 = {
+  key: 0,
   "class": "o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full o1-items-center o1-justify-center",
   style: {
     "max-height": "60vh"
@@ -3062,9 +3082,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
     size: "custom",
     show: $props.show,
-    onCloseViaEscape: _cache[1] || (_cache[1] = function ($event) {
-      return _ctx.$emit('close');
-    }),
+    onCloseViaEscape: $options.closeModal,
     role: "alertdialog",
     maxWidth: "w-full",
     "class": "o1-px-24",
@@ -3073,7 +3091,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LoadingCard, {
         loading: _ctx.loading,
-        "class": "mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+        "class": "mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, function () {
@@ -3081,7 +3099,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               "class": "o1-px-8 o1-flex o1-flex-col"
             }, {
               "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" File info and media fields "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaViewModalInfoListItem, {
+                return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" File info and media fields "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [$props.mediaItem ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaViewModalInfoListItem, {
                   label: _ctx.__('novaMediaHub.viewModalIdTitle'),
                   value: $props.mediaItem.id
                 }, null, 8 /* PROPS */, ["label", "value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaViewModalInfoListItem, {
@@ -3096,13 +3114,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 }, null, 8 /* PROPS */, ["label", "value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaViewModalInfoListItem, {
                   label: _ctx.__('novaMediaHub.collectionTitle'),
                   value: $props.mediaItem.collection_name
-                }, null, 8 /* PROPS */, ["label", "value"])]), $props.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.dataFields, function (dataField, i) {
+                }, null, 8 /* PROPS */, ["label", "value"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.show && _ctx.dataFields.length > 0 && $props.mediaItem ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.dataFields, function (dataField, i) {
                   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_form_translatable_field, {
-                    key: $props.mediaItem.id + i,
+                    key: "".concat($props.mediaItem.id, "-").concat(dataField.attribute, "-").concat(i),
                     "class": "nova-media-hub-media-modal-translatable-field",
                     field: dataField
                   }, null, 8 /* PROPS */, ["field"]);
-                }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" File itself "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [$options.type === 'image' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+                }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" File itself "), $props.mediaItem ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [$options.type === 'image' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
                   key: 0,
                   "class": "o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0 dark:o1-bg-slate-900 dark:o1-border-slate-700",
                   src: $props.mediaItem.url,
@@ -3121,7 +3139,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 }, null, 8 /* PROPS */, _hoisted_10)], 8 /* PROPS */, _hoisted_9)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
                   key: 3,
                   href: $props.mediaItem.url
-                }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.mediaItem.url), 9 /* TEXT, PROPS */, _hoisted_11))])])];
+                }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.mediaItem.url), 9 /* TEXT, PROPS */, _hoisted_11))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
               }),
               _: 1 /* STABLE */
             })];
@@ -3130,16 +3148,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
                 variant: "link",
                 state: "mellow",
-                onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-                  return _ctx.$emit('close');
-                }, ["prevent"])),
+                onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($options.closeModal, ["prevent"]),
                 "class": "o1-mr-4"
               }, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
                   return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.close')), 1 /* TEXT */)];
                 }),
                 _: 1 /* STABLE */
-              }), !$props.readonly ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
+              }, 8 /* PROPS */, ["onClick"]), !$props.readonly ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Button, {
                 key: 0,
                 onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($options.saveAndExit, ["prevent"])
               }, {
@@ -3156,7 +3172,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8 /* PROPS */, ["loading"])];
     }),
     _: 3 /* FORWARDED */
-  }, 8 /* PROPS */, ["show"]);
+  }, 8 /* PROPS */, ["show", "onCloseViaEscape"]);
 }
 
 /***/ }),
