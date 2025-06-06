@@ -1,6 +1,6 @@
 <template>
   <div class="o1-flex o1-flex-col o1-mb-4">
-    <label class="o1-mb-2 o1-font-semibold o1-text-gray-700">{{ field.name }}</label>
+    <label>{{ field.name }}</label>
     
     <!-- Text Field -->
     <input

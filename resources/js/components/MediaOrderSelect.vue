@@ -1,5 +1,5 @@
 <template>
-  <select v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
+  <select class="block form-control form-control-bordered form-input" v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
     <option value="">{{ __('novaMediaHub.orderBy.default') }}</option>
     <template v-for="column in columns" :key="column">
       <option v-for="direction in ['asc', 'desc']" :key="`${column}:${direction}`" :value="`${column}:${direction}`">

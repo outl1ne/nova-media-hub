@@ -15,7 +15,7 @@
           <span class="o1-mb-2">{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
           <select 
             v-model="selectedCollection" 
-            class="w-full form-control form-select form-select-bordered"
+            class="block form-control form-control-bordered form-input"
           >
             <option value="media-hub-new-collection" v-if="canCreateCollections">
               {{ __('novaMediaHub.uploadModalCreateNewOption') }}
