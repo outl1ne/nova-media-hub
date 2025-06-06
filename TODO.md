@@ -1,1 +1,4 @@
-- [ ] On Upload, if you check a collection it will not be show at first shot
+- [ ] On MediaUploadModal, if you check a collection it will not be show at first shot
+- [ ] On MediaUploadModal, you can't create a new collection
+- [ ] On MediaViewModal, you can't close the modal
+- [ ] On IndexMediaHubField, you can't sort your media
