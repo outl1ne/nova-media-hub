@@ -30,7 +30,10 @@ class Base64File
     public function saveBase64ImageToTemporaryFile()
     {
         $fileData = $this->base64Data;
-        if (Str::contains($fileData, [';', ','])) $fileData = explode(',', $fileData)[1];
+        if (Str::contains($fileData, [';', ','])) {
+            $parts = explode(',', $fileData);
+            $fileData = isset($parts[1]) ? $parts[1] : $fileData;
+        }
         [$mimeType, $extension] = FileHelpers::getBase64FileInfo($fileData);
         if (!$mimeType && !$extension) throw new UnknownFileTypeException('File had no detectable mime-type or extension.');
         $tmpFilePath = FileHelpers::getTemporaryFilePath('base64-', extension: $extension);

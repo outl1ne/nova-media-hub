@@ -248,7 +248,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['columns']
+  props: ['columns', 'modelValue'],
+  emits: ['update:modelValue']
 });
 
 /***/ }),
@@ -1974,27 +1975,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 
-var _hoisted_1 = {
+var _hoisted_1 = ["value"];
+var _hoisted_2 = {
   value: ""
 };
-var _hoisted_2 = ["value"];
+var _hoisted_3 = ["value"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_SelectControl = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectControl");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_SelectControl, (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(_ctx.$attrs)), {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.orderBy.default')), 1 /* TEXT */), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.columns, function (column) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-          key: column
-        }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(['asc', 'desc'], function (direction) {
-          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-            key: "".concat(column, ":").concat(direction),
-            value: "".concat(column, ":").concat(direction)
-          }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(direction === 'asc' ? '↑' : '↓') + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__("novaMediaHub.orderBy.".concat(column))), 9 /* TEXT, PROPS */, _hoisted_2);
-        }), 64 /* STABLE_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);
-      }), 128 /* KEYED_FRAGMENT */))];
-    }),
-    _: 1 /* STABLE */
-  }, 16 /* FULL_PROPS */);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("select", (0,vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps)(_ctx.$attrs, {
+    value: $props.modelValue,
+    onInput: _cache[0] || (_cache[0] = function ($event) {
+      return _ctx.$emit('update:modelValue', $event.target.value);
+    })
+  }), [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.orderBy.default')), 1 /* TEXT */), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.columns, function (column) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+      key: column
+    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(['asc', 'desc'], function (direction) {
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+        key: "".concat(column, ":").concat(direction),
+        value: "".concat(column, ":").concat(direction)
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(direction === 'asc' ? '↑' : '↓') + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__("novaMediaHub.orderBy.".concat(column))), 9 /* TEXT, PROPS */, _hoisted_3);
+    }), 64 /* STABLE_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */))], 16 /* FULL_PROPS */, _hoisted_1);
 }
 
 /***/ }),
@@ -2459,13 +2460,13 @@ var _hoisted_2 = {
   "class": "o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2"
 };
 var _hoisted_3 = {
-  "class": "o1-flex overflow-x-auto o1-pt-1 o1-px-1"
+  "class": "overflow-x-auto o1-flex o1-pt-1 o1-px-1"
 };
 var _hoisted_4 = {
   "class": "o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-min-h-[30%] o1-h-full o1-gap-8"
 };
 var _hoisted_5 = {
-  "class": "o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto o1-py-4"
+  "class": "overflow-y-auto o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs o1-py-4"
 };
 var _hoisted_6 = {
   value: ""
@@ -2485,11 +2486,11 @@ var _hoisted_12 = {
   "class": "o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2"
 };
 var _hoisted_13 = {
-  "class": "o1-w-full overflow-y-auto"
+  "class": "overflow-y-auto o1-w-full"
 };
 var _hoisted_14 = {
   id: "media-items-list",
-  "class": "o1-w-full flex flex-wrap o1-gap-4 o1-justify-items-center o1-p-1"
+  "class": "flex flex-wrap o1-w-full o1-gap-4 o1-justify-items-center o1-p-1"
 };
 var _hoisted_15 = {
   key: 0
@@ -2520,12 +2521,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     role: "alertdialog",
     maxWidth: "w-full",
     size: "custom",
-    "class": "o1-px-8 overflow-hidden full-modal"
+    "class": "overflow-hidden o1-px-8 full-modal"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LoadingCard, {
         loading: _ctx.loading,
-        "class": "o1-flex o1-flex-col o1-h-full mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+        "class": "mx-auto overflow-hidden bg-white rounded-lg shadow-lg o1-flex o1-flex-col o1-h-full dark:bg-gray-800"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {}, function () {
@@ -2620,14 +2621,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
                     return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaOrderSelect, {
                       columns: _ctx.orderColumns,
-                      selected: _ctx.orderBy,
-                      "onUpdate:selected": _cache[4] || (_cache[4] = function ($event) {
+                      modelValue: _ctx.orderBy,
+                      "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
                         return _ctx.orderBy = $event;
-                      }),
-                      onChange: _cache[5] || (_cache[5] = function (selected) {
-                        return _ctx.orderBy = selected;
                       })
-                    }, null, 8 /* PROPS */, ["columns", "selected"])];
+                    }, null, 8 /* PROPS */, ["columns", "modelValue"])];
                   }),
                   _: 1 /* STABLE */
                 }, 8 /* PROPS */, ["title"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.quickUpload')), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NMHDropZone, {
@@ -2676,7 +2674,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
                 variant: "link",
                 state: "mellow",
-                onClick: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+                onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
                   return _ctx.$emit('close');
                 }, ["prevent"])),
                 "class": "o1-mr-4"
@@ -2711,10 +2709,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "media-choose-modal-ctx-menu",
         showEvent: _ctx.ctxShowEvent,
         options: _ctx.ctxOptions,
-        onShowModal: _cache[7] || (_cache[7] = function ($event) {
+        onShowModal: _cache[6] || (_cache[6] = function ($event) {
           return _ctx.ctxShowingModal = true;
         }),
-        onHideModal: _cache[8] || (_cache[8] = function ($event) {
+        onHideModal: _cache[7] || (_cache[7] = function ($event) {
           return _ctx.ctxShowingModal = false;
         }),
         mediaItem: _ctx.ctxMediaItem,
@@ -3379,15 +3377,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })]
       }, null, 8 /* PROPS */, ["keyword"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaOrderSelect, {
         columns: _ctx.orderColumns,
-        selected: _ctx.orderBy,
-        "onUpdate:selected": _cache[2] || (_cache[2] = function ($event) {
+        modelValue: _ctx.orderBy,
+        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return _ctx.orderBy = $event;
-        }),
-        onChange: _cache[3] || (_cache[3] = function (selected) {
-          return _ctx.orderBy = selected;
         })
-      }, null, 8 /* PROPS */, ["columns", "selected"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
-        onClick: _cache[4] || (_cache[4] = function ($event) {
+      }, null, 8 /* PROPS */, ["columns", "modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+        onClick: _cache[3] || (_cache[3] = function ($event) {
           return _ctx.showMediaUploadModal = true;
         })
       }, {
@@ -3414,10 +3409,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         key: 1
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Media list "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
         "class": "o1-flex o1-flex-col o1-w-full o1-overflow-hidden o1-relative",
-        onDragenter: _cache[5] || (_cache[5] = function () {
+        onDragenter: _cache[4] || (_cache[4] = function () {
           return $options.toggleShowQuickUpload && $options.toggleShowQuickUpload.apply($options, arguments);
         }),
-        onDragleave: _cache[6] || (_cache[6] = function () {
+        onDragleave: _cache[5] || (_cache[5] = function () {
           return $options.toggleShowQuickUpload && $options.toggleShowQuickUpload.apply($options, arguments);
         })
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Dropzone "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [!_ctx.quickUploadLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_NMHDropZone, {
@@ -3457,7 +3452,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8 /* PROPS */, ["page", "pages", "onPage"])], 32 /* NEED_HYDRATION */)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaViewModal, {
         show: _ctx.showMediaViewModal,
         mediaItem: _ctx.ctxMediaItem,
-        onClose: _cache[7] || (_cache[7] = function ($event) {
+        onClose: _cache[6] || (_cache[6] = function ($event) {
           return _ctx.showMediaViewModal = false;
         })
       }, null, 8 /* PROPS */, ["show", "mediaItem"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MediaUploadModal, {
@@ -3468,7 +3463,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "media-hub-ctx-menu",
         showEvent: _ctx.ctxShowEvent,
         options: _ctx.ctxOptions,
-        onClose: _cache[8] || (_cache[8] = function ($event) {
+        onClose: _cache[7] || (_cache[7] = function ($event) {
           return _ctx.ctxShowEvent = void 0;
         }),
         mediaItem: _ctx.ctxMediaItem,
