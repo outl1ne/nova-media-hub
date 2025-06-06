@@ -42,7 +42,7 @@ class MediaHub extends Tool
             'novaMediaHub' => [
                 'basePath' => MediaHub::getBasePath(),
                 'canCreateCollections' => MediaHub::userCanCreateCollections(),
-                'mediaDataFields' => $this->customFields,
+                'mediaDataFields' => static::getDataFields(),
             ],
         ]);
     }

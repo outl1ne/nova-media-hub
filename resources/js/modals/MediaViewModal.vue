@@ -28,11 +28,13 @@
               </div>
 
               <div class="o1-flex o1-flex-col" v-if="show && dataFields.length > 0 && mediaItem">
-                <form-translatable-field
+                <MediaCustomField
                   v-for="(dataField, i) in dataFields"
                   :key="`${mediaItem.id}-${dataField.attribute}-${i}`"
-                  class="nova-media-hub-media-modal-translatable-field"
+                  class="nova-media-hub-media-modal-custom-field"
                   :field="dataField"
+                  :model-value="getFieldValue(dataField)"
+                  @update:model-value="updateFieldValue(dataField, $event)"
                 />
               </div>
             </div>
@@ -84,13 +86,14 @@
 <script>
 import API from '../api';
 import MediaViewModalInfoListItem from '../components/MediaViewModalInfoListItem';
+import MediaCustomField from '../components/MediaCustomField';
 import { Button } from 'laravel-nova-ui';
 
 export default {
   emits: ['close'],
   props: ['show', 'mediaItem', 'readonly'],
 
-  components: { MediaViewModalInfoListItem, Button },
+  components: { MediaViewModalInfoListItem, MediaCustomField, Button },
 
   data: () => ({
     loading: false,
@@ -132,8 +135,17 @@ export default {
       this.loading = true;
       try {
         const formData = new FormData();
+        
+        // Add custom field data to FormData
         for (const field of this.dataFields) {
-          field.fill(formData);
+          if (field.fill && typeof field.fill === 'function') {
+            // Use the field's fill method if available (Nova field compatibility)
+            field.fill(formData);
+          } else {
+            // Fallback: add the field value directly
+            const value = field.value !== undefined ? field.value : '';
+            formData.append(field.attribute, value);
+          }
         }
 
         const { data } = await API.updateMediaData(this.mediaItem.id, formData);
@@ -143,6 +155,7 @@ export default {
         Nova.$toasted.success(this.__('novaMediaHub.mediaItemUpdated'));
       } catch (e) {
         console.error(e);
+        Nova.$toasted.error(this.__('novaMediaHub.errorUpdatingMediaItem') || 'Error updating media item');
       }
       this.loading = false;
     },
@@ -181,7 +194,27 @@ export default {
         compact: false,
         extraClass: 'field-wrapper',
         value: value,
+        component: 'text-field', // Default component type
       };
+    },
+
+    getFieldValue(field) {
+      if (this.mediaItem && this.mediaItem.data) {
+        return this.mediaItem.data[field.attribute] || field.value || '';
+      }
+      return field.value || '';
+    },
+
+    updateFieldValue(field, value) {
+      // Update the field value
+      field.value = value;
+      
+      // Also update the mediaItem data for immediate consistency
+      if (this.mediaItem && this.mediaItem.data) {
+        this.mediaItem.data[field.attribute] = value;
+      } else if (this.mediaItem) {
+        this.mediaItem.data = { [field.attribute]: value };
+      }
     },
   },
 

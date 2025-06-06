@@ -145,6 +145,21 @@ margin-top: 1.5rem
 margin-top: auto
 }
 
+[dir="ltr"] .o1-ml-2 {
+
+margin-left: 0.5rem
+}
+
+[dir="rtl"] .o1-ml-2 {
+
+margin-right: 0.5rem
+}
+
+.o1-mt-1 {
+
+margin-top: 0.25rem
+}
+
 .o1-flex {
 
 display: flex
@@ -607,6 +622,11 @@ line-height: 1rem
 font-weight: 700
 }
 
+.o1-font-semibold {
+
+font-weight: 600
+}
+
 .o1-capitalize {
 
 text-transform: capitalize
@@ -636,6 +656,20 @@ color: rgb(148 163 184 / var(--tw-text-opacity))
 --tw-text-opacity: 1;
 
 color: rgb(51 65 85 / var(--tw-text-opacity))
+}
+
+.o1-text-gray-600 {
+
+--tw-text-opacity: 1;
+
+color: rgb(75 85 99 / var(--tw-text-opacity))
+}
+
+.o1-text-gray-700 {
+
+--tw-text-opacity: 1;
+
+color: rgb(55 65 81 / var(--tw-text-opacity))
 }
 
 .o1-shadow {

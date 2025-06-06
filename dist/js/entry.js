@@ -115,6 +115,58 @@ var __default__ = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaCustomField.vue?vue&type=script&lang=js":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaCustomField.vue?vue&type=script&lang=js ***!
+  \**********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    modelValue: {
+      "default": null
+    }
+  },
+  emits: ['update:modelValue'],
+  computed: {
+    fieldValue: function fieldValue() {
+      // Get the current value from the field or modelValue
+      return this.field.value !== undefined ? this.field.value : this.modelValue;
+    }
+  },
+  methods: {
+    handleInput: function handleInput(event) {
+      var value = event.target.value;
+      this.$emit('update:modelValue', value);
+
+      // Update the field value directly for immediate UI feedback
+      if (this.field.value !== undefined) {
+        this.field.value = value;
+      }
+    },
+    handleBooleanInput: function handleBooleanInput(event) {
+      var value = event.target.checked;
+      this.$emit('update:modelValue', value);
+
+      // Update the field value directly for immediate UI feedback
+      if (this.field.value !== undefined) {
+        this.field.value = value;
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaItem.vue?vue&type=script&lang=js":
 /*!***************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaItem.vue?vue&type=script&lang=js ***!
@@ -1223,8 +1275,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api */ "./resources/js/api.js");
 /* harmony import */ var _components_MediaViewModalInfoListItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/MediaViewModalInfoListItem */ "./resources/js/components/MediaViewModalInfoListItem.vue");
-/* harmony import */ var laravel_nova_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! laravel-nova-ui */ "./node_modules/laravel-nova-ui/dist/Components/Button/Button.vue.mjs");
+/* harmony import */ var _components_MediaCustomField__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/MediaCustomField */ "./resources/js/components/MediaCustomField.vue");
+/* harmony import */ var laravel_nova_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! laravel-nova-ui */ "./node_modules/laravel-nova-ui/dist/Components/Button/Button.vue.mjs");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
@@ -1234,12 +1290,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   emits: ['close'],
   props: ['show', 'mediaItem', 'readonly'],
   components: {
     MediaViewModalInfoListItem: _components_MediaViewModalInfoListItem__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Button: laravel_nova_ui__WEBPACK_IMPORTED_MODULE_2__["default"]
+    MediaCustomField: _components_MediaCustomField__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Button: laravel_nova_ui__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -1297,18 +1355,25 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     saveAndExit: function saveAndExit() {
       var _this2 = this;
       return _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var formData, _iterator, _step, field, _yield$API$updateMedi, data;
+        var formData, _iterator, _step, field, value, _yield$API$updateMedi, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _this2.loading = true;
               _context2.prev = 1;
-              formData = new FormData();
+              formData = new FormData(); // Add custom field data to FormData
               _iterator = _createForOfIteratorHelper(_this2.dataFields);
               try {
                 for (_iterator.s(); !(_step = _iterator.n()).done;) {
                   field = _step.value;
-                  field.fill(formData);
+                  if (field.fill && typeof field.fill === 'function') {
+                    // Use the field's fill method if available (Nova field compatibility)
+                    field.fill(formData);
+                  } else {
+                    // Fallback: add the field value directly
+                    value = field.value !== undefined ? field.value : '';
+                    formData.append(field.attribute, value);
+                  }
                 }
               } catch (err) {
                 _iterator.e(err);
@@ -1323,15 +1388,16 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _this2.mediaItem.data = data.data;
               _this2.$emit('close');
               Nova.$toasted.success(_this2.__('novaMediaHub.mediaItemUpdated'));
-              _context2.next = 17;
+              _context2.next = 18;
               break;
             case 14:
               _context2.prev = 14;
               _context2.t0 = _context2["catch"](1);
               console.error(_context2.t0);
-            case 17:
-              _this2.loading = false;
+              Nova.$toasted.error(_this2.__('novaMediaHub.errorUpdatingMediaItem') || 'Error updating media item');
             case 18:
+              _this2.loading = false;
+            case 19:
             case "end":
               return _context2.stop();
           }
@@ -1384,8 +1450,26 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         stacked: true,
         compact: false,
         extraClass: 'field-wrapper',
-        value: value
+        value: value,
+        component: 'text-field' // Default component type
       };
+    },
+    getFieldValue: function getFieldValue(field) {
+      if (this.mediaItem && this.mediaItem.data) {
+        return this.mediaItem.data[field.attribute] || field.value || '';
+      }
+      return field.value || '';
+    },
+    updateFieldValue: function updateFieldValue(field, value) {
+      // Update the field value
+      field.value = value;
+
+      // Also update the mediaItem data for immediate consistency
+      if (this.mediaItem && this.mediaItem.data) {
+        this.mediaItem.data[field.attribute] = value;
+      } else if (this.mediaItem) {
+        this.mediaItem.data = _defineProperty({}, field.attribute, value);
+      }
     }
   },
   computed: {
@@ -1842,6 +1926,133 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.files.length) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.dropZone.filesToUpload')), 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 1
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.files.length) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.dropZone.fileToUpload')), 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.multiple ? _ctx.__('novaMediaHub.dropZone.dropFiles') : _ctx.__('novaMediaHub.dropZone.dropFile')), 1 /* TEXT */))], 2 /* CLASS */)], 34 /* CLASS, NEED_HYDRATION */)])], 16 /* FULL_PROPS */);
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaCustomField.vue?vue&type=template&id=11920d70":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaCustomField.vue?vue&type=template&id=11920d70 ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var _hoisted_1 = {
+  "class": "o1-flex o1-flex-col o1-mb-4"
+};
+var _hoisted_2 = {
+  "class": "o1-mb-2 o1-font-semibold o1-text-gray-700"
+};
+var _hoisted_3 = ["value", "placeholder"];
+var _hoisted_4 = ["value", "placeholder"];
+var _hoisted_5 = ["value", "placeholder"];
+var _hoisted_6 = ["value"];
+var _hoisted_7 = {
+  value: ""
+};
+var _hoisted_8 = ["value"];
+var _hoisted_9 = {
+  "class": "o1-flex o1-items-center"
+};
+var _hoisted_10 = ["checked"];
+var _hoisted_11 = {
+  "class": "o1-ml-2"
+};
+var _hoisted_12 = ["value"];
+var _hoisted_13 = ["value"];
+var _hoisted_14 = ["value", "placeholder"];
+var _hoisted_15 = {
+  key: 8,
+  "class": "o1-mt-1 o1-text-sm o1-text-gray-600"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.field.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Text Field "), $props.field.component === 'text-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
+    key: 0,
+    type: "text",
+    "class": "w-full form-control form-input form-input-bordered",
+    value: $options.fieldValue,
+    onInput: _cache[0] || (_cache[0] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    }),
+    placeholder: $props.field.placeholder || ''
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_3)) : $props.field.component === 'textarea-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Textarea Field "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    "class": "w-full form-control form-input form-input-bordered",
+    value: $options.fieldValue,
+    onInput: _cache[1] || (_cache[1] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    }),
+    placeholder: $props.field.placeholder || '',
+    rows: "3"
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_4)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)) : $props.field.component === 'number-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 2
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Number Field "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "number",
+    "class": "w-full form-control form-input form-input-bordered",
+    value: $options.fieldValue,
+    onInput: _cache[2] || (_cache[2] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    }),
+    placeholder: $props.field.placeholder || ''
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_5)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)) : $props.field.component === 'select-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 3
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Select Field "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "class": "w-full form-control form-select form-select-bordered",
+    value: $options.fieldValue,
+    onChange: _cache[3] || (_cache[3] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    })
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.field.placeholder || 'Select an option'), 1 /* TEXT */), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.field.options, function (option) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      key: option.value,
+      value: option.value
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.label), 9 /* TEXT, PROPS */, _hoisted_8);
+  }), 128 /* KEYED_FRAGMENT */))], 40 /* PROPS, NEED_HYDRATION */, _hoisted_6)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)) : $props.field.component === 'boolean-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 4
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Boolean Field "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "class": "form-checkbox",
+    checked: $options.fieldValue,
+    onChange: _cache[4] || (_cache[4] = function () {
+      return $options.handleBooleanInput && $options.handleBooleanInput.apply($options, arguments);
+    })
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_10), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.field.trueLabel || 'Yes'), 1 /* TEXT */)])], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)) : $props.field.component === 'date-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 5
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Date Field "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "date",
+    "class": "w-full form-control form-input form-input-bordered",
+    value: $options.fieldValue,
+    onInput: _cache[5] || (_cache[5] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    })
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_12)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)) : $props.field.component === 'datetime-field' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 6
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DateTime Field "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "datetime-local",
+    "class": "w-full form-control form-input form-input-bordered",
+    value: $options.fieldValue,
+    onInput: _cache[6] || (_cache[6] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    })
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_13)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 7
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Default fallback for other field types "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "class": "w-full form-control form-input form-input-bordered",
+    value: $options.fieldValue,
+    onInput: _cache[7] || (_cache[7] = function () {
+      return $options.handleInput && $options.handleInput.apply($options, arguments);
+    }),
+    placeholder: $props.field.placeholder || ''
+  }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_14)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Help text "), $props.field.helpText ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.field.helpText), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -3087,7 +3298,7 @@ var _hoisted_12 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_MediaViewModalInfoListItem = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MediaViewModalInfoListItem");
-  var _component_form_translatable_field = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("form-translatable-field");
+  var _component_MediaCustomField = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MediaCustomField");
   var _component_ModalContent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalContent");
   var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
   var _component_ModalFooter = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalFooter");
@@ -3129,11 +3340,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   label: _ctx.__('novaMediaHub.collectionTitle'),
                   value: $props.mediaItem.collection_name
                 }, null, 8 /* PROPS */, ["label", "value"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.show && _ctx.dataFields.length > 0 && $props.mediaItem ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.dataFields, function (dataField, i) {
-                  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_form_translatable_field, {
+                  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_MediaCustomField, {
                     key: "".concat($props.mediaItem.id, "-").concat(dataField.attribute, "-").concat(i),
-                    "class": "nova-media-hub-media-modal-translatable-field",
-                    field: dataField
-                  }, null, 8 /* PROPS */, ["field"]);
+                    "class": "nova-media-hub-media-modal-custom-field",
+                    field: dataField,
+                    "model-value": $options.getFieldValue(dataField),
+                    "onUpdate:modelValue": function onUpdateModelValue($event) {
+                      return $options.updateFieldValue(dataField, $event);
+                    }
+                  }, null, 8 /* PROPS */, ["field", "model-value", "onUpdate:modelValue"]);
                 }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" File itself "), $props.mediaItem ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [$options.type === 'image' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
                   key: 0,
                   "class": "o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0 dark:o1-bg-slate-900 dark:o1-border-slate-700",
@@ -9105,6 +9320,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/components/MediaCustomField.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/MediaCustomField.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _MediaCustomField_vue_vue_type_template_id_11920d70__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MediaCustomField.vue?vue&type=template&id=11920d70 */ "./resources/js/components/MediaCustomField.vue?vue&type=template&id=11920d70");
+/* harmony import */ var _MediaCustomField_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MediaCustomField.vue?vue&type=script&lang=js */ "./resources/js/components/MediaCustomField.vue?vue&type=script&lang=js");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_MediaCustomField_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_MediaCustomField_vue_vue_type_template_id_11920d70__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/MediaCustomField.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/components/MediaItem.vue":
 /*!***********************************************!*\
   !*** ./resources/js/components/MediaItem.vue ***!
@@ -9666,6 +9909,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/MediaCustomField.vue?vue&type=script&lang=js":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/MediaCustomField.vue?vue&type=script&lang=js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_MediaCustomField_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_MediaCustomField_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./MediaCustomField.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaCustomField.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/components/MediaItem.vue?vue&type=script&lang=js":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/MediaItem.vue?vue&type=script&lang=js ***!
@@ -9918,6 +10177,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_DropZone_vue_vue_type_template_id_699db726__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_DropZone_vue_vue_type_template_id_699db726__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./DropZone.vue?vue&type=template&id=699db726 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/DropZone.vue?vue&type=template&id=699db726");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/MediaCustomField.vue?vue&type=template&id=11920d70":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/MediaCustomField.vue?vue&type=template&id=11920d70 ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_MediaCustomField_vue_vue_type_template_id_11920d70__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_MediaCustomField_vue_vue_type_template_id_11920d70__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./MediaCustomField.vue?vue&type=template&id=11920d70 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/MediaCustomField.vue?vue&type=template&id=11920d70");
 
 
 /***/ }),
