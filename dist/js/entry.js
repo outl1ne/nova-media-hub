@@ -1095,19 +1095,23 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
           while (1) switch (_context.prev = _context.next) {
             case 0:
               if (!newValue) {
-                _context.next = 4;
+                _context.next = 3;
                 break;
               }
               _context.next = 3;
               return _this.getCollections();
             case 3:
-              _this.selectedCollection = _this.activeCollection || _this.collections[0];
-            case 4:
             case "end":
               return _context.stop();
           }
         }, _callee);
       }))();
+    },
+    newCollection: function newCollection(newValue) {
+      // Reset del nome della collezione quando si passa da "crea nuova" a una collezione esistente
+      if (!newValue) {
+        this.collectionName = '';
+      }
     }
   },
   methods: {
@@ -1161,10 +1165,28 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _yield$API$getCollect = _context3.sent;
               data = _yield$API$getCollect.data;
               _this3.collections = data || [];
+
+              // Filtriamo le collezioni per rimuovere eventuali oggetti malformati
+              _this3.collections = _this3.collections.filter(function (c) {
+                return typeof c === 'string' && c !== '[object event]';
+              });
+
+              // Se non abbiamo una selectedCollection selezionata, impostiamo un default ragionevole
               if (!_this3.selectedCollection) {
-                _this3.selectedCollection = _this3.collections.length ? _this3.collections[0] : void 0;
+                // Se possiamo creare collezioni, inizializziamo con "crea nuova"
+                if (_this3.canCreateCollections) {
+                  _this3.selectedCollection = 'media-hub-new-collection';
+                }
+                // Altrimenti usa l'activeCollection se esiste
+                else if (_this3.activeCollection && _this3.collections.includes(_this3.activeCollection)) {
+                  _this3.selectedCollection = _this3.activeCollection;
+                }
+                // Come ultimo fallback, usa la prima collezione disponibile
+                else if (_this3.collections.length) {
+                  _this3.selectedCollection = _this3.collections[0];
+                }
               }
-            case 6:
+            case 7:
             case "end":
               return _context3.stop();
           }
@@ -2921,7 +2943,6 @@ var _hoisted_5 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ModalHeader = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalHeader");
-  var _component_SelectControl = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectControl");
   var _component_NMHDropZone = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("NMHDropZone");
   var _component_ModalContent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalContent");
   var _component_Button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Button");
@@ -2955,22 +2976,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               "class": "px-8 o1-flex o1-flex-col"
             }, {
               "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Select existing collection "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.uploadModalSelectCollectionTitle')), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SelectControl, {
-                  selected: _ctx.selectedCollection,
-                  "onUpdate:selected": _cache[0] || (_cache[0] = function ($event) {
+                return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Select existing collection "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.uploadModalSelectCollectionTitle')), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+                  "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
                     return _ctx.selectedCollection = $event;
-                  })
-                }, {
-                  "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                    return [$options.canCreateCollections ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.uploadModalCreateNewOption')), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.collections, function (c) {
-                      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-                        key: c,
-                        value: c
-                      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(c), 9 /* TEXT, PROPS */, _hoisted_3);
-                    }), 128 /* KEYED_FRAGMENT */))];
                   }),
-                  _: 1 /* STABLE */
-                }, 8 /* PROPS */, ["selected"]), $options.newCollection ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+                  "class": "w-full form-control form-select form-select-bordered"
+                }, [$options.canCreateCollections ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.uploadModalCreateNewOption')), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.collections, function (c) {
+                  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+                    key: c,
+                    value: c
+                  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(c), 9 /* TEXT, PROPS */, _hoisted_3);
+                }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.selectedCollection]]), $options.newCollection ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
                   key: 0
                 }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('novaMediaHub.enterNewCollectionName')), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
                   type: "text",

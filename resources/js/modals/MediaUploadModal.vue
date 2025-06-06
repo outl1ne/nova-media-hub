@@ -13,12 +13,15 @@
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span class="o1-mb-2">{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
-          <SelectControl v-model:selected="selectedCollection">
+          <select 
+            v-model="selectedCollection" 
+            class="w-full form-control form-select form-select-bordered"
+          >
             <option value="media-hub-new-collection" v-if="canCreateCollections">
               {{ __('novaMediaHub.uploadModalCreateNewOption') }}
             </option>
             <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-          </SelectControl>
+          </select>
 
           <template v-if="newCollection">
             <span class="mt-6">{{ __('novaMediaHub.enterNewCollectionName') }}</span>
@@ -77,7 +80,13 @@ export default {
     async show(newValue) {
       if (newValue) {
         await this.getCollections();
-        this.selectedCollection = this.activeCollection || this.collections[0];
+      }
+    },
+
+    newCollection(newValue) {
+      // Reset del nome della collezione quando si passa da "crea nuova" a una collezione esistente
+      if (!newValue) {
+        this.collectionName = '';
       }
     },
   },
@@ -114,8 +123,23 @@ export default {
       const { data } = await API.getCollections();
       this.collections = data || [];
 
+      // Filtriamo le collezioni per rimuovere eventuali oggetti malformati
+      this.collections = this.collections.filter(c => typeof c === 'string' && c !== '[object event]');
+
+      // Se non abbiamo una selectedCollection selezionata, impostiamo un default ragionevole
       if (!this.selectedCollection) {
-        this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
+        // Se possiamo creare collezioni, inizializziamo con "crea nuova"
+        if (this.canCreateCollections) {
+          this.selectedCollection = 'media-hub-new-collection';
+        }
+        // Altrimenti usa l'activeCollection se esiste
+        else if (this.activeCollection && this.collections.includes(this.activeCollection)) {
+          this.selectedCollection = this.activeCollection;
+        }
+        // Come ultimo fallback, usa la prima collezione disponibile
+        else if (this.collections.length) {
+          this.selectedCollection = this.collections[0];
+        }
       }
     },
   },
