@@ -1,0 +1,1 @@
+- [ ] On Upload, if you check a collection it will not be show at first shot
