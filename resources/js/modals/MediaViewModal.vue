@@ -2,13 +2,13 @@
   <Modal
     size="custom"
     :show="show"
-    @close-via-escape="$emit('close')"
+    @close-via-escape="closeModal"
     role="alertdialog"
     maxWidth="w-full"
     class="o1-px-24"
     id="o1-nmh-media-view-modal"
   >
-    <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <LoadingCard :loading="loading" class="mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800">
       <slot>
         <ModalContent class="o1-px-8 o1-flex o1-flex-col">
           <div class="o1-flex">
@@ -16,7 +16,7 @@
             <div
               class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full dark:o1-border-slate-700"
             >
-              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5">
+              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5" v-if="mediaItem">
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
@@ -27,10 +27,10 @@
                 />
               </div>
 
-              <div class="o1-flex o1-flex-col" v-if="show">
+              <div class="o1-flex o1-flex-col" v-if="show && dataFields.length > 0 && mediaItem">
                 <form-translatable-field
                   v-for="(dataField, i) in dataFields"
-                  :key="mediaItem.id + i"
+                  :key="`${mediaItem.id}-${dataField.attribute}-${i}`"
                   class="nova-media-hub-media-modal-translatable-field"
                   :field="dataField"
                 />
@@ -41,6 +41,7 @@
             <div
               class="o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full o1-items-center o1-justify-center"
               style="max-height: 60vh"
+              v-if="mediaItem"
             >
               <img
                 v-if="type === 'image'"
@@ -67,7 +68,7 @@
 
       <ModalFooter>
         <div class="ml-auto">
-          <Button variant="link" state="mellow" @click.prevent="$emit('close')" class="o1-mr-4">
+          <Button variant="link" state="mellow" @click.prevent="closeModal" class="o1-mr-4">
             {{ __('novaMediaHub.close') }}
           </Button>
 
@@ -104,16 +105,23 @@ export default {
     Nova.$emit('close-dropdowns');
   },
 
+  beforeUnmount() {
+    // Clean up to prevent memory leaks
+    this.dataFields = [];
+    this.loading = false;
+  },
+
   watch: {
     async show(newValue) {
-      if (newValue) {
+      if (newValue && this.mediaItem) {
         const fields = Nova.config('novaMediaHub')?.mediaDataFields || {};
         const fieldKeys = Object.keys(fields);
 
         await this.getCollections();
-        this.selectedCollection = this.activeCollection;
+        this.selectedCollection = this.mediaItem.collection_name || (this.collections.length ? this.collections[0] : void 0);
         this.dataFields = fieldKeys.map(key => this.createField(key, fields[key]));
       } else {
+        // Clear data fields properly to avoid component lifecycle issues
         this.dataFields = [];
       }
     },
@@ -139,6 +147,16 @@ export default {
       this.loading = false;
     },
 
+    closeModal() {
+      // Clean up before closing to prevent lifecycle issues
+      this.loading = false;
+      this.dataFields = [];
+      this.selectedCollection = void 0;
+      this.$nextTick(() => {
+        this.$emit('close');
+      });
+    },
+
     async getCollections() {
       const { data } = await API.getCollections();
       this.collections = data || [];
@@ -149,7 +167,10 @@ export default {
     },
 
     createField(attribute, name) {
-      let value = this.mediaItem.data?.[attribute] || '';
+      let value = '';
+      if (this.mediaItem && this.mediaItem.data) {
+        value = this.mediaItem.data[attribute] || '';
+      }
 
       return {
         name,
