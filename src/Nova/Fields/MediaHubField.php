@@ -23,7 +23,6 @@ class MediaHubField extends Field
             'defaultCollectionName' => $defaultCollectionName,
         ]);
 
-        // TODO Add index field
         $this->hideFromIndex();
     }
 

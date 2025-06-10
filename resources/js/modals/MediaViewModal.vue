@@ -124,7 +124,6 @@ export default {
         this.selectedCollection = this.mediaItem.collection_name || (this.collections.length ? this.collections[0] : void 0);
         this.dataFields = fieldKeys.map(key => this.createField(key, fields[key]));
       } else {
-        // Clear data fields properly to avoid component lifecycle issues
         this.dataFields = [];
       }
     },
@@ -206,10 +205,8 @@ export default {
     },
 
     updateFieldValue(field, value) {
-      // Update the field value
       field.value = value;
       
-      // Also update the mediaItem data for immediate consistency
       if (this.mediaItem && this.mediaItem.data) {
         this.mediaItem.data[field.attribute] = value;
       } else if (this.mediaItem) {
