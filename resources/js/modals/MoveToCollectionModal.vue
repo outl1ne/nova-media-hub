@@ -6,9 +6,12 @@
       <ModalContent class="o1-flex o1-flex-col">
         <p class="o1-leading-tight o1-mb-2">{{ __('novaMediaHub.moveCollectionText') }}</p>
 
-        <SelectControl class="o1-capitalize" v-model:selected="collection" @change="c => (collection = c)">
+        <select 
+          class="block form-control form-control-bordered form-input o1-capitalize" 
+          v-model="collection"
+        >
           <option v-for="c in filteredCollections" :key="c" :value="c">{{ c }}</option>
-        </SelectControl>
+        </select>
       </ModalContent>
 
       <ModalFooter>
