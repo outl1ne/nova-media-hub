@@ -42,8 +42,7 @@ class MediaHub extends Tool
             'novaMediaHub' => [
                 'basePath' => MediaHub::getBasePath(),
                 'canCreateCollections' => MediaHub::userCanCreateCollections(),
-                'locales' => MediaHub::getLocales(),
-                'mediaDataFields' => $this->customFields,
+                'mediaDataFields' => static::getDataFields(),
             ],
         ]);
     }
@@ -273,11 +272,6 @@ class MediaHub extends Tool
     {
         $optimizableMimeTypes = config('nova-media-hub.optimizable_mime_types');
         return in_array($media->mime_type, $optimizableMimeTypes);
-    }
-
-    public static function getLocales()
-    {
-        return config('nova-media-hub.locales');
     }
 
     public static function getDefaultCollections(): array

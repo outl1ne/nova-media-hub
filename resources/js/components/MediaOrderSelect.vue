@@ -1,5 +1,5 @@
 <template>
-  <SelectControl v-bind="$attrs">
+  <select class="block form-control form-control-bordered form-input" v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
     <option value="">{{ __('novaMediaHub.orderBy.default') }}</option>
     <template v-for="column in columns" :key="column">
       <option v-for="direction in ['asc', 'desc']" :key="`${column}:${direction}`" :value="`${column}:${direction}`">
@@ -7,11 +7,12 @@
         {{ __(`novaMediaHub.orderBy.${column}`) }}
       </option>
     </template>
-  </SelectControl>
+  </select>
 </template>
 
 <script>
 export default {
-  props: ['columns'],
+  props: ['columns', 'modelValue'],
+  emits: ['update:modelValue'],
 };
 </script>

@@ -1,3 +1,7 @@
+<!-- /REMOVE THIS BLOCK -->
+## This is a development branch. Please <strong>do not use</strong> in production!
+<!-- /REMOVE THIS BLOCK -->
+
 # Nova Media Hub
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
@@ -5,10 +9,17 @@
 
 This [Laravel Nova](https://nova.laravel.com) package allows you to manage media and media fields.
 
+## Compatibility
+
+| Laravel Nova Version | Package Version |
+|---------------------|----------------|
+| Nova 4.x            | 3.0+          |
+| Nova 5.x            | 4.0+           |
+
 ## Requirements
 
 - `php: >=8.0`
-- `laravel/nova: ^4.0`
+- `laravel/nova: ^5.0`
 
 ## Features
 
@@ -134,14 +145,6 @@ public function register() {
   );
 }
 
-```
-
-## Localization
-
-The translation file(s) can be published by using the following command:
-
-```bash
-php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="translations"
 ```
 
 ## Credits

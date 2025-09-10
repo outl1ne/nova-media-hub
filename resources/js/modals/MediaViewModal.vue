@@ -2,13 +2,13 @@
   <Modal
     size="custom"
     :show="show"
-    @close-via-escape="$emit('close')"
+    @close-via-escape="closeModal"
     role="alertdialog"
     maxWidth="w-full"
     class="o1-px-24"
     id="o1-nmh-media-view-modal"
   >
-    <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <LoadingCard :loading="loading" class="mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800">
       <slot>
         <ModalContent class="o1-px-8 o1-flex o1-flex-col">
           <div class="o1-flex">
@@ -16,7 +16,7 @@
             <div
               class="o1-flex o1-flex-col o1-pr-4 o1-border-r o1-border-slate-200 o1-mr-4 o1-max-w-sm o1-w-full dark:o1-border-slate-700"
             >
-              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5">
+              <div class="border-b o1-border-slate-200 dark:o1-border-slate-700 o1-mb-5" v-if="mediaItem">
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.viewModalIdTitle')" :value="mediaItem.id" />
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name" />
                 <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize" />
@@ -27,12 +27,14 @@
                 />
               </div>
 
-              <div class="o1-flex o1-flex-col" v-if="show">
-                <form-translatable-field
+              <div class="o1-flex o1-flex-col" v-if="show && dataFields.length > 0 && mediaItem">
+                <MediaCustomField
                   v-for="(dataField, i) in dataFields"
-                  :key="mediaItem.id + i"
-                  class="nova-media-hub-media-modal-translatable-field"
+                  :key="`${mediaItem.id}-${dataField.attribute}-${i}`"
+                  class="nova-media-hub-media-modal-custom-field"
                   :field="dataField"
+                  :model-value="getFieldValue(dataField)"
+                  @update:model-value="updateFieldValue(dataField, $event)"
                 />
               </div>
             </div>
@@ -41,6 +43,7 @@
             <div
               class="o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full o1-items-center o1-justify-center"
               style="max-height: 60vh"
+              v-if="mediaItem"
             >
               <img
                 v-if="type === 'image'"
@@ -67,7 +70,7 @@
 
       <ModalFooter>
         <div class="ml-auto">
-          <Button variant="link" state="mellow" @click.prevent="$emit('close')" class="o1-mr-4">
+          <Button variant="link" state="mellow" @click.prevent="closeModal" class="o1-mr-4">
             {{ __('novaMediaHub.close') }}
           </Button>
 
@@ -83,13 +86,14 @@
 <script>
 import API from '../api';
 import MediaViewModalInfoListItem from '../components/MediaViewModalInfoListItem';
+import MediaCustomField from '../components/MediaCustomField';
 import { Button } from 'laravel-nova-ui';
 
 export default {
   emits: ['close'],
   props: ['show', 'mediaItem', 'readonly'],
 
-  components: { MediaViewModalInfoListItem, Button },
+  components: { MediaViewModalInfoListItem, MediaCustomField, Button },
 
   data: () => ({
     loading: false,
@@ -104,14 +108,20 @@ export default {
     Nova.$emit('close-dropdowns');
   },
 
+  beforeUnmount() {
+    // Clean up to prevent memory leaks
+    this.dataFields = [];
+    this.loading = false;
+  },
+
   watch: {
     async show(newValue) {
-      if (newValue) {
+      if (newValue && this.mediaItem) {
         const fields = Nova.config('novaMediaHub')?.mediaDataFields || {};
         const fieldKeys = Object.keys(fields);
 
         await this.getCollections();
-        this.selectedCollection = this.activeCollection;
+        this.selectedCollection = this.mediaItem.collection_name || (this.collections.length ? this.collections[0] : void 0);
         this.dataFields = fieldKeys.map(key => this.createField(key, fields[key]));
       } else {
         this.dataFields = [];
@@ -124,8 +134,17 @@ export default {
       this.loading = true;
       try {
         const formData = new FormData();
+        
+        // Add custom field data to FormData
         for (const field of this.dataFields) {
-          field.fill(formData);
+          if (field.fill && typeof field.fill === 'function') {
+            // Use the field's fill method if available (Nova field compatibility)
+            field.fill(formData);
+          } else {
+            // Fallback: add the field value directly
+            const value = field.value !== undefined ? field.value : '';
+            formData.append(field.attribute, value);
+          }
         }
 
         const { data } = await API.updateMediaData(this.mediaItem.id, formData);
@@ -135,8 +154,19 @@ export default {
         Nova.$toasted.success(this.__('novaMediaHub.mediaItemUpdated'));
       } catch (e) {
         console.error(e);
+        Nova.$toasted.error(this.__('novaMediaHub.errorUpdatingMediaItem') || 'Error updating media item');
       }
       this.loading = false;
+    },
+
+    closeModal() {
+      // Clean up before closing to prevent lifecycle issues
+      this.loading = false;
+      this.dataFields = [];
+      this.selectedCollection = void 0;
+      this.$nextTick(() => {
+        this.$emit('close');
+      });
     },
 
     async getCollections() {
@@ -149,13 +179,9 @@ export default {
     },
 
     createField(attribute, name) {
-      const hasLocales = !!this.locales && this.locales.en !== 'mediaHubHidden';
-
       let value = '';
-      if (!hasLocales) {
-        value = { en: this.mediaItem.data?.[attribute] || '' };
-      } else {
-        value = this.mediaItem.data?.[attribute] || {};
+      if (this.mediaItem && this.mediaItem.data) {
+        value = this.mediaItem.data[attribute] || '';
       }
 
       return {
@@ -166,8 +192,26 @@ export default {
         stacked: true,
         compact: false,
         extraClass: 'field-wrapper',
-        translatable: { locales: this.locales, original_component: 'text-field', value },
+        value: value,
+        component: 'text-field', // Default component type
       };
+    },
+
+    getFieldValue(field) {
+      if (this.mediaItem && this.mediaItem.data) {
+        return this.mediaItem.data[field.attribute] || field.value || '';
+      }
+      return field.value || '';
+    },
+
+    updateFieldValue(field, value) {
+      field.value = value;
+      
+      if (this.mediaItem && this.mediaItem.data) {
+        this.mediaItem.data[field.attribute] = value;
+      } else if (this.mediaItem) {
+        this.mediaItem.data = { [field.attribute]: value };
+      }
     },
   },
 
@@ -190,10 +234,6 @@ export default {
       return 'other';
     },
 
-    locales() {
-      return Nova.appConfig.novaMediaHub.locales || { en: 'mediaHubHidden' };
-    },
-
     fileSize() {
       if (!this.mediaItem) return '';
 
@@ -210,28 +250,6 @@ export default {
 
   + .fixed {
     z-index: 129;
-  }
-
-  .nova-media-hub-media-modal-translatable-field {
-    // margin-bottom: 15px;
-
-    .nova-translatable-locale-tabs {
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    > div:not(.nova-translatable-locale-tabs) {
-      > div {
-        margin-top: -25px;
-        padding-top: 8px;
-
-        > div {
-          width: 100%;
-          padding-left: 0 !important;
-          padding-right: 0 !important;
-        }
-      }
-    }
   }
 }
 </style>

@@ -5,11 +5,11 @@
     role="alertdialog"
     maxWidth="w-full"
     size="custom"
-    class="o1-px-8 overflow-hidden full-modal"
+    class="overflow-hidden o1-px-8 full-modal"
   >
     <LoadingCard
       :loading="loading"
-      class="o1-flex o1-flex-col o1-h-full mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      class="mx-auto overflow-hidden bg-white rounded-lg shadow-lg o1-flex o1-flex-col o1-h-full dark:bg-gray-800"
     >
       <slot>
         <ModalContent class="o1-min-h-[90%] o1-grow o1-px-8 o1-py-0 o1-flex o1-flex-col">
@@ -18,7 +18,7 @@
             <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
-            <div class="o1-flex overflow-x-auto o1-pt-1 o1-px-1" v-show="!!selectedCount">
+            <div class="overflow-x-auto o1-flex o1-pt-1 o1-px-1" v-show="!!selectedCount">
               <Draggable v-model="selectedMediaItems" item-key="id" class="o1-flex o1-flex-shrink-0">
                 <template #item="{ element: mediaItem }">
                   <MediaItem
@@ -41,13 +41,16 @@
           </div>
 
           <div class="o1-flex o1-flex-col lg:o1-flex-row overflow-y-auto o1-min-h-[30%] o1-h-full o1-gap-8">
-            <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs overflow-y-auto o1-py-4">
+            <div class="overflow-y-auto o1-flex o1-flex-col o1-gap-5 o1-w-full lg:o1-max-w-xs o1-py-4">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
-                <SelectControl class="o1-capitalize" v-model:selected="collection" @change="c => (collection = c)">
+                <select 
+                  class="block form-control form-control-bordered form-input o1-capitalize" 
+                  v-model="collection"
+                >
                   <option value="">{{ __('novaMediaHub.showAll') }}</option>
                   <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-                </SelectControl>
+                </select>
               </ModalFilterItem>
 
               <Button v-show="someMediaItemsNotInCurrentCollection" @click.prevent="moveToCollection">
@@ -71,8 +74,7 @@
               <ModalFilterItem :title="__('novaMediaHub.chooseMediaOrder')">
                 <MediaOrderSelect
                   :columns="orderColumns"
-                  v-model:selected="orderBy"
-                  @change="selected => (orderBy = selected)"
+                  v-model="orderBy"
                 />
               </ModalFilterItem>
 
@@ -89,10 +91,10 @@
               <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
                 {{ __('novaMediaHub.chooseMediaTitle') }}
               </div>
-              <div class="o1-w-full overflow-y-auto">
+              <div class="overflow-y-auto o1-w-full">
                 <div
                   id="media-items-list"
-                  class="o1-w-full flex flex-wrap o1-gap-4 o1-justify-items-center o1-p-1"
+                  class="flex flex-wrap o1-w-full o1-gap-4 o1-justify-items-center o1-p-1"
                   v-show="!!mediaItems.length && !mediaLoading"
                 >
                   <MediaItem

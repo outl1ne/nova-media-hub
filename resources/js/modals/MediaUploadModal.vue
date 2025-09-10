@@ -6,19 +6,22 @@
     maxWidth="2xl"
     id="o1-nmh-media-upload-modal"
   >
-    <LoadingCard :loading="loading" class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <LoadingCard :loading="loading" class="mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800">
       <slot>
         <ModalHeader class="flex items-center">{{ __('novaMediaHub.uploadMediaTitle') }}</ModalHeader>
 
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span class="o1-mb-2">{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
-          <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
+          <select 
+            v-model="selectedCollection" 
+            class="block form-control form-control-bordered form-input"
+          >
             <option value="media-hub-new-collection" v-if="canCreateCollections">
               {{ __('novaMediaHub.uploadModalCreateNewOption') }}
             </option>
             <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-          </SelectControl>
+          </select>
 
           <template v-if="newCollection">
             <span class="mt-6">{{ __('novaMediaHub.enterNewCollectionName') }}</span>
@@ -77,7 +80,12 @@ export default {
     async show(newValue) {
       if (newValue) {
         await this.getCollections();
-        this.selectedCollection = this.activeCollection || this.collections[0];
+      }
+    },
+
+    newCollection(newValue) {
+      if (!newValue) {
+        this.collectionName = '';
       }
     },
   },
@@ -114,8 +122,18 @@ export default {
       const { data } = await API.getCollections();
       this.collections = data || [];
 
+      this.collections = this.collections.filter(c => typeof c === 'string' && c !== '[object event]');
+
       if (!this.selectedCollection) {
-        this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
+        if (this.canCreateCollections) {
+          this.selectedCollection = 'media-hub-new-collection';
+        }
+        else if (this.activeCollection && this.collections.includes(this.activeCollection)) {
+          this.selectedCollection = this.activeCollection;
+        }
+        else if (this.collections.length) {
+          this.selectedCollection = this.collections[0];
+        }
       }
     },
   },

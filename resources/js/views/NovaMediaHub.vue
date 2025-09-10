@@ -4,13 +4,19 @@
 
     <!-- Header -->
     <div class="o1-flex o1-mb-4">
-      <IndexSearchInput class="o1-mb-0" v-model:keyword="search" @update:keyword="search = $event" />
+      <div class="flex-grow max-w-sm mr-4">
+        <input 
+          type="text" 
+          v-model="search" 
+          :placeholder="__('novaMediaHub.searchMediaTitle')"
+          class="form-control form-input form-control-bordered w-full h-9 px-3 text-sm border border-gray-300 rounded-lg bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-500"
+        />
+      </div>
 
       <div class="o1-ml-auto o1-flex o1-gap-2">
         <MediaOrderSelect
           :columns="orderColumns"
-          v-model:selected="orderBy"
-          @change="selected => (orderBy = selected)"
+          v-model="orderBy"
         />
         <Button @click="showMediaUploadModal = true">
           {{ __('novaMediaHub.uploadMediaButton') }}
@@ -61,9 +67,9 @@
         <!-- Dropzone -->
         <div
           v-show="showQuickUpload"
-          class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90"
+          class="z-10 o1-absolute o1-inset-0 o1-mx-auto o1-w-100 o1-bg-slate-900 o1-bg-opacity-90"
         >
-          <div class="o1-dropzone-wrapper o1-py-32 o1-px-8 flex o1-items-center o1-justify-center o1-h-full">
+          <div class="flex o1-dropzone-wrapper o1-py-32 o1-px-8 o1-items-center o1-justify-center o1-h-full">
             <NMHDropZone v-if="!quickUploadLoading" @fileChanged="uploadFiles" multiple />
 
             <Loader v-else class="text-gray-300" width="60" />
@@ -72,7 +78,7 @@
 
         <div
           id="media-items-list"
-          class="o1-w-full o1-h-full flex flex-wrap o1-gap-6 o1-p-4 relative"
+          class="relative flex flex-wrap o1-w-full o1-h-full o1-gap-6 o1-p-4"
           :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
           <Loader v-if="loadingMedia" class="text-gray-300 o1-absolute o1-inset-0 o1-m-auto" width="60" />

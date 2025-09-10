@@ -13,9 +13,19 @@ class Sort
             return $next($query)->orderBy('updated_at', 'DESC');
         }
 
-        [$column, $direction] = Str::of(request()->get('orderBy'))
+        $orderByParts = Str::of(request()->get('orderBy'))
             ->explode(':')
             ->toArray();
+
+        // Validate that we have both column and direction
+        if (count($orderByParts) < 2) {
+            return $next($query)->orderBy('updated_at', 'DESC');
+        }
+
+        [$column, $direction] = $orderByParts;
+
+        // Validate direction
+        $direction = in_array(strtoupper($direction), ['ASC', 'DESC']) ? $direction : 'DESC';
 
         return $next($query)->orderBy($column, $direction);
     }
