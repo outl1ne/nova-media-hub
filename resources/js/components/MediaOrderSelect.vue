@@ -1,12 +1,17 @@
 <template>
-  <SelectControl v-bind="$attrs" :options="options()" class="o1-w-[130px]" />
+  <select
+    className="o1-capitalize w-full block form-control form-control-bordered form-input o1-w-[130px]"
+    v-model="collection"
+  >
+    <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
+  </select>
 </template>
 
 <script>
 export default {
   props: ['columns'],
 
-  methods: {
+  computed: {
     options() {
       const orderColumns = this.columns.flatMap(column => [
         { value: `${column}:asc`, label: `↑ ${this.__(`novaMediaHub.orderBy.${column}`)}` },

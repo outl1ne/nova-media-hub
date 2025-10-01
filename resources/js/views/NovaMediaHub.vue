@@ -9,7 +9,7 @@
       <div class="o1-ml-auto o1-flex o1-gap-2">
         <MediaOrderSelect
           :columns="orderColumns"
-          :selected="orderBy"
+          v-model:selected="orderBy"
           @change="selected => (orderBy = selected.target.value)"
         />
         <Button @click="showMediaUploadModal = true">
