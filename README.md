@@ -7,8 +7,12 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 
 ## Requirements
 
-- `php: >=8.0`
-- `laravel/nova: ^4.0`
+- `php: >=8.2`
+- `laravel/nova: ^5.0`
+
+## Other Versions
+
+[`laravel/nova: ^4.0`](https://github.com/outl1ne/nova-mediahub-field/tree/nova-v4)<br>
 
 ## Features
 

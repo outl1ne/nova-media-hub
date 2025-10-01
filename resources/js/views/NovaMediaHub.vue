@@ -10,7 +10,7 @@
         <MediaOrderSelect
           :columns="orderColumns"
           v-model:selected="orderBy"
-          @change="selected => (orderBy = selected)"
+          @change="selected => (orderBy = selected.target.value)"
         />
         <Button @click="showMediaUploadModal = true">
           {{ __('novaMediaHub.uploadMediaButton') }}

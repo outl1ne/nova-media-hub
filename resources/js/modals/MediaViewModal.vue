@@ -213,8 +213,6 @@ export default {
   }
 
   .nova-media-hub-media-modal-translatable-field {
-    // margin-bottom: 15px;
-
     .nova-translatable-locale-tabs {
       padding-left: 0;
       padding-right: 0;
