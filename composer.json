@@ -1,41 +1,66 @@
 {
-  "name": "outl1ne/nova-media-hub",
-  "description": "A Laravel Nova tool for managing media.",
-  "keywords": [
-    "laravel",
-    "nova"
-  ],
-  "license": "MIT",
-  "require": {
-    "php": ">=8.0",
-    "laravel/nova": "^4.29.8",
-    "outl1ne/nova-translations-loader": "^5.0",
-    "outl1ne/nova-translatable": "^2.2",
-    "spatie/image": "^3.0",
-    "spatie/image-optimizer": "^1.7"
-  },
-  "autoload": {
-    "psr-4": {
-      "Outl1ne\\NovaMediaHub\\": "src/"
+    "name": "outl1ne/nova-media-hub",
+    "description": "A Laravel Nova tool for managing media.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0",
+        "laravel/nova": "^5.0",
+        "outl1ne/nova-translations-loader": "^5.0",
+        "outl1ne/nova-translatable": "^3.0",
+        "spatie/image": "^3.0",
+        "spatie/image-optimizer": "^1.7"
     },
-    "files": []
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Outl1ne\\NovaMediaHub\\MediaHubServiceProvider"
-      ]
+    "autoload": {
+        "psr-4": {
+            "Outl1ne\\NovaMediaHub\\": "src/"
+        },
+        "files": []
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Outl1ne\\NovaMediaHub\\MediaHubServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
+    "require-dev": {
+        "laravel/nova-devtool": "^1.8"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi",
+            "@php vendor/bin/testbench storage:link --force" 
+        ]
     }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://nova.laravel.com"
-    }
-  ]
 }
