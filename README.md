@@ -12,7 +12,7 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 
 ## Other Versions
 
-[`laravel/nova: ^4.0`](https://github.com/outl1ne/nova-mediahub-field/tree/nova-v4)<br>
+[`laravel/nova: ^4.0`](https://github.com/outl1ne/nova-media-hub/tree/nova-v4)<br>
 
 ## Features
 
