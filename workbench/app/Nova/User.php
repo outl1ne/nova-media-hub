@@ -62,8 +62,7 @@ class User extends Resource
                 ->creationRules($this->passwordRules())
                 ->updateRules($this->optionalPasswordRules()),
 
-            MediaHubField::make('Avatar', 'avatar_id')
-                ->showOnIndex(true),
+            MediaHubField::make('Avatar', 'avatar_id'),
         ];
     }
 

@@ -13,12 +13,11 @@
         <ModalContent class="px-8 o1-flex o1-flex-col">
           <!-- Select existing collection -->
           <span class="o1-mb-2">{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
-          <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
-            <option value="media-hub-new-collection" v-if="canCreateCollections">
-              {{ __('novaMediaHub.uploadModalCreateNewOption') }}
-            </option>
-            <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-          </SelectControl>
+          <SelectControl
+            :selected="selectedCollection"
+            @change="event => (selectedCollection = event.target.value)"
+            :options="getSelectOptions()"
+          />
 
           <template v-if="newCollection">
             <span class="mt-6">{{ __('novaMediaHub.enterNewCollectionName') }}</span>
@@ -62,10 +61,10 @@ export default {
   props: ['show', 'activeCollection'],
 
   data: () => ({
-    loading: false,
+    loading: true,
     collectionName: '',
     selectedFiles: [],
-    selectedCollection: void 0,
+    selectedCollection: 'default',
     collections: [],
   }),
 
@@ -110,13 +109,29 @@ export default {
       this.selectedFiles = Array.from(selectedFiles);
     },
 
+    getSelectOptions() {
+      const options = this.collections.map(c => ({ label: c, value: c }));
+
+      if (this.canCreateCollections) {
+        options.unshift({
+          label: this.__('novaMediaHub.uploadModalCreateNewOption'),
+          value: 'media-hub-new-collection',
+        });
+      }
+
+      return options;
+    },
+
     async getCollections() {
+      this.loading = true;
       const { data } = await API.getCollections();
       this.collections = data || [];
 
       if (!this.selectedCollection) {
         this.selectedCollection = this.collections.length ? this.collections[0] : void 0;
       }
+
+      this.loading = false;
     },
   },
 
