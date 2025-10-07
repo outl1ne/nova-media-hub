@@ -312,6 +312,6 @@ class MediaHub extends Tool
 
     public static function getImageDriver()
     {
-        return config('nova-media-hub.image_driver', config('image.driver'));
+        return config('nova-media-hub.image_driver', config('image.driver')) ?? 'imagick';
     }
 }

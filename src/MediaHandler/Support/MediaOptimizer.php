@@ -27,8 +27,8 @@ class MediaOptimizer
             if (!$localFilePath) return;
         }
 
-        $image = Image::load($localFilePath);
-        if ($driver = MediaHub::getImageDriver()) $image->useImageDriver($driver);
+        $image = Image::useImageDriver(MediaHub::getImageDriver());
+        $image->loadFile($localFilePath);
         $image->optimize(MediaHub::getOptimizerChain());
         $image = $manipulator->manipulateOriginal($media, $image);
         $image->save();
@@ -69,8 +69,8 @@ class MediaOptimizer
             if (!$localFilePath) return;
         }
 
-        $image = Image::load($localFilePath);
-        if ($driver = MediaHub::getImageDriver()) $image->useImageDriver($driver);
+        $image = Image::useImageDriver(MediaHub::getImageDriver());
+        $image->loadFile($localFilePath);
         $image->optimize(MediaHub::getOptimizerChain());
         $image = $manipulator->manipulateConversion($media, $image, $conversionName, $conversionConfig);
         $image->save();
