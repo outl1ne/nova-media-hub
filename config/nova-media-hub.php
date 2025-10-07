@@ -57,6 +57,22 @@ return [
         'default',
     ],
 
+    // Define a disk for each collection assets and conversions, overrides the default disk
+    // 'disks' => [
+    //     'default' =>  [
+    //         'assets' => 'public',
+    //         'conversions' => 'public',
+    //     ]
+    // ],
+
+    // Temporary URL expiration time in minutes
+    'temporary_url_expiration' => 60,
+
+    // Use Minio URL instead of temporary URL
+    'minio' => [
+        'use_url' => false,
+    ],
+
     // Defines whether user can create collections in the "Upload media" modal
     // If set to false, the user can only use the collections defined in the config
     'user_can_create_collections' => true,

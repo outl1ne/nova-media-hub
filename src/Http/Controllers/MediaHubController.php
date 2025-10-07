@@ -66,6 +66,10 @@ class MediaHubController extends Controller
         }
 
         $uploadedMedia = collect($uploadedMedia);
+
+        // filter null values, can appear if fileHandler throws an exception
+        $uploadedMedia = $uploadedMedia->filter();
+ 
         $coreResponse = [
             'media' => $uploadedMedia->map->formatForNova(),
             'hadExisting' => $uploadedMedia->where(fn ($m) => $m->wasExisting)->count() > 0,

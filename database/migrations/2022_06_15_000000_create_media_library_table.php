@@ -11,8 +11,7 @@ return new class extends Migration
     {
         Schema::create(MediaHub::getTableName(), function (Blueprint $table) {
             // Primary keys
-            $table->bigIncrements('id');
-            $table->uuid('uuid')->nullable()->unique();
+            $table->uuid('id')->primary();
 
             // Core data
             $table->string('collection_name');
