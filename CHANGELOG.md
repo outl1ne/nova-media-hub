@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.2] - 01-07-2026
+
+### Changed
+
+- Restored media search with debounced input and safe sorting (thanks to [@Claudio-Emmolo](https://github.com/Claudio-Emmolo))
+- `MediaCast` now uses the configurable media model instead of the hardcoded `Media` model
+- Fixed implicit nullable parameter deprecation for PHP 8.4
+- Updated Italian translations (thanks to [@trippo](https://github.com/trippo))
+- Updated packages
+
 ## [2.1.0] - 09-09-2024
 
 ### Changed
