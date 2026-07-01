@@ -1,0 +1,19 @@
+CHANGELOG.md
+  s_05a672eabed950::t_4ed01e1fa48af1 8-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "755c769eec09786fef42a5e609ee20c76109ab9f",
+  "prompts": {},
+  "sessions": {
+    "s_05a672eabed950": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "54a1d7eb-d503-4733-b916-fb06e89f6489",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Tarvo Reinpalu <tarvo@versioon.ee>"
+    }
+  }
+}
