@@ -44,7 +44,7 @@ class FileHelpers
         return explode('/', $mimeType)[1] ?? null;
     }
 
-    public static function getFileHash(string $path, string $disk = null): string
+    public static function getFileHash(string $path, ?string $disk = null): string
     {
         if (!$path) return null;
         if (!$disk && !is_file($path)) return null;
