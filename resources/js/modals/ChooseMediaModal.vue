@@ -75,7 +75,6 @@
                 <MediaOrderSelect
                   :columns="orderColumns"
                   v-model:selected="orderBy"
-                  @change="selected => (orderBy = selected)"
                 />
               </ModalFilterItem>
 
@@ -179,6 +178,7 @@ import ModalFilterItem from '../components/ModalFilterItem';
 import MediaOrderSelect from '../components/MediaOrderSelect';
 import MediaViewModal from '../modals/MediaViewModal';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
+import debounce from 'lodash.debounce';
 import { Button } from 'laravel-nova-ui';
 
 export default {
@@ -214,13 +214,27 @@ export default {
   }),
 
   created() {
+    this.debouncedSearchRefresh = debounce(() => {
+      if (!this.show) return;
+      this.refresh(1);
+    }, 700);
+
     this.$watch(
-      () => ({ collection: this.collection, search: this.search, orderBy: this.orderBy, show: this.show }),
+      () => ({ collection: this.collection, orderBy: this.orderBy, show: this.show }),
       async data => {
         if (!data.show) return;
         await this.refresh(1);
       }
     );
+
+    this.$watch(() => this.search, () => {
+      if (!this.show) return;
+      this.debouncedSearchRefresh();
+    });
+  },
+
+  beforeUnmount() {
+    this.debouncedSearchRefresh?.cancel();
   },
 
   watch: {

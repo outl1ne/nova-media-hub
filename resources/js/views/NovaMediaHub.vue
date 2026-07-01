@@ -4,13 +4,18 @@
 
     <!-- Header -->
     <div class="o1-flex o1-mb-4">
-      <IndexSearchInput class="o1-mb-0" v-model:keyword="search" @update:keyword="search = $event" />
+      <input
+        v-model="search"
+        class="w-full md:w-1/3 md:shrink-0 form-control form-input form-input-bordered"
+        type="search"
+        :placeholder="__('novaMediaHub.searchMediaTitle')"
+        spellcheck="false"
+      />
 
       <div class="o1-ml-auto o1-flex o1-gap-2">
         <MediaOrderSelect
           :columns="orderColumns"
           v-model:selected="orderBy"
-          @change="selected => (orderBy = selected.target.value)"
         />
         <Button @click="showMediaUploadModal = true">
           {{ __('novaMediaHub.uploadMediaButton') }}
@@ -180,10 +185,21 @@ export default {
       { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
     ];
 
-    this.$watch(
-      () => ({ search: this.search, orderBy: this.orderBy }),
-      debounce(data => this.getMedia({ ...data, page: 1 }), 400)
-    );
+    this.debouncedSearchRefresh = debounce(() => {
+      this.getMedia({ search: this.search, orderBy: this.orderBy, page: 1 });
+    }, 700);
+
+    this.$watch(() => this.search, () => {
+      this.debouncedSearchRefresh();
+    });
+
+    this.$watch(() => this.orderBy, orderBy => {
+      this.getMedia({ search: this.search, orderBy, page: 1 });
+    });
+  },
+
+  beforeUnmount() {
+    this.debouncedSearchRefresh?.cancel();
   },
 
   async mounted() {
