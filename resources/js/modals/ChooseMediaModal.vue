@@ -14,7 +14,7 @@
       <slot>
         <ModalContent class="o1-min-h-[90%] o1-grow o1-px-8 o1-py-0 o1-flex o1-flex-col">
           <!-- Selected media -->
-          <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-1 o1-border-b o1-border-slate-200 dark:o1-border-slate-700">
+          <div class="o1-flex o1-flex-col o1-pt-6 o1-pb-1 o1-border-b o1-border-gray-200 dark:o1-border-gray-700">
             <div class="o1-leading-tight text-primary-500 o1-font-bold o1-text-md o1-mb-2">
               {{ __('novaMediaHub.selectedMediaTitle') + (selectedCount > 1 ? ` (${selectedCount})` : '') }}
             </div>
@@ -35,7 +35,7 @@
                 </template>
               </Draggable>
             </div>
-            <div v-show="!selectedCount" class="o1-text-slate-400 o1-mb-4">
+            <div v-show="!selectedCount" class="o1-text-gray-400 o1-mb-4">
               {{ __('novaMediaHub.noMediaSelectedText') }}
             </div>
           </div>
@@ -112,7 +112,7 @@
                 </div>
               </div>
 
-              <div v-show="!mediaItems.length && !mediaLoading" class="o1-text-slate-400">
+              <div v-show="!mediaItems.length && !mediaLoading" class="o1-text-gray-400">
                 {{ __('novaMediaHub.noMediaItemsFoundText') }}
               </div>
 
@@ -122,7 +122,7 @@
 
               <PaginationLinks
                 v-show="mediaResponse.last_page > 1"
-                class="o1-mt-auto o1-w-full o1-border o1-border-slate-200 o1-border-l dark:o1-border-gray-700 o1-rounded-b-lg"
+                class="o1-mt-auto o1-w-full o1-border o1-border-gray-200 o1-border-l dark:o1-border-gray-700 o1-rounded-b-lg"
                 style="border-radius: 0px"
                 :page="mediaResponse.current_page"
                 :pages="mediaResponse.last_page"

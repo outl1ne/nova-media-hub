@@ -4,7 +4,8 @@ export default {
   data: () => ({
     collection: undefined,
     search: undefined,
-    orderBy: undefined,
+    // Empty string matches the "default order" option of MediaOrderSelect.
+    orderBy: '',
 
     collections: [],
     mediaItems: [],

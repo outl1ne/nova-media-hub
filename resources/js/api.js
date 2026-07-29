@@ -9,6 +9,10 @@ export default {
     return Nova.request().get(`${PREFIX}/collections`);
   },
 
+  async renameCollection(from, to) {
+    return Nova.request().post(`${PREFIX}/collections/rename`, { from, to });
+  },
+
   async saveMediaToCollection(collectionName, formData) {
     return Nova.request().post(`${PREFIX}/media/save?collectionName=${collectionName}`, formData);
   },

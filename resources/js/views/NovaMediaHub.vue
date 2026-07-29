@@ -1,22 +1,19 @@
 <template>
-  <LoadingView :loading="loading" :key="collectionId" class="o1-flex o1-flex-col o1-m-2">
+  <LoadingView :loading="loading" class="o1-flex o1-flex-col o1-m-2">
     <Head :title="__('novaMediaHub.navigationItemTitle')" />
 
     <!-- Header -->
     <div class="o1-flex o1-mb-4">
       <input
         v-model="search"
-        class="w-full md:w-1/3 md:shrink-0 form-control form-input form-input-bordered"
+        class="w-full md:w-1/3 md:shrink-0 bg-white dark:bg-gray-800 shadow dark:focus:bg-gray-800 appearance-none rounded-full h-8 px-4 w-full focus:bg-white focus:outline-none ring-[1px] ring-gray-50 focus:!ring-primary-400 dark:ring-gray-700"
         type="search"
         :placeholder="__('novaMediaHub.searchMediaTitle')"
         spellcheck="false"
       />
 
       <div class="o1-ml-auto o1-flex o1-gap-2">
-        <MediaOrderSelect
-          :columns="orderColumns"
-          v-model:selected="orderBy"
-        />
+        <MediaOrderSelect :columns="orderColumns" v-model:selected="orderBy" />
         <Button @click="showMediaUploadModal = true">
           {{ __('novaMediaHub.uploadMediaButton') }}
         </Button>
@@ -25,40 +22,49 @@
 
     <!-- Content wrapper -->
     <div
-      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700 o1-min-h-[500px]"
+      class="o1-flex o1-border o1-full o1-border-gray-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-gray-800 dark:o1-border-gray-700 o1-min-h-[500px]"
     >
       <!-- Collections list -->
-      <div class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700 o1-min-w-[160px]">
-        <div
-          class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-slate-700"
-        >
+      <div class="o1-flex o1-flex-col o1-border-r o1-border-gray-200 dark:o1-border-gray-700 o1-min-w-[160px]">
+        <div class="o1-font-bold o1-border-b o1-border-gray-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-gray-700">
           {{ __('novaMediaHub.collectionsTitle') }}
         </div>
 
         <div class="o1-flex o1-flex-col">
-          <div v-if="!collections.length" class="o1-text-sm o1-text-slate-400 o1-p-4 o1-whitespace-nowrap">
+          <div v-if="!collections.length" class="o1-text-sm o1-text-gray-400 o1-p-4 o1-whitespace-nowrap">
             {{ __('novaMediaHub.noCollectionsFoundText') }}
           </div>
 
-          <Link
+          <div
             v-for="collectionName in collections"
             :key="collectionName"
-            :href="`${basePath}/${collectionName}`"
-            class="o1-p-4 o1-bg-slate-50 o1-capitalize o1-border-b o1-border-slate-200 hover:o1-bg-slate-100 dark:o1-border-slate-600 dark:o1-bg-slate-700 dark:hover:o1-bg-slate-800"
-            :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }"
+            class="o1-flex o1-items-stretch o1-bg-gray-50 o1-border-b o1-border-gray-200 hover:o1-bg-gray-100 dark:o1-border-gray-600 dark:o1-bg-gray-700 dark:hover:o1-bg-gray-800"
+            :class="{ 'o1-bg-gray-100': collectionName === collection }"
           >
-            {{ collectionName }}
-          </Link>
-        </div>
-      </div>
+            <Link
+              :href="`${basePath}/${collectionName}`"
+              class="o1-p-4 o1-capitalize o1-flex-1 o1-whitespace-nowrap"
+              :class="{ 'font-bold text-primary-500': collectionName === collection }"
+            >
+              {{ collectionName }}
+            </Link>
 
-      <div class="o1-flex o1-w-full o1-p-4 o1-items-center o1-justify-center" v-if="mediaLoading">
-        <Loader class="text-gray-300" />
+            <button
+              v-if="canRenameCollections"
+              type="button"
+              class="o1-px-3 o1-text-gray-400 hover:o1-text-gray-700 dark:hover:o1-text-gray-200"
+              :title="__('novaMediaHub.renameCollectionButton')"
+              :aria-label="__('novaMediaHub.renameCollectionButton')"
+              @click.stop.prevent="openRenameCollectionModal(collectionName)"
+            >
+              <PencilIcon />
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Media list -->
       <div
-        v-else
         class="o1-flex o1-flex-col o1-w-full o1-overflow-hidden o1-relative"
         @dragenter="toggleShowQuickUpload"
         @dragleave="toggleShowQuickUpload"
@@ -66,7 +72,7 @@
         <!-- Dropzone -->
         <div
           v-show="showQuickUpload"
-          class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90"
+          class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-gray-900 o1-bg-opacity-90"
         >
           <div class="o1-dropzone-wrapper o1-py-32 o1-px-8 flex o1-items-center o1-justify-center o1-h-full">
             <NMHDropZone v-if="!quickUploadLoading" @fileChanged="uploadFiles" multiple />
@@ -81,7 +87,7 @@
           :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
         >
           <Loader v-if="loadingMedia" class="text-gray-300 o1-absolute o1-inset-0 o1-m-auto" width="60" />
-          <div v-else-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
+          <div v-else-if="!mediaItems.length" class="o1-text-sm o1-text-gray-400">
             {{ __('novaMediaHub.noMediaItemsFoundText') }}
           </div>
 
@@ -97,7 +103,7 @@
         </div>
 
         <PaginationLinks
-          class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 dark:o1-border-slate-700"
+          class="o1-mt-auto o1-w-full o1-border-t o1-border-gray-200 dark:o1-border-gray-700"
           :page="mediaResponse.current_page"
           :pages="mediaResponse.last_page"
           @page="switchToPage"
@@ -126,6 +132,12 @@
       :mediaItem="ctxMediaItem"
       @close="handleMoveCollectionModalClose"
     />
+
+    <RenameCollectionModal
+      :show="showRenameCollectionModal"
+      :collection="renamingCollection"
+      @close="handleRenameCollectionModalClose"
+    />
   </LoadingView>
 </template>
 
@@ -139,7 +151,9 @@ import ConfirmDeleteModal from '../modals/ConfirmDeleteModal';
 import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import MediaOrderSelect from '../components/MediaOrderSelect';
+import RenameCollectionModal from '../modals/RenameCollectionModal';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
+import PencilIcon from '../icons/PencilIcon';
 import debounce from 'lodash.debounce';
 import { Button } from 'laravel-nova-ui';
 
@@ -154,7 +168,9 @@ export default {
     ConfirmDeleteModal,
     MediaItemContextMenu,
     MoveToCollectionModal,
+    RenameCollectionModal,
     MediaOrderSelect,
+    PencilIcon,
     Button,
   },
 
@@ -169,8 +185,10 @@ export default {
     showMediaUploadModal: false,
     showConfirmDeleteModal: false,
     showMoveCollectionModal: false,
+    showRenameCollectionModal: false,
     showQuickUpload: false,
     quickUploadLoading: false,
+    renamingCollection: void 0,
   }),
 
   async created() {
@@ -189,13 +207,19 @@ export default {
       this.getMedia({ search: this.search, orderBy: this.orderBy, page: 1 });
     }, 700);
 
-    this.$watch(() => this.search, () => {
-      this.debouncedSearchRefresh();
-    });
+    this.$watch(
+      () => this.search,
+      () => {
+        this.debouncedSearchRefresh();
+      }
+    );
 
-    this.$watch(() => this.orderBy, orderBy => {
-      this.getMedia({ search: this.search, orderBy, page: 1 });
-    });
+    this.$watch(
+      () => this.orderBy,
+      orderBy => {
+        this.getMedia({ search: this.search, orderBy, page: 1 });
+      }
+    );
   },
 
   beforeUnmount() {
@@ -278,6 +302,29 @@ export default {
       if (update) this.getMedia();
     },
 
+    openRenameCollectionModal(collectionName) {
+      this.renamingCollection = collectionName;
+      this.showRenameCollectionModal = true;
+    },
+
+    async handleRenameCollectionModalClose(newCollectionName) {
+      const renamedActiveCollection = this.renamingCollection === this.collection;
+
+      this.showRenameCollectionModal = false;
+      this.renamingCollection = void 0;
+
+      if (!newCollectionName) return;
+
+      // The active collection lives in the URL, so navigate instead of
+      // leaving the page pointing at a collection that no longer exists.
+      if (renamedActiveCollection) {
+        Nova.visit(`${this.toolPath}/${newCollectionName}`);
+        return;
+      }
+
+      await this.getCollections();
+    },
+
     async switchToPage(page) {
       await this.goToMediaPage(page);
       Nova.$emit('resources-loaded');
@@ -285,14 +332,21 @@ export default {
   },
 
   computed: {
+    // Tool path relative to the Nova root, as expected by Nova.visit().
+    toolPath() {
+      const basePath = (Nova.appConfig.novaMediaHub.basePath || 'media-hub').replace(/^\/|\/$/g, '');
+      return `/${basePath}`;
+    },
+
     basePath() {
       const novaRoot = Nova.appConfig.base;
 
-      let basePath = Nova.appConfig.novaMediaHub.basePath || 'media-hub';
-      basePath = basePath.replace(/^\/|\/$/g, '');
+      if (['', '/'].includes(novaRoot)) return this.toolPath;
+      return `${novaRoot}${this.toolPath}`;
+    },
 
-      if (['', '/'].includes(novaRoot)) return `/${basePath}`;
-      return `${novaRoot}/${basePath}`;
+    canRenameCollections() {
+      return Nova.appConfig.novaMediaHub.canCreateCollections;
     },
   },
 };

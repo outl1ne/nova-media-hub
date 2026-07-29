@@ -7,7 +7,7 @@
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 rounded-bl-lg focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'text-gray-500': hasPreviousPages,
-          'o1-text-slate-200': !hasPreviousPages || linksDisabled,
+          'o1-text-gray-200': !hasPreviousPages || linksDisabled,
         }"
         rel="first"
         @click.prevent="selectPage(1)"
@@ -22,7 +22,7 @@
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'text-gray-500': hasPreviousPages,
-          'o1-text-slate-200': !hasPreviousPages || linksDisabled,
+          'o1-text-gray-200': !hasPreviousPages || linksDisabled,
         }"
         rel="prev"
         @click.prevent="selectPreviousPage()"
@@ -53,7 +53,7 @@
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'text-gray-500': hasMorePages,
-          'o1-text-slate-200': !hasMorePages || linksDisabled,
+          'o1-text-gray-200': !hasMorePages || linksDisabled,
         }"
         rel="next"
         @click.prevent="selectNextPage()"
@@ -68,7 +68,7 @@
         class="border-r border-gray-200 dark:border-gray-700 text-xl h-9 min-w-9 px-2 focus:outline-none focus:bg-gray-50 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:o1-opacity-50"
         :class="{
           'text-gray-500': hasMorePages,
-          'o1-text-slate-200': !hasMorePages || linksDisabled,
+          'o1-text-gray-200': !hasMorePages || linksDisabled,
         }"
         rel="last"
         @click.prevent="selectPage(pages)"

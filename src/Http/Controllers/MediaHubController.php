@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Outl1ne\NovaMediaHub\MediaHub;
 use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
 
@@ -14,18 +15,50 @@ class MediaHubController extends Controller
 {
     public function getCollections(Request $request)
     {
-        $defaultCollections = MediaHub::getDefaultCollections();
+        return response()->json($this->getCollectionNames(), 200);
+    }
 
-        $collections = MediaHub::getMediaModel()
-            ::distinct()
-            ->pluck('collection_name')
-            ->merge($defaultCollections)
-            ->map(fn ($name) => str($name)->lower())
-            ->unique()
-            ->values()
-            ->toArray();
+    public function renameCollection(Request $request)
+    {
+        if (!MediaHub::userCanCreateCollections()) {
+            return response()->json(['error' => 'Renaming collections is not allowed.'], 403);
+        }
 
-        return response()->json($collections, 200);
+        $from = str(trim((string) $request->get('from')))->lower()->toString();
+        $to = str(trim((string) $request->get('to')))->lower()->toString();
+
+        if ($from === '' || $to === '') {
+            return response()->json(['error' => 'Both the current and the new collection name are required.'], 400);
+        }
+
+        if (mb_strlen($to) > 255 || preg_match('/[\/\\\\]/', $to)) {
+            return response()->json(['error' => 'Invalid collection name.'], 400);
+        }
+
+        if ($from === $to) {
+            return response()->json(['collection' => $to, 'success_count' => 0], 200);
+        }
+
+        $collections = $this->getCollectionNames();
+
+        if (!in_array($from, $collections, true)) {
+            return response()->json(['error' => 'Collection not found.'], 404);
+        }
+
+        if (in_array($to, $collections, true)) {
+            return response()->json(['error' => 'A collection with that name already exists.'], 409);
+        }
+
+        // Media files are stored under a path derived from the media ID, not the
+        // collection name, so renaming is purely a database operation.
+        $updatedCount = MediaHub::getQuery()
+            ->where(...$this->collectionNameWhere($from))
+            ->update(['collection_name' => $to]);
+
+        return response()->json([
+            'collection' => $to,
+            'success_count' => $updatedCount,
+        ], 200);
     }
 
     public function getMedia()
@@ -183,5 +216,31 @@ class MediaHubController extends Controller
             'media' => $newMediaItem->formatForNova(),
             'success' => true,
         ], 200);
+    }
+
+    protected function getCollectionNames(): array
+    {
+        $defaultCollections = MediaHub::getDefaultCollections();
+
+        return MediaHub::getMediaModel()
+            ::distinct()
+            ->pluck('collection_name')
+            ->merge($defaultCollections)
+            ->map(fn ($name) => str($name)->lower()->toString())
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    // Mirrors the Collection filter so lookups stay case insensitive on the
+    // databases that support it.
+    protected function collectionNameWhere(string $collectionName): array
+    {
+        $connectionName = MediaHub::getMediaModel()::getConnectionResolver()->getDefaultConnection();
+        $isProperSql = in_array($connectionName, ['mysql', 'pgsql', 'sqlite']);
+
+        return $isProperSql
+            ? [DB::raw('LOWER(collection_name)'), '=', mb_strtolower($collectionName)]
+            : ['collection_name', '=', $collectionName];
     }
 }

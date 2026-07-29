@@ -18,6 +18,7 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 
 - Media Hub UI in separate view
 - Media Hub field for selecting single/multiple media
+- Collection renaming from the collections list
 - Image optimization and multiple conversions support
 - File naming and path making customization
 - Dark mode support
@@ -114,6 +115,16 @@ The config file can be published using the following command:
 ```bash
 php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="config"
 ```
+
+### Renaming collections
+
+Each collection in the Media Hub sidebar has an edit button that renames the collection and moves all of
+its media items along with it. Files on disk are stored under a path derived from the media ID, so nothing
+is moved on the disk and existing media URLs keep working.
+
+Renaming is only available when `user_can_create_collections` is enabled in the config, since a rename
+introduces a new collection name. Note that collections listed under the `collections` config key always
+exist, so renaming one of those moves its media but leaves the original (now empty) collection in the list.
 
 ### Custom optimizer chain
 

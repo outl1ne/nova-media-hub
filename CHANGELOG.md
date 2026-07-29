@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Collections can be renamed from the collections list in the Media Hub view
+
+### Changed
+
+- Gray colors now resolve to Nova's theme-driven `--colors-gray-*` CSS variables instead of a hardcoded Tailwind `slate` palette, so the tool follows the active Nova theme
+- Removed dead `mediaLoading`/`collectionId` template bindings from the Media Hub view
+- The media order select now has an explicit empty default value instead of relying on the prop default
+
 ## [3.0.2] - 01-07-2026
 
 ### Changed
