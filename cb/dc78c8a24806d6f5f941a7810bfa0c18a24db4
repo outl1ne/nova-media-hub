@@ -1,0 +1,19 @@
+CHANGELOG.md
+  s_eab1d1532e320c::t_6a945bfe2b5a8c 8,12-14,19-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "cbdc78c8a24806d6f5f941a7810bfa0c18a24db4",
+  "prompts": {},
+  "sessions": {
+    "s_eab1d1532e320c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f70860da-95a4-4a13-a356-084709eaddb2",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Tarvo Reinpalu <tarvo@versioon.ee>"
+    }
+  }
+}
