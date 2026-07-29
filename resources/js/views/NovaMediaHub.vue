@@ -43,7 +43,7 @@
           >
             <Link
               :href="`${basePath}/${collectionName}`"
-              class="o1-p-4 o1-capitalize o1-flex-1 o1-whitespace-nowrap"
+              class="o1-p-4 o1-capitalize o1-flex-1 o1-whitespace-nowrap o1-overflow-hidden o1-text-ellipsis"
               :class="{ 'font-bold text-primary-500': collectionName === collection }"
             >
               {{ collectionName }}
@@ -52,7 +52,7 @@
             <button
               v-if="canRenameCollections"
               type="button"
-              class="o1-px-3 o1-text-gray-400 hover:o1-text-gray-700 dark:hover:o1-text-gray-200"
+              class="o1-px-3 o1-shrink-0 o1-text-gray-400 hover:o1-text-gray-700 dark:hover:o1-text-gray-200"
               :title="__('novaMediaHub.renameCollectionButton')"
               :aria-label="__('novaMediaHub.renameCollectionButton')"
               @click.stop.prevent="openRenameCollectionModal(collectionName)"
