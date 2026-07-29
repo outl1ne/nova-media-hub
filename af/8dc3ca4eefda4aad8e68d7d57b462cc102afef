@@ -1,0 +1,32 @@
+README.md
+  s_eab1d1532e320c::t_3dd70f20069c2d 126-127
+CHANGELOG.md
+  s_eab1d1532e320c::t_36471dc33055ae 15
+resources/js/views/NovaMediaHub.vue
+  s_eab1d1532e320c::t_c7bd7f43479a8d 305-309
+  s_eab1d1532e320c::t_a748113d115498 53
+  s_eab1d1532e320c::t_be24b782d98591 356-359
+dist/js/entry.js
+  s_eab1d1532e320c::t_af613cc674d536 2
+src/MediaHub.php
+  s_eab1d1532e320c::t_aef71202a340a4 289-298
+  s_eab1d1532e320c::t_0a98a94c8fd3c7 45
+src/Http/Controllers/MediaHubController.php
+  s_eab1d1532e320c::t_cf9a8cfe866c76 38-43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "af8dc3ca4eefda4aad8e68d7d57b462cc102afef",
+  "prompts": {},
+  "sessions": {
+    "s_eab1d1532e320c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f70860da-95a4-4a13-a356-084709eaddb2",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Tarvo Reinpalu <tarvo@versioon.ee>"
+    }
+  }
+}
