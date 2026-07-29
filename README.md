@@ -123,8 +123,8 @@ its media items along with it. Files on disk are stored under a path derived fro
 is moved on the disk and existing media URLs keep working.
 
 Renaming is only available when `user_can_create_collections` is enabled in the config, since a rename
-introduces a new collection name. Note that collections listed under the `collections` config key always
-exist, so renaming one of those moves its media but leaves the original (now empty) collection in the list.
+introduces a new collection name. Collections listed under the `collections` config key always exist and
+can't be renamed, so they have no edit button.
 
 ### Custom optimizer chain
 

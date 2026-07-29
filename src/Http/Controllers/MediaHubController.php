@@ -35,6 +35,12 @@ class MediaHubController extends Controller
             return response()->json(['error' => 'Invalid collection name.'], 400);
         }
 
+        // Collections listed in the config always exist, so renaming one would
+        // just leave the original behind as an empty collection.
+        if (in_array($from, MediaHub::getDefaultCollectionNames(), true)) {
+            return response()->json(['error' => 'Collections defined in the config can\'t be renamed.'], 403);
+        }
+
         if ($from === $to) {
             return response()->json(['collection' => $to, 'success_count' => 0], 200);
         }

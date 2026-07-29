@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Collections can now be renamed directly from the collections list in the Media Hub view
   - Renaming moves all media items of the collection along with it. Files on disk are stored under a path derived from the media ID, so nothing is moved on the disk and existing media URLs keep working.
   - Requires the `user_can_create_collections` config option to be enabled
+  - Collections defined in the `collections` config option always exist and can't be renamed
 
 ### Changed
 

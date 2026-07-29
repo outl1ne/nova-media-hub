@@ -50,7 +50,7 @@
             </Link>
 
             <button
-              v-if="canRenameCollections"
+              v-if="canRenameCollection(collectionName)"
               type="button"
               class="o1-px-3 o1-shrink-0 o1-text-gray-400 hover:o1-text-gray-700 dark:hover:o1-text-gray-200"
               :title="__('novaMediaHub.renameCollectionButton')"
@@ -302,6 +302,11 @@ export default {
       if (update) this.getMedia();
     },
 
+    // Config defined collections always exist, so renaming them isn't possible.
+    canRenameCollection(collectionName) {
+      return this.canRenameCollections && !this.defaultCollections.includes(collectionName);
+    },
+
     openRenameCollectionModal(collectionName) {
       this.renamingCollection = collectionName;
       this.showRenameCollectionModal = true;
@@ -347,6 +352,10 @@ export default {
 
     canRenameCollections() {
       return Nova.appConfig.novaMediaHub.canCreateCollections;
+    },
+
+    defaultCollections() {
+      return Nova.appConfig.novaMediaHub.defaultCollections || [];
     },
   },
 };

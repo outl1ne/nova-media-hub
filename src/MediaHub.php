@@ -42,6 +42,7 @@ class MediaHub extends Tool
             'novaMediaHub' => [
                 'basePath' => MediaHub::getBasePath(),
                 'canCreateCollections' => MediaHub::userCanCreateCollections(),
+                'defaultCollections' => MediaHub::getDefaultCollectionNames(),
                 'locales' => MediaHub::getLocales(),
                 'mediaDataFields' => $this->customFields,
             ],
@@ -283,6 +284,16 @@ class MediaHub extends Tool
     public static function getDefaultCollections(): array
     {
         return config('nova-media-hub.collections', []);
+    }
+
+    // Config defined collections always exist, so they can't be renamed away.
+    // Normalized to lowercase to match how collection names are listed.
+    public static function getDefaultCollectionNames(): array
+    {
+        return array_values(array_unique(array_map(
+            fn ($name) => mb_strtolower((string) $name),
+            static::getDefaultCollections()
+        )));
     }
 
     public static function userCanCreateCollections()
