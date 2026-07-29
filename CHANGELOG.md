@@ -5,17 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.0.3] - 29-07-2026
 
 ### Added
 
-- Collections can be renamed from the collections list in the Media Hub view
+- Collections can now be renamed directly from the collections list in the Media Hub view
+  - Renaming moves all media items of the collection along with it. Files on disk are stored under a path derived from the media ID, so nothing is moved on the disk and existing media URLs keep working.
+  - Requires the `user_can_create_collections` config option to be enabled
 
 ### Changed
 
 - Gray colors now resolve to Nova's theme-driven `--colors-gray-*` CSS variables instead of a hardcoded Tailwind `slate` palette, so the tool follows the active Nova theme
-- Removed dead `mediaLoading`/`collectionId` template bindings from the Media Hub view
-- The media order select now has an explicit empty default value instead of relying on the prop default
+- The media order select now has an explicit default value instead of relying on the child component's prop default
+- Removed dead `mediaLoading` and `collectionId` template bindings from the Media Hub view
 
 ## [3.0.2] - 01-07-2026
 
