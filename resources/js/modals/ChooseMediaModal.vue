@@ -153,7 +153,7 @@
     />
 
     <MediaItemContextMenu
-      id="media-choose-modal-ctx-menu"
+      :id="`media-choose-modal-ctx-menu-${field.validationKey || field.attribute}`"
       :showEvent="ctxShowEvent"
       :options="ctxOptions"
       @showModal="ctxShowingModal = true"

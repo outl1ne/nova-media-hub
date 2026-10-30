@@ -26,7 +26,7 @@
       </div>
 
       <MediaItemContextMenu
-        :id="`detail-media-hub-field-ctx-menu-${field.attribute}`"
+        :id="`detail-media-hub-field-ctx-menu-${field.validationKey || field.attribute}`"
         :showEvent="ctxShowEvent"
         :options="ctxOptions"
         @close="

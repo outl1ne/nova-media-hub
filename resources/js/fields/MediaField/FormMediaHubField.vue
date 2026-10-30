@@ -32,7 +32,7 @@
       </Button>
 
       <MediaItemContextMenu
-        :id="`form-media-hub-field-ctx-menu-${field.attribute}`"
+        :id="`form-media-hub-field-ctx-menu-${field.validationKey || field.attribute}`"
         :showEvent="ctxShowEvent"
         :options="ctxOptions"
         @close="ctxShowEvent = void 0"
